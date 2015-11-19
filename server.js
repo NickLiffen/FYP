@@ -33,6 +33,7 @@ app.use(bodyParser()); // get information from html forms
 //Setting our Template Engine to EJS
 app.set('view engine', 'ejs'); // set up ejs for templating
 app.use(express.static(__dirname + '/public'));
+app.use('/vendor', express.static(__dirname + '/bower_components'));
 app.use(favicon(__dirname + '/public/favicon.ico'));
 
 // required for passport

@@ -80,12 +80,29 @@ module.exports = function(app, passport) {
 
     app.post('/update', function(req, res){
 
-      var email, number;
-
+      //Declare vars
+      let email, number;
+      //Get the information sent through by the profile page and store it in our variables
       email = req.body.email;
       number = req.body.number;
 
+      //Run the function that goes to config/database.js to update the users settings
       databaseQuery.updatProfile(email, number);
+
+      //This is the new information about the user
+      let user = {
+        id: req.user.id,
+        email:email,
+        password:req.user.password,
+        number:number
+      };
+
+      //Have to re-log the user in to update the users information in session.
+      req.logIn(user, function () {
+        req.session.save(function(){
+            res.redirect('/app/profile');
+        });
+      });
 
       req.flash('profileMessage', 'You have successfully updated your profile');
       res.redirect('app/profile');
