@@ -1,0 +1,88 @@
+<!doctype html>
+<html>
+<head>
+    <title>Node Authentication</title>
+
+        <!-- Latest compiled and minified jquery-2 -->
+        <script type="text/javascript" src="/javascript/jquery.js"></script>
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script type="text/javascript" src="/javascript/bootstrap.js"></script>
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script type="text/javascript" src="/javascript/main.js"></script>
+
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" type="text/css" href="/css/bootstrap.css">
+
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="/css/bootstrap-theme.css">
+
+        <!-- Latest compiled and minified Font-Awsome -->
+        <link rel="stylesheet" type="text/css" href="/css/font-awesome.css">
+
+        <!-- My CSS File -->
+        <link rel="stylesheet" type="text/css" href="/css/main.css">
+</head>
+<body>
+  <!--Start of Navigation Bar-->
+  <nav class="navbar navbar-default" role="navigation">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/app">Attendance Me</a>
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="/app">Home</a></li>
+            <li><a href="/app/pupil">Pupils</a></li>
+            <li><a href="/app/class">Classes</a></li>
+            <li><a href="/app/teacher">Teachers</a></li>
+            <li><a href="/app/parent">Parents</a></li>
+        </ul>
+        <div class="col-sm-3 col-md-3 pull-right">
+            <form class="navbar-form" role="search">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search" name="q">
+                    <div class="input-group-btn">
+                        <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <ul class="nav navbar-nav navbar-right">
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Other Information <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="/app/profile">Your Profile</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a href="/logout">Logout</a></li>
+            </ul>
+          </li>
+        </ul>
+    </div>
+</nav>
+  <!-- End of Navigation Bar -->
+
+  <div class="jumbotron text-center">
+      <h1><span class="glyphicon glyphicon-home"></span> Home Page</h1>
+
+      <!-- show any messages that come back with authentication -->
+      <% if (message.length > 0) { %>
+          <div class="alert alert-danger"><%= message %></div>
+      <% } %>
+
+      <p>Your Options are Listed Below:</p>
+
+
+
+  </div>
+
+
+
+</body>
+</html>
