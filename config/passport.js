@@ -14,85 +14,18 @@ module.exports = function(passport, connection) {
         done(null, user);
     });
 
-    //Signup Using Passport
-    passport.use('local-signup', new LocalStrategy({
-            // by default, local strategy uses username and password, we will override with email
-            usernameField: 'email',
-            passwordField: 'password',
-            passReqToCallback: true // allows us to pass back the entire request to the callback
-        },
-        function(req, email, password, done) {
-
-            // asynchronous
-            // User.findOne wont fire unless data is sent back
-            process.nextTick(function() {
-
-                //MySQL Query to handle query for logging in.
-                connection.query({
-                        sql: 'SELECT email FROM `User` WHERE `email` = ?',
-                    }, [email],
-                    function(error, results) {
-                        //If error with SQL Query throw error to console
-                        if (error) {
-                            throw error;
-                        }
-                        //Outputs data to the user saying that User already exisits
-                        for (var i = 0; i < results.length; i++) {
-                            var DBemail;
-                            DBemail = results[i].email;
-                            if (DBemail) {
-                                return done(null, false, req.flash('signupMessage', 'Email Already Taken, Sorry.'));
-                            }
-                        }
-                        //Adds information to the database as no user exisits
-                        if (Object.keys(results).length === 0) {
-
-                            var number = req.body.number;
-
-                            bcrypt.hash(password, null, null, function(err, hash) {
-                                //If there is a problem with the hash then it returns this error
-                                if (err) {
-                                    throw error;
-                                }
-                                //This is going to be stored in the databse
-                                var Newuser = {
-                                    email,
-                                    password: hash,
-                                        number
-                                };
-                                //SQL Query to insert the data to the database.
-                                connection.query('INSERT INTO User SET ?', Newuser, function(err, res) {
-                                    //If error with SQL Query throw error to console
-                                    if (err) {
-                                        throw err;
-                                    }
-                                    //This is the information stored in the session
-                                    var user = {
-                                        id: res.insertId,
-                                        email: email,
-                                        password: hash,
-                                        number: number
-                                    };
-                                    return done(null, user);
-                                });
-                            });
-                        }
-                    });
-            });
-        }));
-
     //Loging in using Passport
     passport.use('local-login', new LocalStrategy({
             // by default, local strategy uses username and password, we will override with email
-            usernameField: 'email',
+            usernameField: 'username',
             passwordField: 'password',
             passReqToCallback: true // allows us to pass back the entire request to the callback
         },
-        function(req, email, password, done) { // callback with email and password from our form
+        function(req, username, password, done) { // callback with email and password from our form
             //MySQL Query to handle query for logging in.
             connection.query({
-                    sql: 'SELECT id, email, password, number FROM `User` WHERE `email` = ?',
-                }, [email],
+                    sql: '(SELECT * FROM `Admin` WHERE `Admin_Username` = ? OR `Admin_email` = ?)',
+                }, [username, username],
                 function(error, results) {
                     //If error with SQL Query throw error to console
                     if (error) {
@@ -100,16 +33,26 @@ module.exports = function(passport, connection) {
                     }
                     //If there was no user found if enters the following statment
                     if (typeof results === 'undefined' || results.length < 1) {
-                        console.log("error");
-                        return done(null, false, req.flash('loginMessage', 'Could not find any user with that email'));
+                        return done(null, false, req.flash('loginMessage', 'Could not find any user with that email or username'));
                     }
-                    //Information brought back from the SQL query and stored in a JSON object.
+
+                    //Concatination of the Users Name
+                    let title = results[0].Admin_Title;
+                    let fName = results[0].Admin_Fname;
+                    let lName = results[0].Admin_Lname;
+                    let concatName = title + " ".concat(fName) + " ".concat(lName);
+
+                    //Information brought back from the SQL query and going to be stored in the Passport Session.
                     var user = {
-                        id: results[0].id,
-                        email: results[0].email,
-                        password: results[0].password,
-                        number: results[0].number
+                        id: results[0].Admin_ID,
+                        name: concatName,
+                        email: results[0].Admin_Email,
+                        username: results[0].Admin_Username,
+                        password: results[0].Admin_Password,
+                        privlidge: results[0].Admin_Privledge_Level,
+                        role: results[0].Role
                     };
+
                     //Compare users password to the password in the database
                     bcrypt.compare(password, user.password, function(err, res) {
                         //If ther is an error with the hashing it will appear here

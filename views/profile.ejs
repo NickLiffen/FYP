@@ -1,7 +1,6 @@
 <% include header %>
   <!-- End of Navigation Bar -->
     <div class="row">
-
         <!-- LOCAL INFORMATION -->
          <div class="jumbotron text-center">
 
@@ -17,18 +16,16 @@
             <div class="well">
                 <h3><span class="glyphicon glyphicon-user"></span> Your Account Information</h3>
 
-                    <p>
-                        <strong>ID</strong>: <%= user.id %><br>
-                        <strong>Email</strong>:  <%= user.email %><br>
-                        <strong>Password</strong>: <%= user.password %><br>
-                        <strong>Phone Number</strong>: <%= user.number %><br>
-
-                    </p>
+                        <p>ID        <strong> <%= user.id       %></strong><p>
+                        <p>Name:     <strong> <%= user.name     %></strong><p>
+                        <p>Username: <strong> <%= user.username %></strong><p>
+                        <p>Email:    <strong> <%= user.email    %></strong><p>
+                        <p>Password: <strong> <%= user.password %></strong><p>
+                        <p>You are marked as an <strong><%= user.role %></strong> and have a privlidge level of: <strong><%= user.privlidge %></strong><p><br>
 
             </div>
             <a href="/update" class="btn btn-success btn-lg"><span class="glyphicon glyphicon-user btn-lg"></span> Update Account Information</a>
-        </div
-
+        </div>
     </div>
 
 </body>

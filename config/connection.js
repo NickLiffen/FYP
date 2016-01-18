@@ -1,7 +1,6 @@
 "use strict";
 import mysql from 'mysql';
 
-
 //Insert Credentials to Connect to our database
 const connection = mysql.createConnection({
   host     : process.env.DB_HOST,

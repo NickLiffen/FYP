@@ -8,7 +8,7 @@ module.exports = function(app, passport) {
       res.render('index.ejs'); // load the index.ejs file
   });
 
-  app.get('/app', isLoggedIn, function(req, res) {
+  app.get('/app', allowAdmins, function(req, res) {
       res.render('app.ejs', { message: req.flash('appMessage') });
   });
 
@@ -32,28 +32,28 @@ module.exports = function(app, passport) {
       failureFlash : true // allow flash messages
   }));
 
-  app.get('/app/profile', isLoggedIn, function(req, res) {
+  app.get('/app/profile', allowAdmins, function(req, res) {
       res.render('profile.ejs', {
           user : req.user,
           message: req.flash('profileMessage')
       });
   });
 
-  app.get('/app/parent', isLoggedIn, function(req, res) {
+  app.get('/app/parent', allowAdmins, function(req, res) {
       res.render('parent.ejs', {
           user : req.user,
           message: req.flash('parentMessage')
       });
   });
 
-  app.get('/app/teacher', isLoggedIn, function(req, res) {
+  app.get('/app/teacher', allowAdmins, function(req, res) {
       res.render('teacher.ejs', {
           user : req.user,
           message: req.flash('teahcerMessage')
       });
   });
 
-  app.get('/app/pupil', isLoggedIn, function(req, res) {
+  app.get('/app/pupil', allowAdmins, function(req, res) {
       res.render('pupil.ejs', {
           user : req.user,
           message: req.flash('pupilMessage')
@@ -65,13 +65,13 @@ module.exports = function(app, passport) {
         res.redirect('/');
     });
 
-    app.get('/update', isLoggedIn, function(req, res) {
+    app.get('/update', allowAdmins, function(req, res) {
       res.render('update.ejs', {
           user : req.user // get the user out of session and pass to template
       });
     });
 
-    app.get('/app/class', isLoggedIn, function(req, res) {
+    app.get('/app/class', allowAdmins, function(req, res) {
       res.render('class.ejs', {
           user : req.user,
           message: req.flash('profileMessage') // get the user out of session and pass to template
@@ -81,21 +81,31 @@ module.exports = function(app, passport) {
     app.post('/update', function(req, res){
 
       //Declare vars
-      let email, number;
+      let email, username, id;
       //Get the information sent through by the profile page and store it in our variables
       email = req.body.email;
-      number = req.body.number;
+      username = req.body.username;
+      id = req.user.id;
+
+      /*
+      if(email === req.user.email && username === req.user.username){
+        req.flash('profileMessage', 'You have not changed anything');
+        res.redirect('app/profile');
+      }*/
 
       //Run the function that goes to config/database.js to update the users settings
-      databaseQuery.updatProfile(email, number);
+      databaseQuery.updateProfile(email, username, id);
 
       //This is the new information about the user
       let user = {
-        id: req.user.id,
-        email:email,
-        password:req.user.password,
-        number:number
-      };
+            id: req.user.id,
+            name: req.user.name,
+            email: email,
+            username: username,
+            password: req.user.password,
+            privlidge: req.user.privlidge,
+            role: req.user.role
+          };
 
       //Have to re-log the user in to update the users information in session.
       req.logIn(user, function () {
@@ -106,18 +116,20 @@ module.exports = function(app, passport) {
 
       req.flash('profileMessage', 'You have successfully updated your profile');
       res.redirect('app/profile');
-
     });
-
 };
 
-function isLoggedIn(req, res, next) {
-
-    // if user is authenticated in the session, carry on
-    if (req.isAuthenticated()){
-        return next();
-      }
-
-    req.flash('loginMessage', "You aren't logged in, please log in");
+//Allow Admin to view only Admin URI's
+function allowAdmins(req, res, next) {
+  if(!req.user){
+    req.flash('loginMessage', "Something went wrong, re-login please");
     res.redirect('/login');
+  }
+  else if(req.user.role === 'Admin'){
+    return next();
+  }
+  else{
+    req.flash('loginMessage', "Naughty, Naughty your not an admin!");
+    res.redirect('/login');
+  }
 }
