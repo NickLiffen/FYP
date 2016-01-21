@@ -4,18 +4,80 @@
   <div class="jumbotron text-center">
       <h1><span class="glyphicon glyphicon-home"></span> Pupil Page</h1>
 
-      <!-- show any messages that come back with authentication -->
-      <% if (message.length > 0) { %>
-          <div class="alert alert-danger"><%= message %></div>
-      <% } %>
 
       <p>Your Options are Listed Below:</p>
+  </div>
+  <!-- show any messages that come back with authentication -->
+  <% if (message.length > 0) { %>
+      <div class="alert alert-danger"><%= message %></div>
+  <% } %>
 
-
-
+  <!-- Sends the View Parents and Add Parents navigation to the page -->
+  <div class="btn-group btn-group-justified" role="group" aria-label="...">
+    <div class="btn-group" role="group">
+      <button type="button" class="btn btn-default" id='viewStudent'>View Students</button>
+    </div>
+    <div class="btn-group" role="group">
+      <button type="button" class="btn btn-default" id='addStudent'>Add Students</button>
+    </div>
   </div>
 
+<!-- Add a Student Section -->
+<div class="hideAddStudentForm">
+<section class='alignLeft' id='addStudentForm'>
+    <fieldset>
+        <legend><span>Would you like to add a Student?</span></legend>
+          <form id'addStudentForm' action="/pupil" method="post">
 
+          <p>Please Enter a Student Title:* <input id="studentTitle" name=
+          "studentTitle" placeholder="Mr, Mrs, Master" type="text" autofocus> <span id=
+          "errorStudentTitle"></span> <span class="error"></span></p>
+
+          <p>Please Enter a Student Forname:* <input id="studentFName" name=
+          "studentFName" placeholder="Student First Name" type="text"> <span id=
+          "errorStudentFName"></span> <span class="error"></span></p>
+
+          <p>Please Enter a Student Last Name:* <input id="studentLName" name=
+          "studentLName" placeholder="Student Last Name" type="text"> <span id=
+          "errorStudentLName"></span> <span class="error"></span></p>
+
+          <p>Please Enter a Student Email:* <input id="studentEmail" name=
+          "studentEmail" placeholder="Student Email" type="text"> <span id=
+          "errorStudentLEmail"></span> <span class="error"></span></p>
+
+          <p>Please Enter the Student's Year:* <input id="studentYear" name=
+          "studentYear" placeholder="Year 7,8,9,10,11" type="text"> <span id=
+          "errorStudentYear"></span> <span class="error"></span></p>
+
+          <p>Please Enter a Student Username* <input id="studentUsername" name=
+          "studentUsername" placeholder="Student Username" type="text"> <span id=
+          "errorStudentUsername"></span> <span class="error"></span></p>
+
+          <p>Please Enter a Student Password* <input id="studentPassword" name=
+          "studentPassword" placeholder="Student Password" type="text"> <span id=
+          "errorStudentPassword"></span> <span class="error"></span></p>
+
+          <label for="sel2">Assign Parent? (hold shift to select more than one):</label>
+              <select multiple class="form-control" id="parentPicker">
+            </select>
+
+          <p>Everything marked with a * is a mandatory field</p>
+          <input id="submit" name="submit" type="submit" value="Add Student">
+
+            <div id="addStudentstatus"></div>
+        </form>
+    </fieldset>
+  </section>
+</div>
+
+<!-- View Student's Section -->
+<div class="hideViewStudentList">
+<section class='alignLeft' id='viewStudents'>
+  <!-- This is the DIV where all the dtudent data is going -->
+  <div id='showAllStudent'></div>
+<h1>Loading Students ..... </h1>
+</section>
+</div>
 
 </body>
 </html>

@@ -1,6 +1,7 @@
 "use strict";
 
 var databaseQuery = require('../config/database.js');
+const bcrypt = require('bcrypt-nodejs');
 
 module.exports = function(app, passport) {
 
@@ -64,6 +65,39 @@ module.exports = function(app, passport) {
         req.logout();
         res.redirect('/');
     });
+
+  app.post('/pupil', function(req){
+    //Store the unhashed password in a variable
+    let unhashedPassword = req.body.Student_Password;
+    //Hash the users password
+      bcrypt.hash(unhashedPassword, null, null, function(err, hash) {
+        //If there is a problem with hashing send me a message
+        if (err){
+          return err;
+        }
+        //Chnage the value in the object to the new password
+        req.body.Student_Password = hash;
+        databaseQuery.addStudent(req.body);
+      });
+  });
+
+/*
+  app.get('/getParent', function(req, res){
+    promise = databaseQuery.getParent(req.body);
+  });*/
+
+  app.get('/getParent', function (req, res) {
+    databaseQuery.getParent(req.body)
+    .then(function (data) {
+        res.send(data);
+    })
+    .catch(function (e) {
+        res.status(500, {
+            error: e
+        });
+    });
+});
+
 
     app.get('/update', allowAdmins, function(req, res) {
       res.render('update.ejs', {

@@ -2,7 +2,6 @@
 
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt-nodejs');
-
 // expose this function to our app using module.exports
 module.exports = function(passport, connection) {
 
@@ -13,7 +12,7 @@ module.exports = function(passport, connection) {
     passport.deserializeUser(function(user, done) {
         done(null, user);
     });
-
+//$2a$08$gnA71gTP.S2.DW51s0dpG.G1uBlN6sKM4anblcvFAZoWUrNLnaaWe
     //Loging in using Passport
     passport.use('local-login', new LocalStrategy({
             // by default, local strategy uses username and password, we will override with email
@@ -57,7 +56,8 @@ module.exports = function(passport, connection) {
                     bcrypt.compare(password, user.password, function(err, res) {
                         //If ther is an error with the hashing it will appear here
                         if (err) {
-                            throw error;
+                          console.log(err);
+                            throw err;
                         }
                         //If password hashed okay carry on.
                         if (res === true) {
