@@ -17,9 +17,6 @@ $(document).ready(function() {
         let lName = d.Parent_Lname;
         let concatName = title + " ".concat(fName) + " ".concat(lName);
 
-        console.log(d.Parent_ID);
-        console.log(concatName);
-
         $('#parentPicker').append('<option value="' + d.Parent_ID + '">' + concatName + '</option>');
             });
     });
@@ -49,6 +46,7 @@ $(document).ready(function() {
       event.preventDefault();
       //Declaring varibales
       let newStudent;
+
       //Creating the new student object will all information from the form
       newStudent = {
         Student_Title   :     $('#addStudentForm input#studentTitle').val(),
@@ -60,6 +58,20 @@ $(document).ready(function() {
         Student_Password:     $('#addStudentForm input#studentPassword').val(),
         Role: "Student"
       };
+
+      //Get Values from the add parents option
+      let parentPickerValues = $('#parentPicker').val();
+      console.log(parentPickerValues);
+
+      //Checks the value of the object, if no parents assigned don't add it to the newStudent Object
+      if(parentPickerValues.indexOf("0") > -1){
+        console.log("No Parent Assigned ATM");
+      }
+      else{
+        //As there is a parent assigned i am adding it to the newStudent Object
+        newStudent.Parent = parentPickerValues;
+      }
+
       //Send off the AJAX Request to the /pupil route
       $.ajax({
             type: 'POST',

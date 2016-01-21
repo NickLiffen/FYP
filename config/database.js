@@ -19,15 +19,49 @@ module.exports = {
 
   //Function called from routes.js and adds a student to the database
   addStudent: function(newUser){
+    //Declaring varuables for the addStudent function
+    let parent, parentObjectLength, insertId, output, sqlStatement;
 
-    connection.query('INSERT INTO Student SET ?', newUser, function(err) {
+    //Extracts the parent part of the Object and stores it in the parent variable
+    if(newUser.Parent){
+      parent = newUser.Parent;
+      delete newUser.Parent;
+    }
+
+    connection.query('INSERT INTO Student SET ?', newUser, function(err, result) {
       //If error inserting student to database throw error.
       if (err){
         console.log("Problem Updating User's Profile: " + err);
         return err;
       }
-      console.log("Added the Student successfully");
-      return;
+      //Grabs the ID of the student just added to the database
+      insertId = result.insertId;
+      //Creates an empty array where Student_ID and Parent_ID is going to go.
+      output = [];
+      //Loops through the Parent Array and pushed the Parent_ID to the Student_ID.
+      if(parent){
+        parentObjectLength = parent.length;
+      //The reason for this is becuase if there is no parents we do not want to add anything to the database.
+        console.log("We have a parent");
+        for(var i = 0; i < parent.length; i++) {
+          output.push([insertId, parent[i]]);
+        }
+      //Prepares a SQL statement for inserting student and parent ID to the Student_has_Parent table.
+      sqlStatement = "INSERT INTO Student_has_Parent (Student_Student_ID, Parent_Parent_ID) VALUES ?";
+      //Inserting into database.
+        connection.query(sqlStatement, [output], function(err, results){
+          if (err){
+            console.log("Problem Adding to Parents_Has_Student table: " + err);
+            return err;
+          }
+          console.log(results);
+          return results;
+        });
+      }
+      else{
+        console.log("We have noooooooo parent");
+        return;
+      }
     });
   },
 
@@ -54,7 +88,6 @@ module.exports = {
         reject(Error(err));
       }
       else{
-        console.log(results);
         resolve(results);
       }
 

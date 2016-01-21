@@ -24,49 +24,49 @@
 
 <!-- Add a Student Section -->
 <div class="hideAddStudentForm">
-<section class='alignLeft' id='addStudentForm'>
-    <fieldset>
-        <legend><span>Would you like to add a Student?</span></legend>
-          <form id'addStudentForm' action="/pupil" method="post">
-
-          <p>Please Enter a Student Title:* <input id="studentTitle" name=
-          "studentTitle" placeholder="Mr, Mrs, Master" type="text" autofocus> <span id=
-          "errorStudentTitle"></span> <span class="error"></span></p>
-
-          <p>Please Enter a Student Forname:* <input id="studentFName" name=
-          "studentFName" placeholder="Student First Name" type="text"> <span id=
-          "errorStudentFName"></span> <span class="error"></span></p>
-
-          <p>Please Enter a Student Last Name:* <input id="studentLName" name=
-          "studentLName" placeholder="Student Last Name" type="text"> <span id=
-          "errorStudentLName"></span> <span class="error"></span></p>
-
-          <p>Please Enter a Student Email:* <input id="studentEmail" name=
-          "studentEmail" placeholder="Student Email" type="text"> <span id=
-          "errorStudentLEmail"></span> <span class="error"></span></p>
-
-          <p>Please Enter the Student's Year:* <input id="studentYear" name=
-          "studentYear" placeholder="Year 7,8,9,10,11" type="text"> <span id=
-          "errorStudentYear"></span> <span class="error"></span></p>
-
-          <p>Please Enter a Student Username* <input id="studentUsername" name=
-          "studentUsername" placeholder="Student Username" type="text"> <span id=
-          "errorStudentUsername"></span> <span class="error"></span></p>
-
-          <p>Please Enter a Student Password* <input id="studentPassword" name=
-          "studentPassword" placeholder="Student Password" type="text"> <span id=
-          "errorStudentPassword"></span> <span class="error"></span></p>
-
-          <label for="sel2">Assign Parent? (hold shift to select more than one):</label>
-              <select multiple class="form-control" id="parentPicker">
-            </select>
-
-          <p>Everything marked with a * is a mandatory field</p>
-          <input id="submit" name="submit" type="submit" value="Add Student">
-
-            <div id="addStudentstatus"></div>
-        </form>
+<section id='addStudentForm'>
+  <h2>Add Student</h2>
+    <form id'addStudentForm' action="/pupil" method="post">
+    <fieldset class="form-group">
+        <label for="InputTitle">Student Title</label>
+        <input type="text" name="studentTitle" class="form-control" id="studentTitle" placeholder="Enter Title" autofocus>
     </fieldset>
+    <fieldset class="form-group">
+        <label for="InputFname">Student First Name</label>
+        <input type="text" name="studentFName" class="form-control" id="studentFName" placeholder="Enter First Name">
+    </fieldset>
+    <fieldset class="form-group">
+        <label for="InputLname">Student Last Name</label>
+        <input type="text" name="studentLName" class="form-control" id="studentLName" placeholder="Enter Last Name">
+    </fieldset>
+    <fieldset class="form-group">
+        <label for="InputEmail">Student Email</label>
+        <input type="email" name="studentEmail" class="form-control" id="studentEmail" placeholder="Enter Email">
+    </fieldset>
+    <fieldset class="form-group">
+        <label for="InputYear">Student Year</label>
+        <input type="text" name="studentYear" class="form-control" id="studentYear" placeholder="Enter Year">
+    </fieldset>
+    <fieldset class="form-group">
+        <label for="InputUsername">Student Username</label>
+        <input type="text" name="studentUsername" class="form-control" id="studentUsername" placeholder="Enter Username">
+    </fieldset>
+    </fieldset>
+    <fieldset class="form-group">
+        <label for="InputPassword">Student Password</label>
+        <input type="text" name="studentPassword" class="form-control" id="studentPassword" placeholder="Enter Password">
+    </fieldset>
+    <fieldset class="form-group">
+    <label for="sel2">Assign Parent? (hold shift to select more than one):</label>
+        <select multiple class="form-control" id="parentPicker">
+          <option value="0"selected="selected">No Parent Assigned</option>
+        </select>
+    </fieldset>
+
+    <p>Everything marked with a * is a mandatory field</p>
+    <button type="submit" id="submit" name="submit" class="btn btn-primary">Submit</button>
+      <div id="addStudentstatus"></div>
+  </form>
   </section>
 </div>
 
