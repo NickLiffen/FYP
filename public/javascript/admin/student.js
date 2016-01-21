@@ -12,6 +12,38 @@ $(document).ready(function() {
         $('.hideViewStudentList').toggleClass('showViewStudentList');
     });
 
+    //AJAX function to go and collect information about all pupils.
+    $.ajax({
+      type: 'GET',
+      url: '/getStudent',
+      dataType: 'JSON'
+    }).done(function(response){
+      console.log(response);
+
+      let tableContent = '';
+
+      $.each(response, function(){
+
+          let title = this.Student_Title;
+          let fName = this.Student_Fname;
+          let lName = this.Student_Lname;
+          let concatName = title + " ".concat(fName) + " ".concat(lName);
+
+          tableContent += '<tr>';
+          tableContent += '<th><span rel="' + this.Student_ID + '" id="' + this.Student_ID + '" scope="row"">' + this.Student_ID + '</th>';
+          tableContent += '<td>' + concatName + '</td>';
+          tableContent += '<td>' + this.Student_Email + '</td>';
+          tableContent += '<td>' + this.Student_Year + '</td>';
+          tableContent += '<td><button type="button" id="' + this.Student_ID + '" class="btn btn-success">Profile</button></td>';
+          tableContent += '</tr>';
+      });
+
+      // Inject the whole content string into our existing HTML table
+      $('#studentList table tbody').html(tableContent);
+    });
+
+
+
     //Load Parents into the input feild
     $.ajax({
         type: 'GET',

@@ -81,22 +81,30 @@ module.exports = function(app, passport) {
       });
   });
 
-/*
-  app.get('/getParent', function(req, res){
-    promise = databaseQuery.getParent(req.body);
-  });*/
 
-  app.get('/getParent', function (req, res) {
-    databaseQuery.getParent(req.body)
-    .then(function (data) {
-        res.send(data);
-    })
-    .catch(function (e) {
-        res.status(500, {
-            error: e
+      app.get('/getParent', function (req, res) {
+        databaseQuery.getParent(req.body)
+        .then(function (data) {
+            res.send(data);
+        })
+        .catch(function (e) {
+            res.status(500, {
+                error: e
+            });
         });
     });
-});
+
+    app.get('/getStudent', function(req, res){
+      databaseQuery.getStudent(req)
+      .then(function (data) {
+          res.send(data);
+      })
+      .catch(function (e) {
+          res.status(500, {
+              error: e
+          });
+      });
+    });
 
 
     app.get('/update', allowAdmins, function(req, res) {
@@ -120,12 +128,6 @@ module.exports = function(app, passport) {
       email = req.body.email;
       username = req.body.username;
       id = req.user.id;
-
-      /*
-      if(email === req.user.email && username === req.user.username){
-        req.flash('profileMessage', 'You have not changed anything');
-        res.redirect('app/profile');
-      }*/
 
       //Run the function that goes to config/database.js to update the users settings
       databaseQuery.updateProfile(email, username, id);
