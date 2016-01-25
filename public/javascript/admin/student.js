@@ -99,8 +99,8 @@ $(document).ready(function() {
             url: '/pupil',
             dataType: 'JSON'
         }).done(function(response) {
-            //Do nothing for the time being
-            console.log(response);
+          console.log("Were back!!" + response);
+            $('#addStudentstatus').html("Student Created Okay" + response);
         });
     });
 });

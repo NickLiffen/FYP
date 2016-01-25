@@ -10,11 +10,79 @@
       <% } %>
 
       <p>Your Options are Listed Below:</p>
-
-
-
   </div>
 
+  <!-- Sends the View Parents and Add Parents navigation to the page -->
+  <div class="btn-group btn-group-justified" role="group" aria-label="...">
+    <div class="btn-group" role="group">
+      <button type="button" class="btn btn-default" id='viewTeacher'>View Teachers</button>
+    </div>
+    <div class="btn-group" role="group">
+      <button type="button" class="btn btn-default" id='addTeacher'>Add Teachers</button>
+    </div>
+  </div>
+
+<!-- Add a Teacher Section -->
+<div class="hideAddTeacherForm">
+<section id='addTeacherForm'>
+  <h2>Add Teacher</h2>
+    <form id'addTeacherForm' action="/pupil" method="post">
+    <fieldset class="form-group">
+        <label for="InputTitle">Teacher Title</label>
+        <input type="text" name="TeacherTitle" class="form-control" id="TeacherTitle" placeholder="Enter Title" autofocus>
+    </fieldset>
+    <fieldset class="form-group">
+        <label for="InputFname">Teacher First Name</label>
+        <input type="text" name="TeacherFName" class="form-control" id="TeacherFName" placeholder="Enter First Name">
+    </fieldset>
+    <fieldset class="form-group">
+        <label for="InputLname">Teacher Last Name</label>
+        <input type="text" name="TeacherLName" class="form-control" id="TeacherLName" placeholder="Enter Last Name">
+    </fieldset>
+    <fieldset class="form-group">
+        <label for="InputEmail">Teacher Email</label>
+        <input type="email" name="TeacherEmail" class="form-control" id="TeacherEmail" placeholder="Enter Email">
+    </fieldset>
+    <fieldset class="form-group">
+        <label for="InputMobileNumber">Teacher Mobile Number</label>
+        <input type="text" name="TeacherMobileNumber" class="form-control" id="TeacherMobileNumber" placeholder="Enter Mobile Number">
+    </fieldset>
+    <fieldset class="form-group">
+        <label for="InputUsername">Teacher Username</label>
+        <input type="text" name="TeacherUsername" class="form-control" id="TeacherUsername" placeholder="Enter Username">
+    </fieldset>
+    </fieldset>
+    <fieldset class="form-group">
+        <label for="InputPassword">Teacher Password</label>
+        <input type="text" name="TeacherPassword" class="form-control" id="TeacherPassword" placeholder="Enter Password">
+    </fieldset>
+
+    <p>Everything marked with a * is a mandatory field</p>
+    <button type="submit" id="addTeacherForm" name="addTeacherForm" class="btn btn-primary">Submit</button>
+      <div id="addTeacherstatus"></div>
+  </form>
+  </section>
+</div>
+
+<!-- View Teacher's Section -->
+<div class="hideViewTeacherList">
+<section class='alignLeft' id='viewTeachers'>
+  <!-- This is the DIV where all the dtudent data is going -->
+  <div id='showAllTeacher'></div>
+    <div id="TeacherList">
+      <table class="table table-bordered">
+        <thead>
+          <th>#</th>
+          <th>Teacher Name</th>
+          <th>Teacher Email</th>
+          <th>Profile</th>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+</section>
+</div>
+<script type="text/javascript" src="/javascript/admin/teacher.js"></script>
 
 
 </body>

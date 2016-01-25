@@ -5,6 +5,8 @@ const bcrypt = require('bcrypt-nodejs');
 
 module.exports = function(app, passport) {
 
+//PRE LOGIN ROUTES
+
   app.get('/', function(req, res) {
       res.render('index.ejs'); // load the index.ejs file
   });
@@ -32,6 +34,10 @@ module.exports = function(app, passport) {
       failureRedirect : '/signup', // redirect back to the signup page if there is an error
       failureFlash : true // allow flash messages
   }));
+
+// POST LOGIN ROUTES
+
+  //Loading of each page on the Nav Bar
 
   app.get('/app/profile', allowAdmins, function(req, res) {
       res.render('profile.ejs', {
@@ -61,26 +67,20 @@ module.exports = function(app, passport) {
       });
   });
 
-  app.get('/logout', function(req, res) {
-        req.logout();
-        res.redirect('/');
+  app.get('/update', allowAdmins, function(req, res) {
+    res.render('update.ejs', {
+        user : req.user // get the user out of session and pass to template
     });
-
-  app.post('/pupil', function(req){
-    //Store the unhashed password in a variable
-    let unhashedPassword = req.body.Student_Password;
-    //Hash the users password
-      bcrypt.hash(unhashedPassword, null, null, function(err, hash) {
-        //If there is a problem with hashing send me a message
-        if (err){
-          return err;
-        }
-        //Chnage the value in the object to the new password
-        req.body.Student_Password = hash;
-        databaseQuery.addStudent(req.body);
-      });
   });
 
+  app.get('/app/class', allowAdmins, function(req, res) {
+    res.render('class.ejs', {
+        user : req.user,
+        message: req.flash('profileMessage') // get the user out of session and pass to template
+    });
+  });
+
+//
 
       app.get('/getParent', function (req, res) {
         databaseQuery.getParent(req.body)
@@ -94,6 +94,7 @@ module.exports = function(app, passport) {
         });
     });
 
+
     app.get('/getStudent', function(req, res){
       databaseQuery.getStudent(req)
       .then(function (data) {
@@ -106,19 +107,84 @@ module.exports = function(app, passport) {
       });
     });
 
-
-    app.get('/update', allowAdmins, function(req, res) {
-      res.render('update.ejs', {
-          user : req.user // get the user out of session and pass to template
+    app.get('/getTeacher', function (req, res) {
+      databaseQuery.getTeacher(req.body)
+      .then(function (data) {
+          res.send(data);
+      })
+      .catch(function (e) {
+          res.status(500, {
+              error: e
+          });
       });
-    });
+  });
 
-    app.get('/app/class', allowAdmins, function(req, res) {
-      res.render('class.ejs', {
-          user : req.user,
-          message: req.flash('profileMessage') // get the user out of session and pass to template
+  app.post('/pupil', function(req, res){
+    //Store the unhashed password in a variable
+    let unhashedPassword = req.body.Student_Password;
+    //Hash the users password
+      bcrypt.hash(unhashedPassword, null, null, function(err, hash) {
+        //If there is a problem with hashing send me a message
+        if (err){
+          return err;
+        }
+        //Chnage the value in the object to the new password
+        req.body.Student_Password = hash;
+        databaseQuery.addStudent(req.body).then(function (data) {
+            res.send(data);
+        })
+        .catch(function (e) {
+            res.status(500, {
+                error: e
+            });
+        });
       });
-    });
+  });
+
+  app.post('/teacher', function(req, res){
+    //Store the unhashed password in a variable
+    let unhashedPassword = req.body.Teacher_Password;
+    //Hash the users password
+      bcrypt.hash(unhashedPassword, null, null, function(err, hash) {
+        //If there is a problem with hashing send me a message
+        if (err){
+          return err;
+        }
+        //Chnage the value in the object to the new password
+        req.body.Teacher_Password = hash;
+        databaseQuery.addTeacher(req.body).then(function (data) {
+            res.send(data);
+        })
+        .catch(function (e) {
+            res.status(500, {
+                error: e
+            });
+        });
+      });
+  });
+
+
+  app.post('/parent', function(req, res){
+    //Store the unhashed password in a variable
+    let unhashedPassword = req.body.Parent_Password;
+    //Hash the users password
+      bcrypt.hash(unhashedPassword, null, null, function(err, hash) {
+        //If there is a problem with hashing send me a message
+        if (err){
+          return err;
+        }
+        //Chnage the value in the object to the new password
+        req.body.Parent_Password = hash;
+        databaseQuery.addParent(req.body).then(function (data) {
+            res.send(data);
+        })
+        .catch(function (e) {
+            res.status(500, {
+                error: e
+            });
+        });
+      });
+  });
 
     app.post('/update', function(req, res){
 
@@ -153,6 +219,11 @@ module.exports = function(app, passport) {
       req.flash('profileMessage', 'You have successfully updated your profile');
       res.redirect('app/profile');
     });
+
+    app.get('/logout', function(req, res) {
+          req.logout();
+          res.redirect('/');
+      });
 };
 
 //Allow Admin to view only Admin URI's

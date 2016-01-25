@@ -47,3 +47,29 @@ p {
 .showViewStudentList{
   display: block;
 }
+
+.hideAddTeacherForm{
+  display: none;
+}
+.hideViewTeacherList{
+  display: none;
+}
+.showAddTeacherForm{
+  display: block;
+}
+.showViewTeacherList{
+  display: block;
+}
+
+.hideAddParentForm{
+  display: none;
+}
+.hideViewParentList{
+  display: none;
+}
+.showAddParentForm{
+  display: block;
+}
+.showViewParentList{
+  display: block;
+}
