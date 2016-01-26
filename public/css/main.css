@@ -86,3 +86,29 @@ p {
 .showViewClassList{
   display: block;
 }
+
+.hideAddRoomForm{
+  display: none;
+}
+.hideViewRoomList{
+  display: none;
+}
+.showAddRoomForm{
+  display: block;
+}
+.showViewRoomList{
+  display: block;
+}
+
+.hideAddSubjectForm{
+  display: none;
+}
+.hideViewSubjectList{
+  display: none;
+}
+.showAddSubjectForm{
+  display: block;
+}
+.showViewSubjectList{
+  display: block;
+}

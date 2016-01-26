@@ -1,0 +1,67 @@
+<% include header %>
+  <!-- End of Navigation Bar -->
+
+  <div class="jumbotron text-center">
+      <h1><span class="glyphicon glyphicon-home"></span> Subject Page</h1>
+
+      <!-- show any messages that come back with authentication -->
+      <% if (message.length > 0) { %>
+          <div class="alert alert-danger"><%= message %></div>
+      <% } %>
+
+      <p>Your Options are Listed Below:</p>
+  </div>
+
+  <!-- Sends the View Parents and Add Parents navigation to the page -->
+  <div class="btn-group btn-group-justified" role="group" aria-label="...">
+    <div class="btn-group" role="group">
+      <button type="button" class="btn btn-default" id='viewSubject'>View Subjects</button>
+    </div>
+    <div class="btn-group" role="group">
+      <button type="button" class="btn btn-default" id='addSubject'>Add Subjects</button>
+    </div>
+  </div>
+
+<!-- Add a Subject Section -->
+<div class="hideAddSubjectForm">
+<section id='addSubjectForm'>
+  <h2>Add Subject</h2>
+    <form id'addSubjectForm' action="/pupil" method="post">
+    <fieldset class="form-group">
+        <label for="InputSubject">Subject Name</label>
+        <input type="text" name="subjectName" class="form-control" id="subjectName" placeholder="Subject Name" autofocus>
+    </fieldset>
+    <fieldset class="form-group">
+        <label for="InputDescription">Subject Description</label>
+        <input type="text" name="subjectDescription" class="form-control" id="subjectDescription" placeholder="Subject Description">
+    </fieldset>
+    <p>Everything marked with a * is a mandatory field</p>
+    <button type="submit" id="addSubjectForm" name="addSubjectForm" class="btn btn-primary">Submit</button>
+      <div id="addSubjectstatus"></div>
+  </form>
+  </section>
+</div>
+
+<!-- View Subject's Section -->
+<div class="hideViewSubjectList">
+<section class='alignLeft' id='viewSubjects'>
+  <!-- This is the DIV where all the dtudent data is going -->
+  <div id='showAllSubject'></div>
+    <div id="SubjectList">
+      <table class="table table-bordered">
+        <thead>
+          <th>#</th>
+          <th>Subject Name</th>
+          <th>Subject Description</th>
+          <th>Profile</th>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+</section>
+</div>
+<script type="text/javascript" src="/javascript/admin/subject.js"></script>
+
+
+</body>
+</html>

@@ -241,6 +241,21 @@ module.exports = {
       });
     },
 
+    addSubject: function(newSubject){
+      //Starting the promise for adding Student / Parent.
+      return new Promise(function(resolve, reject) {
+          //Adding the new student to the database
+          connection.query('INSERT INTO Subject SET ?', newSubject, function(err, results) {
+              //If error inserting student to database throw error.
+              if (err) {
+                  console.log("Problem Adding Subject to Database. Check addSubject Function. database.js: " + err);
+                  reject(Error(err));
+              }
+                resolve(results);
+          });
+      });
+    },
+
     getRoom: function(){
       return new Promise(function(resolve, reject) {
         connection.query('SELECT Room_ID, Room_Name, Rom_Description FROM Room', function(err, results) {
@@ -253,6 +268,21 @@ module.exports = {
                 resolve(results);
             }
         });
+      });
+    },
+
+    addRoom: function(newRoom){
+      //Starting the promise for adding Student / Parent.
+      return new Promise(function(resolve, reject) {
+          //Adding the new student to the database
+          connection.query('INSERT INTO Room SET ?', newRoom, function(err, results) {
+              //If error inserting student to database throw error.
+              if (err) {
+                  console.log("Problem Adding Room to Database. Check addRoom Function. database.js: " + err);
+                  reject(Error(err));
+              }
+                resolve(results);
+          });
       });
     }
 };

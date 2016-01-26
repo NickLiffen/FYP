@@ -67,6 +67,20 @@ module.exports = function(app, passport) {
       });
   });
 
+  app.get('/app/room', allowAdmins, function(req, res) {
+      res.render('room.ejs', {
+          user : req.user,
+          message: req.flash('roomMessage')
+      });
+  });
+
+  app.get('/app/subject', allowAdmins, function(req, res) {
+      res.render('subject.ejs', {
+          user : req.user,
+          message: req.flash('subjectMessage')
+      });
+  });
+
   app.get('/update', allowAdmins, function(req, res) {
     res.render('update.ejs', {
         user : req.user // get the user out of session and pass to template
@@ -131,17 +145,17 @@ module.exports = function(app, passport) {
       });
   });
 
-  app.get('/getRoom', function (req, res) {
-    databaseQuery.getRoom(req.body)
-    .then(function (data) {
-        res.send(data);
-    })
-    .catch(function (e) {
-        res.status(500, {
-            error: e
-        });
-    });
-});
+    app.get('/getRoom', function (req, res) {
+      databaseQuery.getRoom(req.body)
+      .then(function (data) {
+          res.send(data);
+      })
+      .catch(function (e) {
+          res.status(500, {
+              error: e
+          });
+      });
+  });
 
     app.get('/getSubject', function (req, res) {
       databaseQuery.getSubject(req.body)
@@ -155,7 +169,6 @@ module.exports = function(app, passport) {
       });
   });
 
-
     app.post('/class', function (req, res) {
       databaseQuery.addClass(req.body)
       .then(function (data) {
@@ -167,6 +180,30 @@ module.exports = function(app, passport) {
           });
       });
   });
+
+    app.post('/room', function (req, res) {
+      databaseQuery.addRoom(req.body)
+      .then(function (data) {
+          res.send(data);
+      })
+      .catch(function (e) {
+          res.status(500, {
+              error: e
+          });
+      });
+  });
+
+    app.post('/subject', function (req, res) {
+      databaseQuery.addSubject(req.body)
+      .then(function (data) {
+          res.send(data);
+      })
+      .catch(function (e) {
+          res.status(500, {
+              error: e
+          });
+      });
+    });
 
 
   app.post('/pupil', function(req, res){

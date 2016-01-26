@@ -1,0 +1,67 @@
+<% include header %>
+  <!-- End of Navigation Bar -->
+
+  <div class="jumbotron text-center">
+      <h1><span class="glyphicon glyphicon-home"></span> Room Page</h1>
+
+      <!-- show any messages that come back with authentication -->
+      <% if (message.length > 0) { %>
+          <div class="alert alert-danger"><%= message %></div>
+      <% } %>
+
+      <p>Your Options are Listed Below:</p>
+  </div>
+
+  <!-- Sends the View Parents and Add Parents navigation to the page -->
+  <div class="btn-group btn-group-justified" role="group" aria-label="...">
+    <div class="btn-group" role="group">
+      <button type="button" class="btn btn-default" id='viewRoom'>View Rooms</button>
+    </div>
+    <div class="btn-group" role="group">
+      <button type="button" class="btn btn-default" id='addRoom'>Add Rooms</button>
+    </div>
+  </div>
+
+<!-- Add a Room Section -->
+<div class="hideAddRoomForm">
+<section id='addRoomForm'>
+  <h2>Add Room</h2>
+    <form id'addRoomForm' action="/pupil" method="post">
+    <fieldset class="form-group">
+        <label for="InputRoom">Room Name</label>
+        <input type="text" name="roomName" class="form-control" id="roomName" placeholder="Room Name" autofocus>
+    </fieldset>
+    <fieldset class="form-group">
+        <label for="InputDescription">Room Description</label>
+        <input type="text" name="roomDescription" class="form-control" id="roomDescription" placeholder="Room Description">
+    </fieldset>
+    <p>Everything marked with a * is a mandatory field</p>
+    <button type="submit" id="addRoomForm" name="addRoomForm" class="btn btn-primary">Submit</button>
+      <div id="addRoomstatus"></div>
+  </form>
+  </section>
+</div>
+
+<!-- View Room's Section -->
+<div class="hideViewRoomList">
+<section class='alignLeft' id='viewRooms'>
+  <!-- This is the DIV where all the dtudent data is going -->
+  <div id='showAllRoom'></div>
+    <div id="RoomList">
+      <table class="table table-bordered">
+        <thead>
+          <th>#</th>
+          <th>Room Name</th>
+          <th>Room Description</th>
+          <th>Profile</th>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+</section>
+</div>
+<script type="text/javascript" src="/javascript/admin/room.js"></script>
+
+
+</body>
+</html>
