@@ -119,6 +119,56 @@ module.exports = function(app, passport) {
       });
   });
 
+    app.get('/getClass', function (req, res) {
+      databaseQuery.getClass(req.body)
+      .then(function (data) {
+          res.send(data);
+      })
+      .catch(function (e) {
+          res.status(500, {
+              error: e
+          });
+      });
+  });
+
+  app.get('/getRoom', function (req, res) {
+    databaseQuery.getRoom(req.body)
+    .then(function (data) {
+        res.send(data);
+    })
+    .catch(function (e) {
+        res.status(500, {
+            error: e
+        });
+    });
+});
+
+    app.get('/getSubject', function (req, res) {
+      databaseQuery.getSubject(req.body)
+      .then(function (data) {
+          res.send(data);
+      })
+      .catch(function (e) {
+          res.status(500, {
+              error: e
+          });
+      });
+  });
+
+
+    app.post('/class', function (req, res) {
+      databaseQuery.addClass(req.body)
+      .then(function (data) {
+          res.send(data);
+      })
+      .catch(function (e) {
+          res.status(500, {
+              error: e
+          });
+      });
+  });
+
+
   app.post('/pupil', function(req, res){
     //Store the unhashed password in a variable
     let unhashedPassword = req.body.Student_Password;

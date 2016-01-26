@@ -173,5 +173,86 @@ module.exports = {
               }
           });
       });
+    },
+
+    addClass: function(newClass){
+      //Starting the promise for adding Student / Parent.
+      return new Promise(function(resolve, reject) {
+          //Declaring varuables for the addTeacher function
+          let student, studentObjectLength, insertId, output, sqlStatement;
+          //Extracts the student part of the Object and stores it in the student variable
+          if (newClass.Student) {
+              student = newClass.Student;
+              delete newClass.Student;
+          }
+          //Adding the new parent to the database
+          connection.query('INSERT INTO Class SET ?', newClass, function(err, result) {
+              //If error inserting student to database throw error.
+              if (err) {
+                  console.log("Problem Added to Class Table: " + err);
+                  reject(Error(err));
+              }
+              //Grabs the ID of the parent just added to the database
+              insertId = result.insertId;
+              //Creates an empty array where Student_ID and Parent_ID is going to go.
+              output = [];
+              //Loops through the Parent Array and pushed the Parent_ID to the Student_ID.
+              studentObjectLength = student.length;
+              //The reason for this is becuase if there is no parents we do not want to add anything to the database.
+              for (var i = 0; i < student.length; i++) {
+                  output.push([student[i], insertId]);
+              }
+              //Prepares a SQL statement for inserting student and parent ID to the Student_has_Parent table.
+              sqlStatement = "INSERT INTO Student_Has_Class (Student_ID, Class_ID) VALUES ?";
+              //Inserting into database.
+              connection.query(sqlStatement, [output], function(err, results) {
+                  if (err) {
+                      console.log("Problem Adding to Student_Has_Class table: " + err);
+                      reject(Error(err));
+                  }
+                  resolve(results);
+              });
+          });
+      });
+    },
+
+    getClass: function(){
+      return new Promise(function(resolve, reject) {
+        connection.query('SELECT Class.Class_ID, Class.Class_Date, Class.Class_Start_Time, Class.Class_End_Time, Class.Class_Level, Subject.Subject_Name, Room.Room_Name, Teacher.Teacher_Title, Teacher.Teacher_Fname, Teacher.Teacher_Lname FROM Class, Subject, Room, Teacher WHERE Class.Subject_ID = Subject.Subject_ID AND Class.Room_ID = Room.Room_ID AND Class.Teacher_ID = Teacher.Teacher_ID', function(err, results){
+          if (err) {
+              console.log("Problem getting class information. Check getClass Function. database.js: " + err);
+              reject(Error(err));
+          }
+            resolve(results);
+        });
+      });
+    },
+
+    getSubject: function(){
+      return new Promise(function(resolve, reject) {
+        connection.query('SELECT Subject_ID, Subject_Name, Subject_Description FROM Subject', function(err, results) {
+            //If error reject the promise.
+            if (err) {
+                reject(Error(err));
+            } else {
+                resolve(results);
+            }
+        });
+      });
+    },
+
+    getRoom: function(){
+      return new Promise(function(resolve, reject) {
+        connection.query('SELECT Room_ID, Room_Name, Rom_Description FROM Room', function(err, results) {
+            //If error reject the promise.
+            if (err) {
+              console.log(err);
+                reject(Error(err));
+            } else {
+              console.log("Made it");
+                resolve(results);
+            }
+        });
+      });
     }
 };

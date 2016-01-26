@@ -73,3 +73,16 @@ p {
 .showViewParentList{
   display: block;
 }
+
+.hideAddClassForm{
+  display: none;
+}
+.hideViewClassList{
+  display: none;
+}
+.showAddClassForm{
+  display: block;
+}
+.showViewClassList{
+  display: block;
+}

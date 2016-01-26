@@ -1,18 +1,105 @@
 <% include header %>
-  <!-- End of Navigation Bar -->
+    <!-- End of Navigation Bar -->
 
-  <div class="jumbotron text-center">
-      <h1><span class="glyphicon glyphicon-home"></span> Class Information</h1>
+    <div class="jumbotron text-center">
+        <h1><span class="glyphicon glyphicon-home"></span> Class Page</h1>
 
-      <!-- show any messages that come back with authentication -->
-      <% if (message.length > 0) { %>
-          <div class="alert alert-danger"><%= message %></div>
-      <% } %>
+        <!-- show any messages that come back with authentication -->
+        <% if (message.length > 0) { %>
+            <div class="alert alert-danger"><%= message %></div>
+        <% } %>
 
         <p>Your Options are Listed Below:</p>
+    </div>
+
+    <!-- Sends the View Parents and Add Parents navigation to the page -->
+    <div class="btn-group btn-group-justified" role="group" aria-label="...">
+      <div class="btn-group" role="group">
+        <button type="button" class="btn btn-default" id='viewClass'>View Classs</button>
+      </div>
+      <div class="btn-group" role="group">
+        <button type="button" class="btn btn-default" id='addClass'>Add Classs</button>
+      </div>
+    </div>
+
+  <!-- Add a Class Section -->
+  <div class="hideAddClassForm">
+  <section id='addClassForm'>
+    <h2>Add Class</h2>
+      <form id'addClassForm' action="/pupil" method="post">
+      <fieldset class="form-group">
+          <label for="InputLevel">Class Level</label>
+          <input type="number" name="ClassLevel" class="form-control" id="ClassLevel" placeholder="Enter Level" autofocus>
+      </fieldset>
+      <fieldset class="form-group">
+          <label for="InputDate">Class Date</label>
+          <input type="date" name="ClassDate" class="form-control" id="ClassDate" placeholder="Enter Date">
+      </fieldset>
+      <fieldset class="form-group">
+          <label for="InputSTime">Class Start Time</label>
+          <input type="time" name="ClassSTime" class="form-control" id="ClassSTime" placeholder="Enter Start Time">
+      </fieldset>
+      <fieldset class="form-group">
+          <label for="InputETime">Class End Time</label>
+          <input type="time" name="ClassETime" class="form-control" id="ClassETime" placeholder="Enter End Time">
+      </fieldset>
 
 
+      <fieldset class="form-group">
+      <label for="sel2">Assign Subject?</label>
+          <select class="form-control" id="subjectPicker">
+          </select>
+      </fieldset>
+
+      <fieldset class="form-group">
+      <label for="sel2">Assign Room?</label>
+          <select class="form-control" id="roomPicker">
+          </select>
+      </fieldset>
+
+      <fieldset class="form-group">
+      <label for="sel2">Assign Teacher?</label>
+          <select class="form-control" id="teacherPicker">
+          </select>
+      </fieldset>
+
+      <fieldset class="form-group">
+      <label for="sel2">Assign Student? (hold shift to select more than one):</label>
+          <select multiple class="form-control" id="studentPicker">
+          </select>
+      </fieldset>
+
+      <p>Everything marked with a * is a mandatory field</p>
+      <button type="submit" id="addClassForm" name="addClassForm" class="btn btn-primary">Submit</button>
+        <div id="addClassstatus"></div>
+    </form>
+    </section>
   </div>
 
-</body>
-</html>
+  <!-- View Class's Section -->
+  <div class="hideViewClassList">
+  <section class='alignLeft' id='viewClasss'>
+    <!-- This is the DIV where all the dtudent data is going -->
+    <div id='showAllClass'></div>
+      <div id="ClassList">
+        <table class="table table-bordered">
+          <thead>
+            <th>#</th>
+            <th>Class Level</th>
+            <th>Class Date</th>
+            <th>Class Start Time</th>
+            <th>Class End Time</th>
+            <th>Subject</th>
+            <th>Room</th>
+            <th>Teacher</th>
+            <th>Profile</th>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+  </section>
+  </div>
+  <script type="text/javascript" src="/javascript/admin/class.js"></script>
+
+  </body>
+  </html>

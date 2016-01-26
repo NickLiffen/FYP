@@ -409,3 +409,13 @@ WHERE Class.Teacher_ID = Teacher.Teacher_ID
   AND LOWER( Teacher_Lname ) LIKE 'Nagy'
 
   LIMIT 0 , 100;
+
+
+
+
+
+
+
+
+
+SELECT Class.Class_Date, Class.Class_Start_Time, Class.Class_End_Time, Subject.Subject_Name, Room.Room_Name, Teacher.Teacher_Title, Teacher.Teacher_Fname, Teacher.Teacher_Lname FROM Class, Subject, Room, Teacher WHERE Class.Subject_ID = Subject.Subject_ID AND Class.Room_ID = Room.Room_ID AND Class.Teacher_ID = Teacher.Teacher_ID;
