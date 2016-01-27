@@ -19,13 +19,37 @@ module.exports = function(app, passport) {
     });
 
     app.post('/login', passport.authenticate('local-login', {
-        successRedirect: '/admin', // redirect to the secure profile section
+        successRedirect: '/checkAuth', // redirect to the secure profile section
         failureRedirect: '/login', // redirect back to the signup page if there is an error
         failureFlash: true // allow flash messages
     }));
 
+    app.get('/checkAuth', function(req, res) {
+      if (!req.user) {
+          req.flash('loginMessage', "Something went wrong, re-login please");
+          res.redirect('/login');
+      } else if (req.user.role === 'Admin') {
+          res.redirect('/admin');
+        }
+        else if (req.user.role === 'Teacher') {
+          res.redirect('/teacher');
+      } else {
+          res.redirect('/login');
+      }
+    });
 
-    // POST LOGIN ROUTES
+
+    app.get('/teacher', allowTeachers, function(req, res) {
+        res.render('teacher/index.ejs', {
+            message: req.flash('appMessage')
+        });
+    });
+
+    app.get('/teacher/timetable', allowTeachers, function(req, res) {
+        res.render('teacher/timetable.ejs', {
+            message: req.flash('timetableMessage')
+        });
+    });
 
     app.get('/admin', allowAdmins, function(req, res) {
         res.render('admin/admin.ejs', {
@@ -87,13 +111,6 @@ module.exports = function(app, passport) {
             user: req.user // get the user out of session and pass to template
         });
     });
-
-    app.get('/teacher', allowAdmins, function(req, res) {
-        res.render('update.ejs', {
-            user: req.user // get the user out of session and pass to template
-        });
-    });
-
 
 
     app.get('/getParent', function(req, res) {

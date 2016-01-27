@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+<head>
+    <title>Node Authentication</title>
+
+        <!--  JAVASCRIPT FILES  -->
+
+        <!-- Latest compiled and minified jquery-2 -->
+        <script type="text/javascript" src="/vendor/jquery/dist/jquery.min.js"></script>
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script type="text/javascript" src="/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+
+        <!-- Moment API JavaScript -->
+        <script type="text/javascript" src="/vendor/moment/min/moment.min.js"></script>
+
+        <!-- Calendar API JavaScript -->
+        <script type="text/javascript" src="/vendor/fullcalendar/dist/fullcalendar.min.js"></script>
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script type="text/javascript" src="/javascript/main.js"></script>
+
+        <!--  CSS FILES  -->
+
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" type="text/css" href="/vendor/bootstrap/dist/css/bootstrap.min.css">
+
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="/vendor/bootstrap/dist/css/bootstrap-theme.min.css">
+
+        <!-- Latest compiled and minified Font-Awsome -->
+        <link rel="stylesheet" type="text/css" href="/vendor/font-awesome/css/font-awesome.min.css">
+
+        <!-- My CSS File -->
+        <link rel="stylesheet" type="text/css" href="/css/main.css">
+
+        <!-- Calendar API CSS -->
+        <link rel="stylesheet" type="text/css" href="/vendor/fullcalendar/dist/fullcalendar.min.css">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+</head>
+<body>
+  <!--Start of Navigation Bar-->
+  <nav class="navbar navbar-default" role="navigation">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/admin">Attendance Me</a>
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="/teacher">Home</a></li>
+            <li><a href="/teacher/timetable">Timetable</a></li>
+        </ul>
+        <div class="col-sm-3 col-md-3 pull-right">
+            <form class="navbar-form" role="search">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search" name="q">
+                    <div class="input-group-btn">
+                        <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <ul class="nav navbar-nav navbar-right">
+              <li><a href="/logout">Logout</a></li>
+            </ul>
+          </li>
+        </ul>
+    </div>
+  </nav>
