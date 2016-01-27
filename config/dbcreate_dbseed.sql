@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS `SchoolDatabase`.`Student` (
   `Student_Fname` VARCHAR(45) NOT NULL,
   `Student_Lname` VARCHAR(45) NOT NULL,
   `Student_Email` VARCHAR(45) NULL,
-  `Student_Graduation_Year` INT NULL,
+  `Student_Year` INT NULL,
   `Student_Username` VARCHAR(45) NULL,
   `Student_Password` VARCHAR(300) NULL,
   `Role` VARCHAR(45) NOT NULL,
@@ -279,11 +279,11 @@ INSERT INTO Room (Room_Name, Rom_Description)
 VALUES ('8.0.2', 'Portland Building');
 --Class
 INSERT INTO Class (Class_Level, Class_Capacity, Class_Date, Class_Start_Time, Class_End_Time, Subject_ID, Room_ID, Teacher_ID)
-VALUES ('7', '3', '29-01-2016', '08:00', '09:00', '1', '2', '1');
+VALUES ('7', '3', '2016-01-27', '08:00:00', '09:00:00', '1', '2', '1');
 INSERT INTO Class (Class_Level, Class_Capacity, Class_Date, Class_Start_Time, Class_End_Time, Subject_ID, Room_ID, Teacher_ID)
-VALUES ('11', '3', '29-01-2016', '09:00', '10:00', '2', '1', '2');
+VALUES ('11', '3', '2016-01-27', '09:00:00', '10:00:00', '2', '1', '2');
 INSERT INTO Class (Class_Level, Class_Capacity, Class_Date, Class_Start_Time, Class_End_Time, Subject_ID, Room_ID, Teacher_ID)
-VALUES ('9', '3', '29-01-2016', '10:00', '11:00', '3', '3', '3');
+VALUES ('9', '3', '2016-01-28', '10:00:00', '11:00:00', '3', '3', '3');
 --Admin
 INSERT INTO Admin (Admin_Title, Admin_Fname, Admin_Lname, Admin_Email, Admin_Privledge_Level, Admin_Username, Admin_Password, Role)
 VALUES ('Mr', 'Andrew', 'Stockdale', 'Andrew.Stockdale@hotmail.com', '1', 'AndrewStockdale', '$2a$08$gnA71gTP.S2.DW51s0dpG.G1uBlN6sKM4anblcvFAZoWUrNLnaaWe', 'Admin');
@@ -405,10 +405,17 @@ FROM Teacher, Subject, Class, Room
 WHERE Class.Teacher_ID = Teacher.Teacher_ID
   AND Class.Subject_ID = Subject.Subject_ID
   AND Class.Room_ID = Room.Room_ID
-  AND LOWER( Teacher_Fname ) LIKE  'Erik'
-  AND LOWER( Teacher_Lname ) LIKE 'Nagy'
+  AND LOWER( Teacher.Teacher_ID ) LIKE  '3';
 
-  LIMIT 0 , 100;
+
+
+SELECT Class.Class_ID, Subject.Subject_Name, Class.Class_Start_Time, Class.Class_End_Time, Class.Class_Date, Class.Class_Level FROM Teacher, Subject, Class, Room WHERE Class.Teacher_ID = Teacher.Teacher_ID AND Class.Subject_ID = Subject.Subject_ID AND Class.Room_ID = Room.Room_ID AND Teacher.Teacher_ID LIKE  '3';
+
+
+
+
+SELECT Class.Class_ID AS 'id', Subject.Subject_Name AS 'title', CONCAT( Class.Class_Date, ' ' , Class.Class_Start_Time) AS 'start', CONCAT( Class.Class_Date, ' ' , Class.Class_End_Time) AS 'end' FROM Teacher, Subject, Class, Room WHERE Class.Teacher_ID = Teacher.Teacher_ID AND Class.Subject_ID = Subject.Subject_ID AND Class.Room_ID = Room.Room_ID AND Teacher.Teacher_ID LIKE  '3';
+
 
 
 

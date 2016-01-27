@@ -284,5 +284,18 @@ module.exports = {
                 resolve(results);
           });
       });
+    },
+
+    getTimetable: function(userID){
+      return new Promise(function(resolve, reject) {
+        connection.query(`SELECT Class.Class_ID AS 'id', Subject.Subject_Name AS 'title', CONCAT( Class.Class_Date, ' ' , Class.Class_Start_Time) AS 'start', CONCAT( Class.Class_Date, ' ' , Class.Class_End_Time) AS 'end' FROM Teacher, Subject, Class, Room WHERE Class.Teacher_ID = Teacher.Teacher_ID AND Class.Subject_ID = Subject.Subject_ID AND Class.Room_ID = Room.Room_ID AND Teacher.Teacher_ID LIKE ${userID}`, function(err, results){
+          if (err) {
+              console.log("Problem Getting Class Information. Check getTimetable Function. database.js: " + err);
+              reject(Error(err));
+          }
+          resolve(results);
+        });
+
+      });
     }
 };

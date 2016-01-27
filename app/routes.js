@@ -5,12 +5,9 @@ const bcrypt = require('bcrypt-nodejs');
 
 module.exports = function(app, passport) {
 
-    //PRE LOGIN ROUTES
-
     app.get('/', function(req, res) {
         res.render('index.ejs'); // load the login.ejs file
     });
-
 
     app.get('/login', function(req, res) {
         res.render('login.ejs', {
@@ -50,6 +47,20 @@ module.exports = function(app, passport) {
             message: req.flash('timetableMessage')
         });
     });
+
+    app.get('/getTimetable', allowTeachers, function(req, res){
+      databaseQuery.getTimetable(req.user.id)
+          .then(function(data) {
+              res.send(data);
+          })
+          .catch(function(e) {
+              res.status(500, {
+                  error: e
+              });
+          });
+    });
+
+
 
     app.get('/admin', allowAdmins, function(req, res) {
         res.render('admin/admin.ejs', {

@@ -113,11 +113,14 @@ $(document).ready(function() {
         //Stop the Form from submiting automatically
         event.preventDefault();
         //Declaring varibales
-        let newClass;
+        let newClass, date;
+
+        date = $('#addClassForm input#ClassDate').val();
+        date = date.split("/").reverse().join("-");
         //Creating the new Class object will all information from the form
         newClass = {
             Class_Level:        $('#addClassForm input#ClassLevel').val(),
-            Class_Date:         $('#addClassForm input#ClassDate').val(),
+            Class_Date:         date,
             Class_Start_Time:   $('#addClassForm input#ClassSTime').val(),
             Class_End_Time:     $('#addClassForm input#ClassETime').val(),
             Subject_ID:         $('#subjectPicker').val(),
