@@ -419,8 +419,8 @@ SELECT Class.Class_ID AS 'id', Subject.Subject_Name AS 'title', CONCAT( Class.Cl
 
 
 
-
-
+--Get All Students in a class based on a class ID
+SELECT Student.Student_ID AS 'Student ID', Class.Class_ID AS 'Class ID', CONCAT( Student.Student_Fname, ' ' , Student.Student_Lname)  AS 'Student Name' FROM Student, Class, Student_Has_Class WHERE Student_Has_Class.Student_ID = Student.Student_ID AND Student_Has_Class.Class_ID = Class.Class_ID AND Class.Class_ID LIKE  '6';
 
 
 

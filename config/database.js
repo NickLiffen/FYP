@@ -297,5 +297,17 @@ module.exports = {
         });
 
       });
+    },
+    addClassStudent: function(classInfo){
+      return new Promise(function(resolve, reject) {
+        connection.query(`SELECT Student.Student_ID AS 'Student_ID', Class.Class_ID AS 'Class_ID', CONCAT( Student.Student_Fname, ' ' , Student.Student_Lname)  AS 'Student_Name' FROM Student, Class, Student_Has_Class WHERE Student_Has_Class.Student_ID = Student.Student_ID AND Student_Has_Class.Class_ID = Class.Class_ID AND Class.Class_ID LIKE  ${classInfo.classID}`, function(err, results){
+          if (err) {
+              console.log("Problem Getting Students in Class Information. Check addClassStudent Function. database.js: " + err);
+              reject(Error(err));
+          }
+          console.log(results);
+          resolve(results);
+        });
+      });
     }
 };

@@ -33,6 +33,10 @@ p {
   padding-left: 150px;
 }
 
+.bottom {
+    padding-bottom: 20px;
+}
+
 /* Visibility Quries
 ------------------------------------------*/
 .hideAddStudentForm{
@@ -113,8 +117,14 @@ p {
   display: block;
 }
 
-
-
+#ClassList td {
+  text-align: center;
+  vertical-align: middle;
+}
+#ClassList th {
+  text-align: center;
+  vertical-align: middle;
+}
 #calendar {
 		max-width: 900px;
 		margin: 0 auto;

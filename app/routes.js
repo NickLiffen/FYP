@@ -197,6 +197,20 @@ module.exports = function(app, passport) {
             });
     });
 
+    app.post('/getClassStudent', function(req, res){
+      //Add the Teahcer ID to the JSON Object to get specifc students;
+      req.body.teacherID = req.user.id;
+      databaseQuery.addClassStudent(req.body)
+          .then(function(data) {
+              res.send(data);
+          })
+          .catch(function(e) {
+              res.status(500, {
+                  error: e
+              });
+          });
+    });
+
     app.post('/class', function(req, res) {
         databaseQuery.addClass(req.body)
             .then(function(data) {

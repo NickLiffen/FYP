@@ -9,7 +9,30 @@
       <% } %>
   </div>
 
+<div id='calendarEffect'>
 <div id='calendar'></div>
+</div>
+
+<div id='attendanceEffect'>
+  <div id ='paddingBottom' class="text-center"><button id="hideAttendance" name="hideAttendance" class="btn btn-primary">Back to Timetable!</button></div>
+    <div class='bottom'></div>
+    <div id="ClassList">
+      <form id'takeAttendance' action="/takeAttendance" method="post">
+      <table class="table table-bordered">
+        <thead>
+          <th>#</th>
+          <th>Student Name</th>
+          <th>Present</th>
+          <th>Late</th>
+          <th>Absent</th>
+          <th>Profile</th>
+        </thead>
+      <tbody></tbody>
+    </table>
+    <div id ='paddingBottom 'class="text-center"><button type="submit" id="hideAttendance" name="hideAttendance" class="btn btn-success">Save!</button></div>
+  </form>
+  </div>
+</div>
 
 <script type="text/javascript" src="/javascript/teacher/timetable.js"></script>
 </body>
