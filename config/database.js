@@ -126,8 +126,7 @@ module.exports = {
       });
     },
 
-//PARENT SECTION (ADMIN PART)
-
+    //PARENT SECTION (ADMIN PART)
     addParent: function(newUser){
       //Starting the promise for adding Student / Parent.
       return new Promise(function(resolve, reject) {
@@ -307,6 +306,19 @@ module.exports = {
           }
           console.log(results);
           resolve(results);
+        });
+      });
+    },
+
+    takeAttendance: function(attendanceInfo){
+      return new Promise(function(resolve, reject) {
+        let sqlStatement = "INSERT INTO Attendance (Attendance_Status, Attendance_Remarks, Class_ID, Student_ID) VALUES ?";
+        connection.query(sqlStatement, [attendanceInfo], function(err, results) {
+            if (err) {
+                console.log("Problem Adding to Parents_Has_Student table: " + err);
+                reject(Error(err));
+            }
+            resolve(results);
         });
       });
     }

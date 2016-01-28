@@ -16,8 +16,8 @@
 <div id='attendanceEffect'>
   <div id ='paddingBottom' class="text-center"><button id="hideAttendance" name="hideAttendance" class="btn btn-primary">Back to Timetable!</button></div>
     <div class='bottom'></div>
+    <form id='takeAttendance' action="/takeAttendance" method="post">
     <div id="ClassList">
-      <form id'takeAttendance' action="/takeAttendance" method="post">
       <table class="table table-bordered">
         <thead>
           <th>#</th>
@@ -29,9 +29,10 @@
         </thead>
       <tbody></tbody>
     </table>
-    <div id ='paddingBottom 'class="text-center"><button type="submit" id="hideAttendance" name="hideAttendance" class="btn btn-success">Save!</button></div>
-  </form>
+  <div id ='paddingBottom 'class="text-center"><button type="submit" id="takeAttendance" name="takeAttendance" class="btn btn-success">Save!</button></div>
+  <div id='attendanceStatus'><div>
   </div>
+  </form>
 </div>
 
 <script type="text/javascript" src="/javascript/teacher/timetable.js"></script>
