@@ -25,23 +25,38 @@ $(document).ready(function() {
 		      dataType: 'JSON'
 		    }).done(function(response){
 
-						let tableContent = '';
+						let tableContent;
+						tableContent= $('<tbody></tbody>');
 
 						$.each(response, function(){
 
-			        	tableContent += `<tr>`;
-			          tableContent += `<th><span rel="${this.Student_ID}" id="${this.Student_ID}" scope="row"">${this.Student_ID}</th>`;
-			          tableContent += `<td>${this.Student_Name}</td>`;
-			          tableContent += `<td><label><input type="radio" value='Present' id='${this.Student_ID} ${this.Class_ID}' name="optradio${this.Student_ID}" required> Present</label></td>`;
-			          tableContent += `<td><label><input type="radio" value='Late' id='${this.Student_ID} ${this.Class_ID}' name="optradio${this.Student_ID}" required> Late</label></td>`;
-			          tableContent += `<td><label><input type="radio" value='Absent' id='${this.Student_ID} ${this.Class_ID}' name="optradio${this.Student_ID}" required> Absent</label></td>`;
-			          tableContent += `<td><button type="button" id="${this.Student_ID}" class="btn btn-primary" required>Profile</button></td>`;
-			          tableContent += `</tr>`;
+							tableContent.append(
+											            `<tr>
+											            <th><span rel="${this.Student_ID}" id="${this.Student_ID}" scope="row"">${this.Student_ID}</th>
+											            <td>${this.Student_Name}</td>
+																	<td><label><input type="radio" value='Present' id='${this.Student_ID} ${this.Class_ID} ${this.Attendance_ID}' name='optradio${this.Student_ID}' required> Present</label></td>
+																	<td><label><input type="radio" value='Late' id='${this.Student_ID} ${this.Class_ID} ${this.Attendance_ID}' name="optradio${this.Student_ID}" required> Late</label></td>
+																	<td><label><input type="radio" value='Absent' id='${this.Student_ID} ${this.Class_ID} ${this.Attendance_ID}' name="optradio${this.Student_ID}" required> Absent</label></td>
+																	<td><button type="button" id="${this.Student_ID}" class="btn btn-primary" required>Profile</button></td>
+																	</tr>`
+							        				);
+
+						$(tableContent).find(`input[type=radio][name=optradio${this.Student_ID}][value=${this.Status}]`).prop("checked", true);
+
 			      });
 		      // Inject the whole content string into our existing HTML table
-		      $('#ClassList table tbody').html(tableContent);
+		      $('#ClassList table').append(tableContent);
 					$('#calendarEffect').fadeOut();
 					$('#attendanceEffect').fadeIn();
+
+
+					$("#hideAttendance").click(function(){
+						$("#attendanceEffect").fadeOut();
+						$('#calendarEffect').fadeIn();
+						tableContent.empty();
+						//location.reload();
+					});
+
 		    });
     },
       defaultView: 'agendaWeek',
@@ -55,25 +70,28 @@ $(document).ready(function() {
 			]
 		});
 
-		$("#hideAttendance").click(function(){
-    	$("#attendanceEffect").fadeOut();
-			$('#calendarEffect').fadeIn();
-		});
-
 		$("#takeAttendance").submit(function(event) {
 				event.preventDefault();
 
 				const elems = $('input:radio');
 				let count = elems.length;
-				const output = [];
+				let output = [];
 
 				elems.each(function() {
   				if($(this).is(':checked')) {
 							var stuentID = this.id;
 							var res = stuentID.split(" ");
+							console.log(res);
+							if((res[2] !== "undefined")){
+								output.push([this.value, this.value, res[2]]);
+							}
+							else{
 						  output.push([this.value, this.value, res[1], res[0]]);
+						}
+													console.log(output);
   				}
 					if(!--count){
+
 
 						$.ajax({
 								type: 'POST',
