@@ -85,7 +85,7 @@ module.exports = {
     getStudent: function() {
         //Return a new promise
         return new Promise(function(resolve, reject) {
-            connection.query('SELECT Student_ID, Student_Title, Student_Fname, Student_Lname, Student_Email, Student_Year FROM Student', function(err, results) {
+            connection.query('SELECT Student_ID, Student_Title, Student_Fname, Student_Lname, Student_Email, Student_Year, Student_Username FROM Student', function(err, results) {
                 //If error reject the promise.
                 if (err) {
                     reject(Error(err));
