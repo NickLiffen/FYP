@@ -96,6 +96,19 @@ module.exports = {
         });
     },
 
+    getStudentProfile: function(studentID) {
+        return new Promise(function(resolve, reject) {
+            connection.query(`SELECT Student_ID, CONCAT( Student.Student_Fname, ' ' , Student.Student_Lname)  AS 'Student_Name', CONCAT( Parent.Parent_Fname, ' ' , Parent.Parent_Lname)  AS 'Parent_Name', Student_Email, Student_Year, Student_Username FROM Student, Parent, Student_has_Parent WHERE Student_has_Parent.Student_Student_ID = Student.Student_ID AND Student_has_Parent.Parent_Parent_ID = Parent.Parent_ID AND LOWER( Student_ID ) LIKE  '${studentID}' LIMIT 1`, function(err, results) {
+                //If error reject the promise.
+                if (err) {
+                    reject(Error(err));
+                } else {
+                    resolve(results);
+                }
+            });
+        });
+    },
+
     //Teacher SECTION (ADMIN PART)
 
     getTeacher: function() {

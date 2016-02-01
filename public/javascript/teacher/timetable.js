@@ -37,7 +37,7 @@ $(document).ready(function() {
 																	<td><label><input type="radio" value='Present' id='${this.Student_ID} ${this.Class_ID} ${this.Attendance_ID}' name='optradio${this.Student_ID}' required> Present</label></td>
 																	<td><label><input type="radio" value='Late' id='${this.Student_ID} ${this.Class_ID} ${this.Attendance_ID}' name="optradio${this.Student_ID}" required> Late</label></td>
 																	<td><label><input type="radio" value='Absent' id='${this.Student_ID} ${this.Class_ID} ${this.Attendance_ID}' name="optradio${this.Student_ID}" required> Absent</label></td>
-																	<td><button type="button" id="${this.Student_ID}" class="btn btn-primary" required>Profile</button></td>
+																	<td><button type="button" id="${this.Student_ID}" class="btn btn-primary">Profile</button></td>
 																	</tr>`
 							        				);
 
@@ -69,6 +69,11 @@ $(document).ready(function() {
         }
 			]
 		});
+
+			$('#ClassList').on('click', '.btn ', function(){
+				let studentID = this.id;
+				  window.location.href = `/user/${studentID}`;
+			});
 
 		$("#takeAttendance").submit(function(event) {
 				event.preventDefault();

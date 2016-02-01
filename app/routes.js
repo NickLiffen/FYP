@@ -35,7 +35,6 @@ module.exports = function(app, passport) {
       }
     });
 
-
     app.get('/teacher', allowTeachers, function(req, res) {
         res.render('teacher/index.ejs', {
             message: req.flash('appMessage')
@@ -48,6 +47,7 @@ module.exports = function(app, passport) {
         });
     });
 
+
     app.get('/getTimetable', allowTeachers, function(req, res){
       databaseQuery.getTimetable(req.user.id)
           .then(function(data) {
@@ -59,6 +59,33 @@ module.exports = function(app, passport) {
               });
           });
     });
+
+    app.get('/user', allowTeachers, function(req, res) {
+        res.render('teacher/user.ejs', {
+            message: req.flash('user')
+        });
+    });
+
+    app.get('/user/:id', function (req, res) {
+        let studentID = req.params.id;
+        databaseQuery.getStudentProfile(studentID)
+            .then(function(data) {
+              res.render('teacher/user.ejs', {
+                  message: req.flash('user'),
+                  studentID: data[0].Student_ID,
+                  studentName: data[0].Student_Name,
+                  parentName: data[0].Parent_Name,
+                  studentYear: data[0].Student_Year,
+                  studentEmail: data[0].Student_Email,
+                  studentUsername: data[0].Student_Username
+              });
+            })
+            .catch(function(e) {
+                res.status(500, {
+                    error: e
+                });
+            });
+      });
 
 
 
@@ -196,6 +223,8 @@ module.exports = function(app, passport) {
                 });
             });
     });
+
+
 
     app.post('/takeAttendance', function(req, res){
       databaseQuery.takeAttendance(req.body)
