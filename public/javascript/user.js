@@ -1,6 +1,9 @@
 "use strict";
 
 $(document).ready(function() {
+
+  $(".calendarEffect").fadeOut();
+
     var panels = $('.user-infos');
     var panelsButton = $('.dropdown-user');
     panels.hide();
@@ -26,8 +29,46 @@ $(document).ready(function() {
         });
     });
 
-
     $('[data-toggle="tooltip"]').tooltip();
 
+    $("#getTimetable").click(function(){
+      $(".profileEffect").fadeOut();
+      $(".calendarEffect").fadeIn();
+
+
+      let studentID = $('.studentID').attr("id");
+      $('#calendar').fullCalendar({
+        header: {
+          left: 'prev,next today',
+          center: 'title',
+          right: 'month,agendaWeek,agendaDay'
+        },
+        defaultView: 'agendaWeek',
+        eventLimit: true,
+        weekends: false,
+        eventSources: [
+          {
+              url: '/getStudentTimetable',
+              type: 'POST',
+              data: {
+                ID: studentID
+              }
+          }
+        ],
+        eventRender: function(event, element) {
+          console.log(event);
+          $(element).tooltip({
+            title: `Title: ${event.title}  Room: ${event.room} Teacher: ${event.teacher}`
+          });
+        },
+        minTime: "06:00",
+        maxTime: "21:00"
+      });
+    });
+
+    $("#hidecalendar").click(function() {
+      $(".calendarEffect").fadeOut();
+      $(".profileEffect").fadeIn();
+    });
 
 });

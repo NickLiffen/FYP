@@ -41,15 +41,28 @@ module.exports = function(app, passport) {
         });
     });
 
-    app.get('/teacher/timetable', allowTeachers, function(req, res) {
-        res.render('teacher/timetable.ejs', {
-            message: req.flash('timetableMessage')
+    app.get('/teacher/attendance', allowTeachers, function(req, res) {
+        res.render('teacher/attendance.ejs', {
+            message: req.flash('atattendanceMessage')
         });
     });
 
 
     app.get('/getTimetable', allowTeachers, function(req, res){
       databaseQuery.getTimetable(req.user.id)
+          .then(function(data) {
+              res.send(data);
+          })
+          .catch(function(e) {
+              res.status(500, {
+                  error: e
+              });
+          });
+    });
+
+    app.post('/getStudentTimetable', allowTeachers, function(req, res){
+      console.log(req.body);
+      databaseQuery.getStudentTimetable(req.user.id)
           .then(function(data) {
               res.send(data);
           })
@@ -87,6 +100,28 @@ module.exports = function(app, passport) {
                 });
             });
       });
+
+      app.get('/user/:id/timetable', function (req, res) {
+          let studentID = req.params.id;
+          databaseQuery.getStudentTimetable(studentID)
+              .then(function(data) {
+                console.log(data);
+                res.render('teacher/userTimetable.ejs', {
+                    message: req.flash('user'),
+                    studentID: data[0].Student_ID,
+                    studentName: data[0].Student_Name,
+                    parentName: data[0].Parent_Name,
+                    studentYear: data[0].Student_Year,
+                    studentEmail: data[0].Student_Email,
+                    studentUsername: data[0].Student_Username
+                });
+              })
+              .catch(function(e) {
+                  res.status(500, {
+                      error: e
+                  });
+              });
+        });
 
 
 

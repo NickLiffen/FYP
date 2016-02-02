@@ -2,11 +2,13 @@
   <!-- End of Navigation Bar -->
 
   <div class="jumbotron text-center">
-      <h1><span class="glyphicon glyphicon-calendar"></span> Your Timetable </h1>
+      <h1><span class="glyphicon glyphicon-education"></span> Take Attendance </h1>
       <!-- show any messages that come back with authentication -->
       <% if (message.length > 0) { %>
           <div class="alert alert-danger"><%= message %></div>
       <% } %>
+
+      <h3>Click on a class to take attendnace or see previous records</h3>
   </div>
 
 <div id='calendarEffect'>
@@ -21,19 +23,19 @@
       <table class="table table-bordered">
         <thead>
           <th>#</th>
-          <th>Student Name</th>
-          <th>Present</th>
-          <th>Late</th>
-          <th>Absent</th>
-          <th>Profile</th>
+          <th>Student Name <span class="glyphicon glyphicon-info-sign"></th>
+          <th>Present <span class="glyphicon glyphicon-thumbs-up"></th>
+          <th>Late <span class="glyphicon glyphicon-hand-right"></th>
+          <th>Absent <span class="glyphicon glyphicon-thumbs-down"></th>
+          <th>Profile <span class="glyphicon glyphicon-user"></th>
         </thead>
     </table>
-  <div id ='paddingBottom 'class="text-center"><button type="submit" id="takeAttendance" name="takeAttendance" class="btn btn-success">Save!</button></div>
+  <div id ='paddingBottom'class="text-center"><button type="submit" id="takeAttendance" name="takeAttendance" class="btn btn-success">Save!</button></div>
   <div id='attendanceStatus'><div>
   </div>
   </form>
 </div>
 
-<script type="text/javascript" src="/javascript/teacher/timetable.js"></script>
+<script type="text/javascript" src="/javascript/teacher/attendance.js"></script>
 </body>
 </html>

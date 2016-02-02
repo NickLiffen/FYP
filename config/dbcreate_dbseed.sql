@@ -358,6 +358,11 @@ WHERE Class.Subject_ID = Subject.Subject_ID
 LIMIT 0 , 10;
 
 
+
+
+SELECT Class.Class_ID AS 'id', Subject.Subject_Name AS 'title', CONCAT( Class.Class_Date, ' ' , Class.Class_Start_Time) AS 'start', CONCAT( Class.Class_Date, ' ' , Class.Class_End_Time) AS 'end' FROM Student, Student_has_Class, Subject, Class, Room WHERE Student_has_Class.Student_ID = Student.Student_ID AND Student_has_Class.Class_ID = Class.Class_ID AND Class.Subject_ID = Subject.Subject_ID AND Class.Room_ID = Room.Room_ID AND Student.Student_ID LIKE 1;
+
+
 -----GET ATTENDNACE INFORMATION-----
 SELECT CONCAT( Student.Student_Fname, ' ' , Student.Student_Lname)    AS 'Student Name',
        LOWER(  Attendance.Attendance_Status ) 	                      AS 'Attendance Info',

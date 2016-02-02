@@ -67,7 +67,9 @@ $(document).ready(function() {
             url: '/getTimetable',
             textColor: 'black'
         }
-			]
+			],
+			minTime: "06:00",
+			maxTime: "21:00"
 		});
 
 			$('#ClassList').on('click', '.btn ', function(){

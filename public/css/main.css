@@ -23,6 +23,10 @@ p {
 .paddingTop{
   padding-top: 150px;
 }
+
+#paddingTop{
+  padding-top: 40px;
+}
 .paddingBottom{
   padding-bottom: 150px;
 }
