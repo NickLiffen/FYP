@@ -1,8 +1,7 @@
 <% include header %>
 
-
 <div class="jumbotron text-center">
-    <h1><span class="glyphicon glyphicon-calendar"></span> User Information </h1>
+    <h1>Teacher Information <span class="glyphicon glyphicon-info-sign"></span></h1>
     <!-- show any messages that come back with authentication -->
     <% if (message.length > 0) { %>
         <div class="alert alert-danger"><%= message %></div>
@@ -15,8 +14,8 @@
           <div class="panel panel-info">
             <div class="panel-heading">
               <h3 class="panel-title">
-                <span class='studentID' id="<%= studentID %>"></span>
-                <td><%= studentName %></td>
+                <span class='teacherID' id="<%= teacherID %>"></span>
+                <td><%= teacherName %></td>
               </h3>
             </div>
             <div class="panel-body">
@@ -26,32 +25,28 @@
                   <table class="table table-user-information">
                     <tbody>
                       <tr>
-                        <td>Student Name: </td>
-                        <td><%= studentName %></td>
+                        <td>Teacher Name: </td>
+                        <td><%= teacherName %></td>
                       </tr>
                       <tr>
-                        <td>Student Year: </td>
-                        <td><%= studentYear %></td>
-                      </tr>
                       <tr>
-                        <td>Student Email: </td>
-                        <td><%= studentEmail %></td>
+                        <td>Teacher Email: </td>
+                        <td><%= teacherEmail %></td>
                       </tr>
                          <tr>
                              <tr>
-                        <td>Parents: </td>
-                        <td><%= parentName %></td>
+                       <td>Teacher Phone Number: </td>
+                       <td><%= teacherNumber %></td>
                       </tr>
                         <tr>
-                        <td>Student Username: </td>
-                        <td><%= studentUsername %></td>
+                        <td>Teacher Username: </td>
+                        <td><%= teacherUsername %></td>
                       </tr>
                         </td>
                       </tr>
                     </tbody>
                   </table>
-                  <button type="button" class="btn btn-primary" id="getTimetable">Student Timetable</button>
-                  <button type="button" class="btn btn-primary" id="contactParents">Contact Parents</button>
+                  <button type="button" class="btn btn-primary" id="getTimetable">Teacher Timetable</button>
                 </div>
               </div>
             </div>
@@ -68,7 +63,7 @@
         </div>
 
     <div class='calendarEffect'>
-        <div id ='paddingBottom' class="text-center"><button id="hidecalendar" name="hideAttendance" class="btn btn-primary">Back to Student Profile!</button></div>
+        <div id ='paddingBottom' class="text-center"><button id="hidecalendar" name="hideAttendance" class="btn btn-primary">Back to Teacher Profile!</button></div>
   <div id='paddingTop'></div>
     <div id='calendar'></div>
     </div>

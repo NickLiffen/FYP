@@ -434,3 +434,28 @@ SELECT Student.Student_ID AS 'Student ID', Class.Class_ID AS 'Class ID', CONCAT(
 
 
 SELECT Class.Class_Date, Class.Class_Start_Time, Class.Class_End_Time, Subject.Subject_Name, Room.Room_Name, Teacher.Teacher_Title, Teacher.Teacher_Fname, Teacher.Teacher_Lname FROM Class, Subject, Room, Teacher WHERE Class.Subject_ID = Subject.Subject_ID AND Class.Room_ID = Room.Room_ID AND Class.Teacher_ID = Teacher.Teacher_ID;
+
+
+
+
+
+
+--Get all Classes Based on Teacher Information --
+SELECT Class.Class_ID AS 'id', Subject.Subject_Name AS 'title', CONCAT( Class.Class_Date, ' ' , Class.Class_Start_Time) AS 'start', CONCAT( Class.Class_Date, ' ' , Class.Class_End_Time) AS 'end', Room.Room_Name AS 'room', CONCAT( Teacher.Teacher_Fname, ' ' , Teacher.Teacher_Lname) AS 'teacher' FROM Teacher, Subject, Class, Room WHERE Class.Teacher_ID = Teacher.Teacher_ID AND Class.Subject_ID = Subject.Subject_ID AND Class.Room_ID = Room.Room_ID AND Teacher.Teacher_ID LIKE ${userID}
+
+--Get all Classes base don Students Information --
+SELECT Class.Class_ID AS 'id',
+        Subject.Subject_Name AS 'title',
+          CONCAT( Class.Class_Date, ' ' , Class.Class_Start_Time) AS 'start',
+            CONCAT( Class.Class_Date, ' ' , Class.Class_End_Time) AS 'end',
+              Room.Room_Name AS 'room',
+                CONCAT( Teacher.Teacher_Fname, ' ' , Teacher.Teacher_Lname) AS 'teacher'
+
+FROM Student, Student_has_Class, Subject, Class, Room, Teacher
+
+WHERE Student_has_Class.Student_ID = Student.Student_ID
+  AND Student_has_Class.Class_ID = Class.Class_ID
+    AND Class.Subject_ID = Subject.Subject_ID
+      AND Class.Teacher_ID = Teacher.Teacher_ID
+        AND Class.Room_ID = Room.Room_ID
+          AND Student.Student_ID LIKE ${userID}

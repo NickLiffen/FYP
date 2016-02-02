@@ -64,17 +64,24 @@ $(document).ready(function() {
 			weekends: false,
 			eventSources: [
         {
-            url: '/getTimetable',
+            url: '/teacherTimetable',
+						type: 'POST',
             textColor: 'black'
         }
 			],
+			eventRender: function(event, element) {
+				console.log(event);
+				$(element).tooltip({
+					title: `Title: ${event.title}  Room: ${event.room} Teacher: ${event.teacher}`
+				});
+			},
 			minTime: "06:00",
 			maxTime: "21:00"
 		});
 
 			$('#ClassList').on('click', '.btn ', function(){
 				let studentID = this.id;
-				  window.location.href = `/user/${studentID}`;
+				  window.location.href = `/student/${studentID}`;
 			});
 
 		$("#takeAttendance").submit(function(event) {

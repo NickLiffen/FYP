@@ -48,8 +48,15 @@ module.exports = function(app, passport) {
     });
 
 
-    app.get('/getTimetable', allowTeachers, function(req, res){
-      databaseQuery.getTimetable(req.user.id)
+    app.post('/teacherTimetable', allowTeachers, function(req, res){
+      let data;
+      if(Object.keys(req.body).length === 0 || !req.body.ID){
+        data = req.user.id;
+      }
+      else{
+        data = req.body.ID;
+      }
+      databaseQuery.teacherTimetable(data)
           .then(function(data) {
               res.send(data);
           })
@@ -60,9 +67,8 @@ module.exports = function(app, passport) {
           });
     });
 
-    app.post('/getStudentTimetable', allowTeachers, function(req, res){
-      console.log(req.body);
-      databaseQuery.getStudentTimetable(req.user.id)
+    app.post('/studentTimetable', allowTeachers, function(req, res){
+      databaseQuery.studentTimetable(req.body.ID)
           .then(function(data) {
               res.send(data);
           })
@@ -73,18 +79,12 @@ module.exports = function(app, passport) {
           });
     });
 
-    app.get('/user', allowTeachers, function(req, res) {
-        res.render('teacher/user.ejs', {
-            message: req.flash('user')
-        });
-    });
-
-    app.get('/user/:id', function (req, res) {
+    app.get('/student/:id', function (req, res) {
         let studentID = req.params.id;
         databaseQuery.getStudentProfile(studentID)
             .then(function(data) {
               console.log(data);
-              res.render('teacher/user.ejs', {
+              res.render('teacher/student.ejs', {
                   message: req.flash('user'),
                   studentID: data[0].Student_ID,
                   studentName: data[0].Student_Name,
@@ -101,19 +101,18 @@ module.exports = function(app, passport) {
             });
       });
 
-      app.get('/user/:id/timetable', function (req, res) {
-          let studentID = req.params.id;
-          databaseQuery.getStudentTimetable(studentID)
+      app.get('/teacher/:id', function (req, res) {
+          let teacherID = req.params.id;
+          databaseQuery.getTeacherProfile(teacherID)
               .then(function(data) {
                 console.log(data);
-                res.render('teacher/userTimetable.ejs', {
+                res.render('teacher/teacher.ejs', {
                     message: req.flash('user'),
-                    studentID: data[0].Student_ID,
-                    studentName: data[0].Student_Name,
-                    parentName: data[0].Parent_Name,
-                    studentYear: data[0].Student_Year,
-                    studentEmail: data[0].Student_Email,
-                    studentUsername: data[0].Student_Username
+                    teacherID: data[0].Teacher_ID,
+                    teacherName: data[0].Teacher_Name,
+                    teacherNumber: data[0].Teacher_Number,
+                    teacherEmail: data[0].Teacher_Email,
+                    teacherUsername: data[0].Teacher_Username
                 });
               })
               .catch(function(e) {
@@ -122,8 +121,6 @@ module.exports = function(app, passport) {
                   });
               });
         });
-
-
 
     app.get('/admin', allowAdmins, function(req, res) {
         res.render('admin/admin.ejs', {
@@ -418,12 +415,12 @@ module.exports = function(app, passport) {
         //Have to re-log the user in to update the users information in session.
         req.logIn(user, function() {
             req.session.save(function() {
-                res.redirect('/app/profile');
+                res.redirect('/admin/profile');
             });
         });
 
         req.flash('profileMessage', 'You have successfully updated your profile');
-        res.redirect('app/profile');
+        res.redirect('/admin/profile');
     });
 
     app.get('/logout', function(req, res) {

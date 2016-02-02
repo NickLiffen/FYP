@@ -35,8 +35,21 @@ $(document).ready(function() {
       $(".profileEffect").fadeOut();
       $(".calendarEffect").fadeIn();
 
+      let urlToUse, idToUse;
 
       let studentID = $('.studentID').attr("id");
+      let teacherID = $('.teacherID').attr("id");
+
+
+      if(studentID){
+        urlToUse = '/studentTimetable';
+        idToUse = studentID;
+      }
+      else{
+        urlToUse = '/teacherTimetable';
+        idToUse = teacherID;
+      }
+
       $('#calendar').fullCalendar({
         header: {
           left: 'prev,next today',
@@ -48,10 +61,10 @@ $(document).ready(function() {
         weekends: false,
         eventSources: [
           {
-              url: '/getStudentTimetable',
+              url: urlToUse,
               type: 'POST',
               data: {
-                ID: studentID
+                ID: idToUse
               }
           }
         ],

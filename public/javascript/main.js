@@ -26,7 +26,7 @@ $("#searchForm").submit(function(event) {
 
     userID = searchValue.charAt(1);
 
-    window.location.href = `/user/${userID}`;
+    window.location.href = `/student/${userID}`;
 
   });
 
