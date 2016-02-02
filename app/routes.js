@@ -70,6 +70,7 @@ module.exports = function(app, passport) {
         let studentID = req.params.id;
         databaseQuery.getStudentProfile(studentID)
             .then(function(data) {
+              console.log(data);
               res.render('teacher/user.ejs', {
                   message: req.flash('user'),
                   studentID: data[0].Student_ID,
