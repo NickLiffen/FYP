@@ -29,12 +29,19 @@ $(document).ready(function() {
       let lName = this.Teacher_Lname;
       let concatName = title + " ".concat(fName) + " ".concat(lName);
 
+      let date      =   this.Class_Start_Timestamp;
+      let endTime   =   this.Class_End_Timestamp;
+
+      let newDate = moment(date).format('DD-MM-YYYY');
+      let newStartTime = moment(date).format('HH:mm');
+      let newEndTime = moment(endTime).format('HH:mm');
+
           tableContent += '<tr>';
           tableContent += '<th><span rel="' + this.Class_ID + '" id="' + this.Class_ID + '" scope="row"">' + this.Class_ID + '</th>';
           tableContent += '<td>' + this.Class_Level + '</td>';
-          tableContent += '<td>' + this.Class_Date + '</td>';
-          tableContent += '<td>' + this.Class_Start_Time + '</td>';
-          tableContent += '<td>' + this.Class_End_Time + '</td>';
+          tableContent += '<td>' + newDate + '</td>';
+          tableContent += '<td>' + newStartTime + '</td>';
+          tableContent += '<td>' + newEndTime + '</td>';
           tableContent += '<td>' + this.Subject_Name + '</td>';
           tableContent += '<td>' + this.Room_Name + '</td>';
           tableContent += '<td>' + concatName + '</td>';
@@ -113,21 +120,28 @@ $(document).ready(function() {
         //Stop the Form from submiting automatically
         event.preventDefault();
         //Declaring varibales
-        let newClass, date;
+        let newClass, date, inputStartTime, inputEndTime, startTimestamp, endTimestamp;
 
         date = $('#addClassForm input#ClassDate').val();
+        inputStartTime = $('#addClassForm input#ClassSTime').val();
+        inputEndTime = $('#addClassForm input#ClassETime').val();
+
         date = date.split("/").reverse().join("-");
+
+        startTimestamp = date + ' ' + inputStartTime;
+        endTimestamp   = date + ' ' + inputEndTime;
+
         //Creating the new Class object will all information from the form
         newClass = {
-            Class_Level:        $('#addClassForm input#ClassLevel').val(),
-            Class_Date:         date,
-            Class_Start_Time:   $('#addClassForm input#ClassSTime').val(),
-            Class_End_Time:     $('#addClassForm input#ClassETime').val(),
-            Subject_ID:         $('#subjectPicker').val(),
-            Room_ID:            $('#roomPicker').val(),
-            Teacher_ID:         $('#teacherPicker').val(),
-            Student:            $('#studentPicker').val()
+            Class_Level:             $('#addClassForm input#ClassLevel').val(),
+            Class_Start_Timestamp:   startTimestamp,
+            Class_End_Timestamp:     endTimestamp,
+            Subject_ID:              $('#subjectPicker').val(),
+            Room_ID:                 $('#roomPicker').val(),
+            Teacher_ID:              $('#teacherPicker').val(),
+            Student:                 $('#studentPicker').val()
         };
+
         //Send off the AJAX Request to the /pupil route
         $.ajax({
             type: 'POST',

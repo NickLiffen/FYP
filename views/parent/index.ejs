@@ -1,0 +1,41 @@
+<% include header %>
+  <!-- End of Navigation Bar -->
+
+  <div class="jumbotron text-center">
+      <h1><span class="glyphicon glyphicon-education"></span> Parent Home Page </h1>
+      <!-- show any messages that come back with authentication -->
+      <% if (message.length > 0) { %>
+          <div class="alert alert-danger"><%= message %></div>
+      <% } %>
+
+      <h3>Your Children: </h3>
+  </div>
+
+
+  <div id='attendanceEffect'>
+      <div class='bottom'></div>
+      <form id='takeAttendance' action="/takeAttendance" method="post">
+      <div id="ClassList">
+        <table class="table table-bordered">
+          <thead>
+            <th>#</th>
+            <th>Student Name <span class="glyphicon glyphicon-tree-conifer"></th>
+            <th>Student Email <span class="glyphicon glyphicon-envelope"></th>
+            <th>Student Year <span class="glyphicon glyphicon-hand-right"></th>
+            <th>Student Username <span class="glyphicon glyphicon-user"></th>
+            <th>Current Information <span class="glyphicon glyphicon-comment"></th>
+            <th>Profile <span class="glyphicon glyphicon-globe"></th>
+          </thead>
+      </table>
+    <div id='attendanceStatus'><div>
+    </div>
+    </form>
+    </div>
+    </div>
+    </div>
+
+
+
+<script type="text/javascript" src="/javascript/parent/index.js"></script>
+</body>
+</html>

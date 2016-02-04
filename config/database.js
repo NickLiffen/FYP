@@ -243,7 +243,7 @@ module.exports = {
 
     getClass: function() {
         return new Promise(function(resolve, reject) {
-            connection.query('SELECT Class.Class_ID, Class.Class_Date, Class.Class_Start_Time, Class.Class_End_Time, Class.Class_Level, Subject.Subject_Name, Room.Room_Name, Teacher.Teacher_Title, Teacher.Teacher_Fname, Teacher.Teacher_Lname FROM Class, Subject, Room, Teacher WHERE Class.Subject_ID = Subject.Subject_ID AND Class.Room_ID = Room.Room_ID AND Class.Teacher_ID = Teacher.Teacher_ID', function(err, results) {
+            connection.query('SELECT Class.Class_ID, Class.Class_Start_Timestamp, Class.Class_End_Timestamp, Class.Class_Level, Subject.Subject_Name, Room.Room_Name, Teacher.Teacher_Title, Teacher.Teacher_Fname, Teacher.Teacher_Lname FROM Class, Subject, Room, Teacher WHERE Class.Subject_ID = Subject.Subject_ID AND Class.Room_ID = Room.Room_ID AND Class.Teacher_ID = Teacher.Teacher_ID', function(err, results) {
                 if (err) {
                     console.log("Problem getting class information. Check getClass Function. database.js: " + err);
                     reject(Error(err));
@@ -313,7 +313,7 @@ module.exports = {
 
     teacherTimetable: function(userID) {
         return new Promise(function(resolve, reject) {
-            connection.query(`SELECT Class.Class_ID AS 'id', Subject.Subject_Name AS 'title', CONCAT( Class.Class_Date, ' ' , Class.Class_Start_Time) AS 'start', CONCAT( Class.Class_Date, ' ' , Class.Class_End_Time) AS 'end', Room.Room_Name AS 'room', CONCAT( Teacher.Teacher_Fname, ' ' , Teacher.Teacher_Lname) AS 'teacher' FROM Teacher, Subject, Class, Room WHERE Class.Teacher_ID = Teacher.Teacher_ID AND Class.Subject_ID = Subject.Subject_ID AND Class.Room_ID = Room.Room_ID AND Teacher.Teacher_ID LIKE ${userID}`, function(err, results) {
+            connection.query(`SELECT Class.Class_ID AS 'id', Subject.Subject_Name AS 'title', Class_Start_Timestamp AS 'start', Class_End_Timestamp AS 'end', Room.Room_Name AS 'room', CONCAT( Teacher.Teacher_Fname, ' ' , Teacher.Teacher_Lname) AS 'teacher' FROM Teacher, Subject, Class, Room WHERE Class.Teacher_ID = Teacher.Teacher_ID AND Class.Subject_ID = Subject.Subject_ID AND Class.Room_ID = Room.Room_ID AND Teacher.Teacher_ID LIKE ${userID}`, function(err, results) {
                 if (err) {
                     console.log("Problem Getting Class Information. Check getTimetable Function. database.js: " + err);
                     reject(Error(err));
@@ -326,7 +326,7 @@ module.exports = {
 
     studentTimetable: function(userID) {
         return new Promise(function(resolve, reject) {
-            connection.query(`SELECT Class.Class_ID AS 'id', Subject.Subject_Name AS 'title', CONCAT( Class.Class_Date, ' ' , Class.Class_Start_Time) AS 'start', CONCAT( Class.Class_Date, ' ' , Class.Class_End_Time) AS 'end', Room.Room_Name AS 'room', CONCAT( Teacher.Teacher_Fname, ' ' , Teacher.Teacher_Lname) AS 'teacher' FROM Student, Student_has_Class, Subject, Class, Room, Teacher WHERE Student_has_Class.Student_ID = Student.Student_ID AND Student_has_Class.Class_ID = Class.Class_ID AND Class.Subject_ID = Subject.Subject_ID AND Class.Teacher_ID = Teacher.Teacher_ID AND Class.Room_ID = Room.Room_ID AND Student.Student_ID LIKE ${userID}`, function(err, results) {
+            connection.query(`SELECT Class.Class_ID AS 'id', Subject.Subject_Name AS 'title', Class_Start_Timestamp AS 'start', Class_End_Timestamp AS 'end', Room.Room_Name AS 'room', CONCAT( Teacher.Teacher_Fname, ' ' , Teacher.Teacher_Lname) AS 'teacher' FROM Student, Student_has_Class, Subject, Class, Room, Teacher WHERE Student_has_Class.Student_ID = Student.Student_ID AND Student_has_Class.Class_ID = Class.Class_ID AND Class.Subject_ID = Subject.Subject_ID AND Class.Teacher_ID = Teacher.Teacher_ID AND Class.Room_ID = Room.Room_ID AND Student.Student_ID LIKE ${userID}`, function(err, results) {
                 if (err) {
                     console.log("Problem Getting Class Information. Check getStudentTimetable Function. database.js: " + err);
                     reject(Error(err));
@@ -400,5 +400,18 @@ module.exports = {
                 });
             }
         });
-    }
+    },
+
+    getParentStudents: function(parentID){
+      return new Promise(function(resolve, reject) {
+        let sqlStatement = `SELECT Student_ID, CONCAT( Student.Student_Fname, ' ' , Student.Student_Lname)  AS 'Student_Name', Student.Student_Email, Student.Student_Year, Student.Student_Username FROM Parent, Student, Student_has_Parent WHERE Student_has_Parent.Student_Student_ID = Student.Student_ID AND Student_has_Parent.Parent_Parent_ID = Parent.Parent_ID AND LOWER( Parent_ID ) LIKE  '${parentID}'`;
+        connection.query(sqlStatement, function(err, results) {
+            if (err) {
+                console.log("Problem Getting Student Information : " + err);
+                reject(Error(err));
+            }
+            resolve(results);
+          });
+        });
+      }
 };

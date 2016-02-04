@@ -5,7 +5,7 @@
 
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ALLOW_INVALID_DATES';
 
 -- -----------------------------------------------------
 -- Schema SchoolDatabase
@@ -115,10 +115,8 @@ DROP TABLE IF EXISTS `SchoolDatabase`.`Class` ;
 CREATE TABLE IF NOT EXISTS `SchoolDatabase`.`Class` (
   `Class_ID` INT NOT NULL AUTO_INCREMENT,
   `Class_Level` VARCHAR(45) NOT NULL,
-  `Class_Capacity` VARCHAR(45) NULL,
-  `Class_Date` VARCHAR(45) NOT NULL,
-  `Class_Start_Time` VARCHAR(45) NOT NULL,
-  `Class_End_Time` VARCHAR(45) NOT NULL,
+  `Class_Start_Timestamp` TIMESTAMP NOT NULL,
+  `Class_End_Timestamp` TIMESTAMP NOT NULL,
   `Subject_ID` INT NOT NULL,
   `Room_ID` INT NOT NULL,
   `Teacher_ID` INT NOT NULL,
@@ -278,12 +276,12 @@ VALUES ('1.0.4', 'Richmond Building');
 INSERT INTO Room (Room_Name, Rom_Description)
 VALUES ('8.0.2', 'Portland Building');
 --Class
-INSERT INTO Class (Class_Level, Class_Capacity, Class_Date, Class_Start_Time, Class_End_Time, Subject_ID, Room_ID, Teacher_ID)
-VALUES ('7', '3', '2016-01-27', '08:00:00', '09:00:00', '1', '2', '1');
-INSERT INTO Class (Class_Level, Class_Capacity, Class_Date, Class_Start_Time, Class_End_Time, Subject_ID, Room_ID, Teacher_ID)
-VALUES ('11', '3', '2016-01-27', '09:00:00', '10:00:00', '2', '1', '2');
-INSERT INTO Class (Class_Level, Class_Capacity, Class_Date, Class_Start_Time, Class_End_Time, Subject_ID, Room_ID, Teacher_ID)
-VALUES ('9', '3', '2016-01-28', '10:00:00', '11:00:00', '3', '3', '3');
+INSERT INTO Class (Class_Level, Class_Start_Timestamp, Class_End_Timestamp, Subject_ID, Room_ID, Teacher_ID)
+VALUES ('7', '2016-01-27 08:00:00', '2016-01-27 09:00:00', '1', '2', '1');
+INSERT INTO Class (Class_Level, Class_Start_Timestamp, Class_End_Timestamp, Subject_ID, Room_ID, Teacher_ID)
+VALUES ('11', '2016-01-27 09:00:00', '2016-01-27 10:00:00', '2', '1', '2');
+INSERT INTO Class (Class_Level, Class_Start_Timestamp, Class_End_Timestamp, Subject_ID, Room_ID, Teacher_ID)
+VALUES ('9', '2016-01-27 10:00:00', '2016-01-27 11:00:00', '3', '3', '3');
 --Admin
 INSERT INTO Admin (Admin_Title, Admin_Fname, Admin_Lname, Admin_Email, Admin_Privledge_Level, Admin_Username, Admin_Password, Role)
 VALUES ('Mr', 'Andrew', 'Stockdale', 'Andrew.Stockdale@hotmail.com', '1', 'AndrewStockdale', '$2a$08$gnA71gTP.S2.DW51s0dpG.G1uBlN6sKM4anblcvFAZoWUrNLnaaWe', 'Admin');
@@ -342,9 +340,9 @@ VALUES ('Absent', 'N/A', '3', '3');
 ------Useful Queries----------------------
 
 -----GET CLASS INFORMATION----
-SELECT LOWER( Class.Class_Date)                                     AS 'Class Date',
-			 LOWER( Class.Class_Start_Time ) 	                            AS 'Class Start Time',
-			 LOWER( Class.Class_End_Time ) 	                              AS 'Class End Time',
+SELECT
+			 LOWER( Class.Class_Start_Timestamp ) 	                      AS 'Class Start Time',
+			 LOWER( Class.Class_End_Timestamp ) 	                        AS 'Class End Time',
 			 LOWER( Subject.Subject_Name ) 		                            AS 'Subject Name',
 			 LOWER( Room.Room_Name ) 								 	                    AS 'Room Name',
        CONCAT( Teacher.Teacher_Fname, ' ' , Teacher.Teacher_Lname)  AS 'Teacher Name'
@@ -384,16 +382,10 @@ WHERE Attendance.Class_ID = Class.Class_ID
 LIMIT 0 , 100;
 
 -----GET STUDENT PARENT INFORMATION-----
-SELECT CONCAT( Parent.Parent_Fname, ' ' , Parent.Parent_Lname)  AS 'Parent Name'
+SELECT CONCAT( Student.Student_Fname, ' ' , Student.Student_Lname)  AS 'Student_Name', Student.Student_Email, Student.Student_Year, Student.Student_Username FROM Parent, Student, Student_has_Parent WHERE Student_has_Parent.Student_Student_ID = Student.Student_ID AND Student_has_Parent.Parent_Parent_ID = Parent.Parent_ID AND LOWER( Parent_ID ) LIKE  '1'
 
-FROM Parent, Student, Student_has_Parent
 
-WHERE Student_has_Parent.Student_Student_ID = Student.Student_ID
-  AND Student_has_Parent.Parent_Parent_ID = Parent.Parent_ID
-  AND LOWER( Student_Fname ) LIKE  'Caris'
-  AND LOWER( Student_Lname ) LIKE 'Love'
 
-LIMIT 0 , 100;
 
 
 
@@ -427,8 +419,8 @@ SELECT Class.Class_ID AS 'id', Subject.Subject_Name AS 'title', CONCAT( Class.Cl
 
 
 
---Get All Students in a class based on a class ID
-SELECT Student.Student_ID AS 'Student ID', Class.Class_ID AS 'Class ID', CONCAT( Student.Student_Fname, ' ' , Student.Student_Lname)  AS 'Student Name' FROM Student, Class, Student_Has_Class WHERE Student_Has_Class.Student_ID = Student.Student_ID AND Student_Has_Class.Class_ID = Class.Class_ID AND Class.Class_ID LIKE  '6';
+--Get All Students in a class based on a Student ID
+SELECT Student.Student_ID AS 'Student ID', Class.Class_ID AS 'Class ID', CONCAT( Class.Class_Date, ' ' , Class.Class_Start_Time) AS 'start', CONCAT( Class.Class_Date, ' ' , Class.Class_End_Time) AS 'end' FROM Student, Class, Student_Has_Class WHERE Student_Has_Class.Student_ID = Student.Student_ID AND Student_Has_Class.Class_ID = Class.Class_ID AND Student.Student_ID LIKE  '1';
 
 
 
@@ -458,4 +450,17 @@ WHERE Student_has_Class.Student_ID = Student.Student_ID
     AND Class.Subject_ID = Subject.Subject_ID
       AND Class.Teacher_ID = Teacher.Teacher_ID
         AND Class.Room_ID = Room.Room_ID
-          AND Student.Student_ID LIKE ${userID}
+              AND Student.Student_ID LIKE ${userID}
+
+
+
+              AND Class.Class_Start_Time >= '2016-01-28 19:00'
+                AND Class.Class_End_Time <= '2016-01-28 20:00'
+
+
+
+
+
+
+--Gets Start & End Time for all classes and returns the attendnace status for each class. Based on a Student ID
+SELECT Student.Student_ID AS 'Student ID', Class.Class_ID AS 'Class ID', CONCAT( Class.Class_Date, ' ' , Class.Class_Start_Time) AS 'start', CONCAT( Class.Class_Date, ' ' , Class.Class_End_Time) AS 'end', Subject.Subject_Name as 'Subject_Name', Attendance.Attendance_Status AS 'Attendance_Status' FROM Student, Class, Student_Has_Class, Subject, Attendance WHERE Student_Has_Class.Student_ID = Student.Student_ID AND Student_Has_Class.Class_ID = Class.Class_ID AND Class.Subject_ID = Subject.Subject_ID AND Attendance.Class_ID = Class.Class_ID AND Attendance.Student_ID = Student.Student_ID AND Student.Student_ID LIKE  '1';

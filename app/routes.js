@@ -30,10 +30,52 @@ module.exports = function(app, passport) {
         }
         else if (req.user.role === 'Teacher') {
           res.redirect('/teacher');
-      } else {
+      }
+      else if (req.user.role === 'Parent') {
+        res.redirect('/parent');
+    } else {
           res.redirect('/login');
       }
     });
+
+
+
+    app.get('/parent', allowParents, function(req, res) {
+        res.render('parent/index.ejs', {
+            message: req.flash('appMessage')
+        });
+    });
+
+    app.get('/parent/record', allowParents, function(req, res) {
+        res.render('parent/record.ejs', {
+            message: req.flash('recordMessage')
+        });
+    });
+
+    app.get('/currentStudentStatus', allowParents, function(req, res) {
+      databaseQuery.currentStudentStatus()
+          .then(function(data) {
+              res.send(data);
+          })
+          .catch(function(e) {
+              res.status(500, {
+                  error: e
+              });
+          });
+    });
+
+    app.get('/getParentStudents', allowParents, function(req, res) {
+      databaseQuery.getParentStudents(req.user.id)
+          .then(function(data) {
+              res.send(data);
+          })
+          .catch(function(e) {
+              res.status(500, {
+                  error: e
+              });
+          });
+    });
+
 
     app.get('/teacher', allowTeachers, function(req, res) {
         res.render('teacher/index.ejs', {
@@ -441,12 +483,24 @@ function allowAdmins(req, res, next) {
         res.redirect('/login');
     }
 }
-
+//Allow Teachers to view only Teachers URI's
 function allowTeachers(req, res, next) {
     if (!req.user) {
         req.flash('loginMessage', "Something went wrong, re-login please");
         res.redirect('/login');
     } else if (req.user.role === 'Teacher') {
+        return next();
+    } else {
+        req.flash('loginMessage', "Naughty, Naughty your not an Teacher!");
+        res.redirect('/login');
+    }
+}
+//Allow Parents to view only Parents URI's
+function allowParents(req, res, next) {
+    if (!req.user) {
+        req.flash('loginMessage', "Something went wrong, re-login please");
+        res.redirect('/login');
+    } else if (req.user.role === 'Parent') {
         return next();
     } else {
         req.flash('loginMessage', "Naughty, Naughty your not an Teacher!");
