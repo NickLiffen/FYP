@@ -88,6 +88,7 @@
 
     // Custom Globals
     "globals"       : {
-      "moment" : false
+      "moment" : false,
+      "Chart"  : false
       }        // additional predefined global variables
 }

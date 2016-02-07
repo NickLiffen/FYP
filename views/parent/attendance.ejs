@@ -72,13 +72,39 @@
             </div>
         </div>
 
-        <h2>Useful Information</h2>
-                  <div id="js-legend" class="chart-legend"></div>
-        <canvas id="myChart" width="800" height="400">
-        </canvas>
+  <h2>Useful Information</h2>
+    <h4>Attendance Across All Classes</h4>
+<div class='container'>
+  <div class="row">
+    <canvas id="myChart" width="800" height="400"></canvas>
+  </div>
+    <h4>Total Count of Present, Late and Absent.</h4>
+<div class='container'>
+  <div class="row">
+    <canvas id="pieChart" width="800" height="400"></canvas>
+  </div>
+</div>
+  <h4>Find Attendance Information Per Class</h4>
+<div class='container'>
+  <div class="row">
+    <div class="col-sm-6 col-sm-offset-3">
+            <form class="form" id='getGraphUniqueClass' role="search">
+                <div class="input-group stylish-input-group">
+                    <input type="text" class="form-control" id='typeaheadGraph' data-provide="typeahead" placeholder="Search" name="q" autocomplete="off">
+                    <span class="input-group-addon">
+                        <button type="submit">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button>
 
-
-
+                    </span>
+                </div>
+              </form>
+                <div class='paddingTop'></div>
+        </div>
+        <canvas id="searchClass" width="800" height="400"></canvas>
+  </div>
+</div>
+</div>
 </div>
 
 <script type="text/javascript" src="/javascript/parent/attendance.js"></script>

@@ -459,8 +459,7 @@ module.exports = {
 
       getBarChartDetails: function(studentID){
         return new Promise(function(resolve, reject) {
-          let sqlStatement = `SELECT LOWER(  Subject.Subject_Name ) AS 'Subject_Name', LOWER(  Attendance.Attendance_Status )AS 'Attendance_Info', COUNT(  Attendance.Attendance_Status) AS 'Attendance_Count' FROM Student, Attendance, Class, Subject WHERE Attendance.Class_ID = Class.Class_ID AND Attendance.Student_ID = Student.Student_ID AND Class.Subject_ID = Subject.Subject_ID AND LOWER( Student.Student_ID ) LIKE  '${studentID}'  GROUP BY Subject.Subject_Name, Attendance.Attendance_Status;
-`;
+          let sqlStatement = `SELECT LOWER(  Subject.Subject_Name ) AS 'Subject_Name', LOWER(  Attendance.Attendance_Status )AS 'Attendance_Info', COUNT(  Attendance.Attendance_Status) AS 'Attendance_Count' FROM Student, Attendance, Class, Subject WHERE Attendance.Class_ID = Class.Class_ID AND Attendance.Student_ID = Student.Student_ID AND Class.Subject_ID = Subject.Subject_ID AND LOWER( Student.Student_ID ) LIKE  '${studentID}'  GROUP BY Subject.Subject_Name, Attendance.Attendance_Status;`;
           connection.query(sqlStatement, function(err, results) {
               if (err) {
                   console.log("Problem Getting Bar Chart Information : " + err);
@@ -469,5 +468,30 @@ module.exports = {
               resolve(results);
             });
           });
+      },
+      getRadarChartDetails: function(studentID){
+        return new Promise(function(resolve, reject) {
+          let sqlStatement = `SELECT LOWER(  Attendance.Attendance_Status )AS 'Attendance_Info', COUNT(  Attendance.Attendance_Status) AS 'Attendance_Count' FROM Student, Attendance, Class, Subject WHERE Attendance.Class_ID = Class.Class_ID AND Attendance.Student_ID = Student.Student_ID AND Class.Subject_ID = Subject.Subject_ID AND LOWER( Student.Student_ID ) LIKE  '${studentID}' GROUP BY Attendance.Attendance_Status`;
+          connection.query(sqlStatement, function(err, results) {
+              if (err) {
+                  console.log("Problem Getting Bar Chart Information : " + err);
+                  reject(Error(err));
+              }
+              resolve(results);
+            });
+          });
+      },
+      parentGraphRequest: function(parentInfo){
+        return new Promise(function(resolve, reject) {
+          let sqlStatement = `SELECT LOWER( Attendance.Attendance_Status )AS 'Attendance_Info', COUNT(  Attendance.Attendance_Status) AS 'Attendance_Count' FROM Student, Attendance, Class, Subject WHERE Attendance.Class_ID = Class.Class_ID AND Attendance.Student_ID = Student.Student_ID AND Class.Subject_ID = Subject.Subject_ID AND LOWER( Student.Student_ID ) = '${parentInfo.id}' AND LOWER( Subject.Subject_ID ) = '${parentInfo.subjectID}' GROUP BY Attendance.Attendance_Status`;
+          connection.query(sqlStatement, function(err, results) {
+              if (err) {
+                  console.log("Problem Getting Bar Chart Information : " + err);
+                  reject(Error(err));
+              }
+              resolve(results);
+            });
+          });
+
       }
 };

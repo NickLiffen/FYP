@@ -128,9 +128,31 @@ module.exports = function(app, passport) {
     });
 
     app.post('/getBarChartDetails', function(req, res){
-      console.log("WERE HEREEEE");
-      console.log(req.body);
       databaseQuery.getBarChartDetails(req.body.id)
+          .then(function(data) {
+              res.send(data);
+          })
+          .catch(function(e) {
+              res.status(500, {
+                  error: e
+              });
+          });
+    });
+    app.post('/parentGraphRequest', function(req, res){
+      console.log(req.body);
+      databaseQuery.parentGraphRequest(req.body)
+          .then(function(data) {
+              res.send(data);
+          })
+          .catch(function(e) {
+              res.status(500, {
+                  error: e
+              });
+          });
+    });
+
+    app.post('/getRadarChartDetails', function(req, res){
+      databaseQuery.getRadarChartDetails(req.body.id)
           .then(function(data) {
               res.send(data);
           })

@@ -1,6 +1,6 @@
 "use strict";
 
-$(document).ready(function() {
+$(document).ready(() => {
 
 		//On Page Load only show the calender not the layout for taking attendnace.
 		$("#attendanceEffect").fadeOut();
