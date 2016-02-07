@@ -54,14 +54,13 @@ $(document).ready(function() {
 						$("#attendanceEffect").fadeOut();
 						$('#calendarEffect').fadeIn();
 						tableContent.empty();
-						//location.reload();
 					});
 
 		    });
     },
       defaultView: 'agendaWeek',
 			eventLimit: true,
-			weekends: false,
+			weekends: true,
 			eventSources: [
         {
             url: '/teacherTimetable',
@@ -76,7 +75,7 @@ $(document).ready(function() {
 				});
 			},
 			minTime: "06:00",
-			maxTime: "21:00"
+			maxTime: "23:00"
 		});
 
 			$('#ClassList').on('click', '.btn ', function(){

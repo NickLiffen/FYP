@@ -27,6 +27,7 @@
     "font-awesome": "fontawesome#~4.4.0",
     "fullcalendar": "~2.4.0",
     "moment": "~2.10.6",
-    "bootstrap3-typeahead": "git://github.com/bassjobsen/Bootstrap-3-Typeahead.git#master"
+    "bootstrap3-typeahead": "git://github.com/bassjobsen/Bootstrap-3-Typeahead.git#master",
+    "Chart.js": "^1.0.2"
   }
 }

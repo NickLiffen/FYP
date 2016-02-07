@@ -362,22 +362,7 @@ SELECT Class.Class_ID AS 'id', Subject.Subject_Name AS 'title', CONCAT( Class.Cl
 
 
 -----GET ATTENDNACE INFORMATION-----
-SELECT CONCAT( Student.Student_Fname, ' ' , Student.Student_Lname)    AS 'Student Name',
-       LOWER(  Attendance.Attendance_Status ) 	                      AS 'Attendance Info',
-			 LOWER(  Attendance.Attendance_Remarks ) 	                      AS 'Attendance Further Info',
-			 LOWER(  Class.Class_Start_Time ) 	                            AS 'Class Start Time',
-       LOWER(  Class.Class_End_Time ) 	                              AS 'Class End Time',
-			 LOWER(  Subject.Subject_Name ) 		                            AS 'Subject Name',
-			 CONCAT( Teacher.Teacher_Fname, ' ' , Teacher.Teacher_Lname)    AS 'Teacher Name'
-
-FROM Student, Attendance, Class, Subject, Teacher
-
-WHERE Attendance.Class_ID = Class.Class_ID
-    AND Attendance.Student_ID = Student.Student_ID
-    AND Class.Teacher_ID = Teacher.Teacher_ID
-    AND Class.Subject_ID = Subject.Subject_ID
-    AND LOWER( Student_Fname ) LIKE  'Nick'
-		AND LOWER( Student_Lname ) LIKE 'Liffen'
+SELECT LOWER(  Subject.Subject_Name ) AS 'Subject_Name', LOWER(  Attendance.Attendance_Status )AS 'Attendance_Info', COUNT(  Attendance.Attendance_Status) AS 'Attendance_Count' FROM Student, Attendance, Class, Subject WHERE Attendance.Class_ID = Class.Class_ID AND Attendance.Student_ID = Student.Student_ID AND Class.Subject_ID = Subject.Subject_ID AND LOWER( Student_Fname ) LIKE  'Nick' AND LOWER( Student_Lname ) LIKE 'Liffen' GROUP BY Subject.Subject_Name, Attendance.Attendance_Status;
 
 LIMIT 0 , 100;
 
@@ -435,32 +420,24 @@ SELECT Class.Class_Date, Class.Class_Start_Time, Class.Class_End_Time, Subject.S
 --Get all Classes Based on Teacher Information --
 SELECT Class.Class_ID AS 'id', Subject.Subject_Name AS 'title', CONCAT( Class.Class_Date, ' ' , Class.Class_Start_Time) AS 'start', CONCAT( Class.Class_Date, ' ' , Class.Class_End_Time) AS 'end', Room.Room_Name AS 'room', CONCAT( Teacher.Teacher_Fname, ' ' , Teacher.Teacher_Lname) AS 'teacher' FROM Teacher, Subject, Class, Room WHERE Class.Teacher_ID = Teacher.Teacher_ID AND Class.Subject_ID = Subject.Subject_ID AND Class.Room_ID = Room.Room_ID AND Teacher.Teacher_ID LIKE ${userID}
 
---Get all Classes base don Students Information --
-SELECT Class.Class_ID AS 'id',
-        Subject.Subject_Name AS 'title',
-          CONCAT( Class.Class_Date, ' ' , Class.Class_Start_Time) AS 'start',
-            CONCAT( Class.Class_Date, ' ' , Class.Class_End_Time) AS 'end',
-              Room.Room_Name AS 'room',
-                CONCAT( Teacher.Teacher_Fname, ' ' , Teacher.Teacher_Lname) AS 'teacher'
-
-FROM Student, Student_has_Class, Subject, Class, Room, Teacher
-
-WHERE Student_has_Class.Student_ID = Student.Student_ID
-  AND Student_has_Class.Class_ID = Class.Class_ID
-    AND Class.Subject_ID = Subject.Subject_ID
-      AND Class.Teacher_ID = Teacher.Teacher_ID
-        AND Class.Room_ID = Room.Room_ID
-              AND Student.Student_ID LIKE ${userID}
 
 
 
-              AND Class.Class_Start_Time >= '2016-01-28 19:00'
-                AND Class.Class_End_Time <= '2016-01-28 20:00'
+----------------------------- RUN THIS QUERY AS A BUNCH
 
+-- Run This Query to get the current Class ID and Student ID that the Student is supposed to be in--
+SELECT Class.Class_ID AS 'Class_ID', Student.Student_ID AS 'Student_ID' FROM Student, Student_has_Class, Subject, Class, Room, Teacher WHERE Student_has_Class.Student_ID = Student.Student_ID AND Student_has_Class.Class_ID = Class.Class_ID AND Class.Subject_ID = Subject.Subject_ID AND Class.Teacher_ID = Teacher.Teacher_ID AND Class.Room_ID = Room.Room_ID AND NOW() BETWEEN Class.Class_Start_Timestamp AND Class.Class_End_Timestamp AND Student.Student_ID LIKE '1'
 
+-- If the above query is empty then the student isn't supposed to be in a class?
 
-
-
+-- If there is data then run the below query
 
 --Gets Start & End Time for all classes and returns the attendnace status for each class. Based on a Student ID
-SELECT Student.Student_ID AS 'Student ID', Class.Class_ID AS 'Class ID', CONCAT( Class.Class_Date, ' ' , Class.Class_Start_Time) AS 'start', CONCAT( Class.Class_Date, ' ' , Class.Class_End_Time) AS 'end', Subject.Subject_Name as 'Subject_Name', Attendance.Attendance_Status AS 'Attendance_Status' FROM Student, Class, Student_Has_Class, Subject, Attendance WHERE Student_Has_Class.Student_ID = Student.Student_ID AND Student_Has_Class.Class_ID = Class.Class_ID AND Class.Subject_ID = Subject.Subject_ID AND Attendance.Class_ID = Class.Class_ID AND Attendance.Student_ID = Student.Student_ID AND Student.Student_ID LIKE  '1';
+SELECT Student.Student_ID AS 'Student ID', Class.Class_ID AS 'Class ID', Class.Class_Start_Timestamp AS 'start', Class.Class_End_Timestamp AS 'end', Subject.Subject_Name as 'Subject_Name', Attendance.Attendance_Status AS 'Attendance_Status' FROM Student, Class, Student_Has_Class, Subject, Attendance WHERE Student_Has_Class.Student_ID = Student.Student_ID AND Student_Has_Class.Class_ID = Class.Class_ID AND Class.Subject_ID = Subject.Subject_ID AND Attendance.Class_ID = Class.Class_ID AND Attendance.Student_ID = Student.Student_ID AND Class.Class_ID LIKE  '1' AND Student.Student_ID LIKE '1';
+
+--Get the Attendance Remarks, if none then teachr hasn't taken class yet
+
+
+
+--Gets Attendnace Information based on the last day, week or month. (Change variable at end). Need Student ID.
+SELECT Class.Class_ID AS 'Class ID', Subject.Subject_Name as 'Subject_Name', Class.Class_Start_Timestamp AS 'start',  CONCAT( Teacher.Teacher_Fname, ' ' , Teacher.Teacher_Lname) AS 'Teacher_Name', Attendance.Attendance_Status AS 'Attendance_Status' FROM Student, Class, Student_Has_Class, Subject, Teacher, Attendance WHERE Student_Has_Class.Student_ID = Student.Student_ID AND Student_Has_Class.Class_ID = Class.Class_ID AND Class.Teacher_ID = Teacher.Teacher_ID AND Class.Subject_ID = Subject.Subject_ID AND Attendance.Class_ID = Class.Class_ID AND Attendance.Student_ID = Student.Student_ID AND Class.Class_Start_Timestamp > DATE_SUB(NOW(), INTERVAL 1 MONTH) AND Student.Student_ID LIKE '1' ORDER BY start ASC;

@@ -38,6 +38,12 @@ module.exports = function(app, passport) {
       }
     });
 
+    app.get('/attendance', allowParents, function(req, res) {
+        res.render('parent/attendance.ejs', {
+            message: req.flash('appMessage')
+        });
+    });
+
 
 
     app.get('/parent', allowParents, function(req, res) {
@@ -121,6 +127,62 @@ module.exports = function(app, passport) {
           });
     });
 
+    app.post('/getBarChartDetails', function(req, res){
+      console.log("WERE HEREEEE");
+      console.log(req.body);
+      databaseQuery.getBarChartDetails(req.body.id)
+          .then(function(data) {
+              res.send(data);
+          })
+          .catch(function(e) {
+              res.status(500, {
+                  error: e
+              });
+          });
+    });
+
+    app.post('/studentTodayAttendance', function(req, res){
+        console.log(" day were here");
+      databaseQuery.studentTodayAttendance(req.body.id)
+          .then(function(data) {
+            console.log(data);
+              res.send(data);
+          })
+          .catch(function(e) {
+              res.status(500, {
+                  error: e
+              });
+          });
+    });
+
+    app.post('/studentWeekAttendance', function(req, res){
+      console.log(" week were here");
+      databaseQuery.studentWeekAttendance(req.body.id)
+          .then(function(data) {
+            console.log(data);
+              res.send(data);
+          })
+          .catch(function(e) {
+              res.status(500, {
+                  error: e
+              });
+          });
+    });
+
+    app.post('/studentMonthAttendance', function(req, res){
+      console.log("month were here");
+      databaseQuery.studentMonthAttendance(req.body.id)
+          .then(function(data) {
+            console.log(data);
+              res.send(data);
+          })
+          .catch(function(e) {
+              res.status(500, {
+                  error: e
+              });
+          });
+    });
+
     app.get('/student/:id', function (req, res) {
         let studentID = req.params.id;
         databaseQuery.getStudentProfile(studentID)
@@ -142,6 +204,24 @@ module.exports = function(app, passport) {
                 });
             });
       });
+
+      app.get('/student/:id/attendance', function (req, res) {
+          let studentID = req.params.id;
+          databaseQuery.getStudentProfile(studentID)
+              .then(function(data) {
+                console.log(data);
+                res.render('parent/attendance.ejs', {
+                    message: req.flash('user'),
+                    studentID: data[0].Student_ID,
+                    studentName: data[0].Student_Name
+                });
+              })
+              .catch(function(e) {
+                  res.status(500, {
+                      error: e
+                  });
+              });
+        });
 
       app.get('/teacher/:id', function (req, res) {
           let teacherID = req.params.id;

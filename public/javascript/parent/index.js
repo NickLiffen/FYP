@@ -1,5 +1,6 @@
 "use strict";
 $(document).ready(function() {
+
   $.ajax({
     type: 'GET',
     url: '/getParentStudents',
@@ -11,7 +12,6 @@ $(document).ready(function() {
     tableContent= $('<tbody></tbody>');
 
     $.each(response, function(){
-
       tableContent.append(
                           `<tr>
                           <th><span rel="${this.Student_ID}" id="${this.Student_ID}" scope="row"">${this.Student_ID}</th>
@@ -24,7 +24,13 @@ $(document).ready(function() {
                           </tr>`
                       );
       });
+
       $('#ClassList table').append(tableContent);
+  });
+
+  $('#ClassList').on('click', '.btn ', function(){
+    let studentID = this.id;
+      window.location.href = `/student/${studentID}/attendance`;
   });
 
   $.ajax({
@@ -33,19 +39,9 @@ $(document).ready(function() {
     dataType: 'JSON'
   }).done(function(response){
 
-    let currentTimestamp = moment().format("YYYY-MM-DD HH:mm");
+    console.log(response);
 
-    if (currentDateTime >= '2016-02-04 19:00' && currentDateTime <= '2016-02-04 20:00') {
-         console.log('We should be here');
-  } else {
-        console.log('we shouldnt be here');
-  }
 
   });
-
-
-
-
-
 
 });

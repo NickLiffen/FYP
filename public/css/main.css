@@ -17,6 +17,9 @@ p {
   float:right;
   padding-right:150px;
 }
+div.dataTables_wrapper {
+        margin-bottom: 3em;
+    }
 
 /* Padding Quries
 ------------------------------------------*/
@@ -121,6 +124,8 @@ p {
   display: block;
 }
 
+
+
 #ClassList td {
   text-align: center;
   vertical-align: middle;
@@ -167,3 +172,10 @@ p {
   .toppad
   {margin-top:20px;
   }
+
+
+
+.attendanceHeaders{
+  display: inline-block;
+  padding-right: 20px;
+}

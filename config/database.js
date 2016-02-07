@@ -413,5 +413,61 @@ module.exports = {
             resolve(results);
           });
         });
+      },
+
+      studentTodayAttendance: function(studentID){
+        return new Promise(function(resolve, reject) {
+          let sqlStatement = `SELECT Class.Class_ID AS 'Class_ID', Subject.Subject_Name as 'Subject_Name', Class.Class_Start_Timestamp AS 'start',  CONCAT( Teacher.Teacher_Fname, ' ' , Teacher.Teacher_Lname) AS 'Teacher_Name', Attendance.Attendance_Status AS 'Attendance_Status' FROM Student, Class, Student_Has_Class, Subject, Teacher, Attendance WHERE Student_Has_Class.Student_ID = Student.Student_ID AND Student_Has_Class.Class_ID = Class.Class_ID AND Class.Teacher_ID = Teacher.Teacher_ID AND Class.Subject_ID = Subject.Subject_ID AND Attendance.Class_ID = Class.Class_ID AND Attendance.Student_ID = Student.Student_ID AND Class.Class_Start_Timestamp > DATE_SUB(NOW(), INTERVAL 1 DAY) AND Student.Student_ID LIKE '${studentID}' ORDER BY start ASC`;
+          connection.query(sqlStatement, function(err, results) {
+              if (err) {
+                  console.log("Problem Getting Student's Today Attendnace Information : " + err);
+                  reject(Error(err));
+              }
+              var type = {results};
+              resolve(type);
+            });
+          });
+      },
+
+      studentWeekAttendance: function(studentID){
+        return new Promise(function(resolve, reject) {
+          let sqlStatement = `SELECT Class.Class_ID AS 'Class_ID', Subject.Subject_Name as 'Subject_Name', Class.Class_Start_Timestamp AS 'start',  CONCAT( Teacher.Teacher_Fname, ' ' , Teacher.Teacher_Lname) AS 'Teacher_Name', Attendance.Attendance_Status AS 'Attendance_Status' FROM Student, Class, Student_Has_Class, Subject, Teacher, Attendance WHERE Student_Has_Class.Student_ID = Student.Student_ID AND Student_Has_Class.Class_ID = Class.Class_ID AND Class.Teacher_ID = Teacher.Teacher_ID AND Class.Subject_ID = Subject.Subject_ID AND Attendance.Class_ID = Class.Class_ID AND Attendance.Student_ID = Student.Student_ID AND Class.Class_Start_Timestamp > DATE_SUB(NOW(), INTERVAL 1 Week) AND Student.Student_ID LIKE '${studentID}' ORDER BY start ASC`;
+          connection.query(sqlStatement, function(err, results) {
+              if (err) {
+                  console.log("Problem Getting Student's Today Attendnace Information : " + err);
+                  reject(Error(err));
+              }
+              var type = {results};
+              resolve(type);
+            });
+          });
+      },
+
+      studentMonthAttendance: function(studentID){
+        return new Promise(function(resolve, reject) {
+          let sqlStatement = `SELECT Class.Class_ID AS 'Class_ID', Subject.Subject_Name as 'Subject_Name', Class.Class_Start_Timestamp AS 'start',  CONCAT( Teacher.Teacher_Fname, ' ' , Teacher.Teacher_Lname) AS 'Teacher_Name', Attendance.Attendance_Status AS 'Attendance_Status' FROM Student, Class, Student_Has_Class, Subject, Teacher, Attendance WHERE Student_Has_Class.Student_ID = Student.Student_ID AND Student_Has_Class.Class_ID = Class.Class_ID AND Class.Teacher_ID = Teacher.Teacher_ID AND Class.Subject_ID = Subject.Subject_ID AND Attendance.Class_ID = Class.Class_ID AND Attendance.Student_ID = Student.Student_ID AND Class.Class_Start_Timestamp > DATE_SUB(NOW(), INTERVAL 1 Month) AND Student.Student_ID LIKE '${studentID}' ORDER BY start ASC`;
+          connection.query(sqlStatement, function(err, results) {
+              if (err) {
+                  console.log("Problem Getting Student's Today Attendnace Information : " + err);
+                  reject(Error(err));
+              }
+              var type = {results};
+              resolve(type);
+            });
+          });
+      },
+
+      getBarChartDetails: function(studentID){
+        return new Promise(function(resolve, reject) {
+          let sqlStatement = `SELECT LOWER(  Subject.Subject_Name ) AS 'Subject_Name', LOWER(  Attendance.Attendance_Status )AS 'Attendance_Info', COUNT(  Attendance.Attendance_Status) AS 'Attendance_Count' FROM Student, Attendance, Class, Subject WHERE Attendance.Class_ID = Class.Class_ID AND Attendance.Student_ID = Student.Student_ID AND Class.Subject_ID = Subject.Subject_ID AND LOWER( Student.Student_ID ) LIKE  '${studentID}'  GROUP BY Subject.Subject_Name, Attendance.Attendance_Status;
+`;
+          connection.query(sqlStatement, function(err, results) {
+              if (err) {
+                  console.log("Problem Getting Bar Chart Information : " + err);
+                  reject(Error(err));
+              }
+              resolve(results);
+            });
+          });
       }
 };
