@@ -28,7 +28,9 @@ $(document).ready(function() {
           tableContent += '<th><span rel="' + this.Room_ID + '" id="' + this.Room_ID + '" scope="row"">' + this.Room_ID + '</th>';
           tableContent += '<td>' + this.Room_Name + '</td>';
           tableContent += '<td>' + this.Rom_Description + '</td>';
-          tableContent += '<td><button type="button" id="' + this.Room_ID + '" class="btn btn-success">Profile</button></td>';
+          tableContent += '<td><button type="button" id="' + this.Room_ID + '" class="btn btn-primary">Profile</button></td>';
+          tableContent += '<td><button type="button" id="' + this.Room_ID + '" class="btn btn-success">Update</button></td>';
+          tableContent += '<td><button type="button" id="' + this.Room_ID + '" class="btn btn-warning">Delete</button></td>';
           tableContent += '</tr>';
       });
 

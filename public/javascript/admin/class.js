@@ -45,7 +45,9 @@ $(document).ready(function() {
           tableContent += '<td>' + this.Subject_Name + '</td>';
           tableContent += '<td>' + this.Room_Name + '</td>';
           tableContent += '<td>' + concatName + '</td>';
-          tableContent += '<td><button type="button" id="' + this.Class_ID + '" class="btn btn-success">Profile</button></td>';
+          tableContent += '<td><button type="button" id="' + this.Class_ID + '" class="btn btn-primary">Profile</button></td>';
+          tableContent += '<td><button type="button" id="' + this.Class_ID + '" class="btn btn-success">Update</button></td>';
+          tableContent += '<td><button type="button" id="' + this.Class_ID + '" class="btn btn-warning">Delete</button></td>';
           tableContent += '</tr>';
       });
 

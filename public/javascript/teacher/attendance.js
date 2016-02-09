@@ -74,7 +74,7 @@ $(document).ready(() => {
 					title: `Title: ${event.title}  Room: ${event.room} Teacher: ${event.teacher}`
 				});
 			},
-			minTime: "06:00",
+			minTime: "00:00",
 			maxTime: "23:00"
 		});
 

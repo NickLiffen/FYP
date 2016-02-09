@@ -28,7 +28,9 @@ $(document).ready(function() {
           tableContent += '<th><span rel="' + this.Subject_ID + '" id="' + this.Subject_ID + '" scope="row"">' + this.Subject_ID + '</th>';
           tableContent += '<td>' + this.Subject_Name + '</td>';
           tableContent += '<td>' + this.Subject_Description + '</td>';
-          tableContent += '<td><button type="button" id="' + this.Subject_ID + '" class="btn btn-success">Profile</button></td>';
+          tableContent += '<td><button type="button" id="' + this.Subject_ID + '" class="btn btn-primary">Profile</button></td>';
+          tableContent += '<td><button type="button" id="' + this.Subject_ID + '" class="btn btn-success">Update</button></td>';
+          tableContent += '<td><button type="button" id="' + this.Subject_ID + '" class="btn btn-warning">Delete</button></td>';
           tableContent += '</tr>';
       });
 

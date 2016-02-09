@@ -402,19 +402,6 @@ module.exports = {
         });
     },
 
-    getParentStudents: function(parentID){
-      return new Promise(function(resolve, reject) {
-        let sqlStatement = `SELECT Student_ID, CONCAT( Student.Student_Fname, ' ' , Student.Student_Lname)  AS 'Student_Name', Student.Student_Email, Student.Student_Year, Student.Student_Username FROM Parent, Student, Student_has_Parent WHERE Student_has_Parent.Student_Student_ID = Student.Student_ID AND Student_has_Parent.Parent_Parent_ID = Parent.Parent_ID AND LOWER( Parent_ID ) LIKE  '${parentID}'`;
-        connection.query(sqlStatement, function(err, results) {
-            if (err) {
-                console.log("Problem Getting Student Information : " + err);
-                reject(Error(err));
-            }
-            resolve(results);
-          });
-        });
-      },
-
       studentTodayAttendance: function(studentID){
         return new Promise(function(resolve, reject) {
           let sqlStatement = `SELECT Class.Class_ID AS 'Class_ID', Subject.Subject_Name as 'Subject_Name', Class.Class_Start_Timestamp AS 'start',  CONCAT( Teacher.Teacher_Fname, ' ' , Teacher.Teacher_Lname) AS 'Teacher_Name', Attendance.Attendance_Status AS 'Attendance_Status' FROM Student, Class, Student_Has_Class, Subject, Teacher, Attendance WHERE Student_Has_Class.Student_ID = Student.Student_ID AND Student_Has_Class.Class_ID = Class.Class_ID AND Class.Teacher_ID = Teacher.Teacher_ID AND Class.Subject_ID = Subject.Subject_ID AND Attendance.Class_ID = Class.Class_ID AND Attendance.Student_ID = Student.Student_ID AND Class.Class_Start_Timestamp > DATE_SUB(NOW(), INTERVAL 1 DAY) AND Student.Student_ID LIKE '${studentID}' ORDER BY start ASC`;
@@ -492,6 +479,18 @@ module.exports = {
               resolve(results);
             });
           });
-
-      }
+      },
+          getParentStudents: function(parentID){
+            return new Promise((resolve, reject) => {
+              let sqlStatement = `SELECT DISTINCT student.Student_ID as 'Student_ID', CONCAT( Student.Student_Fname, ' ' , Student.Student_Lname)  AS 'Student_Name', Student.Student_Email AS 'Student_Email', Student.Student_Year AS 'Student_Year', Student.Student_Username AS 'Student_Username', CASE when Subject.Subject_Name is null then 'Student Has No Class' else Subject.Subject_Name end as 'Subject_Name', CASE when Attendance.Attendance_Status is null then 'No Attendance Taken Yet' else Attendance.Attendance_Status end as 'Attendance_Status' FROM Student LEFT JOIN Student_Has_Class ON(student_has_class.student_id = student.student_id) LEFT JOIN class ON class.class_id = student_has_class.class_id AND NOW() between class.class_start_timestamp AND class.class_end_timestamp LEFT JOIN Subject ON(class.subject_id = subject.subject_id) LEFT JOIN Attendance ON(Attendance.class_id = class.class_ID AND Attendance.student_id = student.student_id) LEFT JOIN Student_has_Parent ON (Student_has_Parent.Student_Student_ID = Student.Student_ID) LEFT JOIN Parent ON (Parent.Parent_ID = Student_has_Parent.Parent_Parent_ID) WHERE Parent.Parent_ID = '${parentID}' ORDER BY class.class_id DESC LIMIT 1`;
+              connection.query(sqlStatement, (err, results) => {
+                  if (err) {
+                      console.log("Problem Getting Student Information : " + err);
+                      reject(Error(err));
+                  }
+                  console.log(results);
+                  resolve(results);
+                });
+              });
+            },
 };

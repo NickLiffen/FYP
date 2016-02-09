@@ -433,7 +433,7 @@ SELECT Class.Class_ID AS 'Class_ID', Student.Student_ID AS 'Student_ID' FROM Stu
 -- If there is data then run the below query
 
 --Gets Start & End Time for all classes and returns the attendnace status for each class. Based on a Student ID
-SELECT Student.Student_ID AS 'Student ID', Class.Class_ID AS 'Class ID', Class.Class_Start_Timestamp AS 'start', Class.Class_End_Timestamp AS 'end', Subject.Subject_Name as 'Subject_Name', Attendance.Attendance_Status AS 'Attendance_Status' FROM Student, Class, Student_Has_Class, Subject, Attendance WHERE Student_Has_Class.Student_ID = Student.Student_ID AND Student_Has_Class.Class_ID = Class.Class_ID AND Class.Subject_ID = Subject.Subject_ID AND Attendance.Class_ID = Class.Class_ID AND Attendance.Student_ID = Student.Student_ID AND Class.Class_ID LIKE  '1' AND Student.Student_ID LIKE '1';
+SELECT Student.Student_ID AS 'Student ID', Class.Class_ID AS 'Class ID', Class.Class_Start_Timestamp AS 'start', Class.Class_End_Timestamp AS 'end', Subject.Subject_Name as 'Subject_Name', Attendance.Attendance_Status AS 'Attendance_Status' FROM Student, Class, Student_Has_Class, Subject, Attendance WHERE Student_Has_Class.Student_ID = Student.Student_ID AND Student_Has_Class.Class_ID = Class.Class_ID AND Class.Subject_ID = Subject.Subject_ID AND Attendance.Class_ID = Class.Class_ID AND Attendance.Student_ID = Student.Student_ID AND Class.Class_ID LIKE  '11' AND Student.Student_ID LIKE '1';
 
 --Get the Attendance Remarks, if none then teachr hasn't taken class yet
 
@@ -441,3 +441,155 @@ SELECT Student.Student_ID AS 'Student ID', Class.Class_ID AS 'Class ID', Class.C
 
 --Gets Attendnace Information based on the last day, week or month. (Change variable at end). Need Student ID.
 SELECT Class.Class_ID AS 'Class ID', Subject.Subject_Name as 'Subject_Name', Class.Class_Start_Timestamp AS 'start',  CONCAT( Teacher.Teacher_Fname, ' ' , Teacher.Teacher_Lname) AS 'Teacher_Name', Attendance.Attendance_Status AS 'Attendance_Status' FROM Student, Class, Student_Has_Class, Subject, Teacher, Attendance WHERE Student_Has_Class.Student_ID = Student.Student_ID AND Student_Has_Class.Class_ID = Class.Class_ID AND Class.Teacher_ID = Teacher.Teacher_ID AND Class.Subject_ID = Subject.Subject_ID AND Attendance.Class_ID = Class.Class_ID AND Attendance.Student_ID = Student.Student_ID AND Class.Class_Start_Timestamp > DATE_SUB(NOW(), INTERVAL 1 MONTH) AND Student.Student_ID LIKE '1' ORDER BY start ASC;
+
+
+SELECT Class.Class_ID AS 'Class_ID',
+          Student.Student_ID AS 'Student_ID',
+          IFNULL(Attendance.Attendance_Status, 0) AS 'Attendance'
+
+FROM Student, Student_has_Class, Subject, Class, Room, Teacher, Attendance
+
+WHERE Student_has_Class.Student_ID = Student.Student_ID
+  AND Student_has_Class.Class_ID = Class.Class_ID
+    AND Class.Subject_ID = Subject.Subject_ID
+      AND Attendance.Class_ID = Class.Class_ID
+        AND Attendance.Student_ID = Student.Student_ID
+          AND Class.Teacher_ID = Teacher.Teacher_ID
+            AND Class.Room_ID = Room.Room_ID AND NOW() BETWEEN Class.Class_Start_Timestamp
+              AND Class.Class_End_Timestamp AND Student.Student_ID LIKE '1';
+
+
+SELECT Class.Class_ID AS 'Class_ID',
+          Student.Student_ID AS 'Student_ID',
+          IFNULL(Attendance.Attendance_Status, 0) AS 'Attendance'
+
+FROM Class
+  INNER JOIN Student
+    ON Subject.Subject_ID=Class.Subject_ID
+  INNER JOIN Student_has_Class
+    ON Student.Student_ID=Student_has_Class.Student_ID AND Class.Class_ID=Student_has_Class.Class_ID
+  INNER JOIN Attendance
+    ON Class.Class_ID=Attendance.Class_ID;
+
+
+
+
+
+
+
+
+SELECT Class.Class_ID AS 'Class_ID',
+          Student.Student_ID AS 'Student_ID',
+          Attendance.Attendance_Status AS 'Attendance'
+
+FROM Student, Student_has_Class, Subject, Class, Attendance
+
+WHERE Student_has_Class.Student_ID = Student.Student_ID
+  AND Student_has_Class.Class_ID = Class.Class_ID
+    AND Class.Subject_ID = Subject.Subject_ID
+      AND Attendance.Class_ID = Class.Class_ID
+        AND Attendance.Student_ID = Student.Student_ID
+            AND NOW() BETWEEN Class.Class_Start_Timestamp AND Class.Class_End_Timestamp
+              AND Student.Student_ID LIKE '1';
+
+
+              SELECT  student.Student_ID as 'Student_ID',
+                      case when class.class_id is null then 'No Class ATM' else class.class_id end as 'Class_ID',
+                      case when Attendance.Attendance_Status is null then 'Not Present' else Attendance.Attendance_Status end as 'attendence_status'
+              FROM Student
+              LEFT OUTER JOIN Student_Has_Class ON(student_has_class.student_id = student.student_id
+                                                    AND Student.student_id like '1')
+              LEFT OUTER JOIN class ON(class.class_id = student_has_class.class_id)
+              INNER JOIN Subject ON(class.subject_id = subject.subject_id)
+              LEFT JOIN Attendance on(Attendance.class_id = class.class_ID
+                                      AND Attendance.student_id = student.student_id)
+              WHERE NOW() between class.class_start_timestamp and class.class_end_timestamp;
+
+
+
+
+              SELECT  student.Student_ID as 'Student_ID',
+                      case when class.class_id is null then 'No Class ATM' else class.class_id end as 'Class_ID',
+                      case when Attendance.Attendance_Status is null then 'Not Present' else Attendance.Attendance_Status end as 'attendence_status'
+              FROM Student
+              INNER JOIN Student_Has_Class ON(student_has_class.student_id = student.student_id)
+              INNER JOIN class ON(class.class_id = student_has_class.class_id)
+              INNER JOIN Subject ON(class.subject_id = subject.subject_id)
+              LEFT JOIN Attendance on(Attendance.class_id = class.class_ID
+                                      AND Attendance.student_id = student.student_id)
+              WHERE NOW() between class.class_start_timestamp and class.class_end_timestamp
+              AND Student.student_id like '1'
+
+
+
+                      --WORKING QUERY - NEEDS CHANGING THOUGH
+                        SELECT DISTINCT student.Student_ID as 'Student_ID',
+                                CONCAT( Student.Student_Fname, ' ' , Student.Student_Lname)  AS 'Student_Name',
+                                 Student.Student_Email AS 'Student_Email',
+                                 Student.Student_Year AS 'Student_Year',
+                                 Student.Student_Username AS 'Student_Username',
+                                 CONCAT ((CASE when Subject.Subject_Name is null then 'No Class ATM' else Subject.Subject_Name end), ' ',  (CASE when Attendance.Attendance_Status is null then 'No attendance taken' else Attendance.Attendance_Status end)) AS 'Attendance_Info'
+                        FROM Student
+                          LEFT JOIN Student_Has_Class ON(student_has_class.student_id = student.student_id)
+                          LEFT JOIN class ON class.class_id = student_has_class.class_id
+                              AND NOW() between class.class_start_timestamp and class.class_end_timestamp
+                          LEFT JOIN Subject ON(class.subject_id = subject.subject_id)
+                          LEFT JOIN Attendance on(Attendance.class_id = class.class_ID
+                              AND Attendance.student_id = student.student_id)
+                        WHERE Student.student_id = 4
+                          ORDER BY class.class_id DESC
+                            LIMIT 1;
+
+                            CONCAT (Subject.Subject_Name AS 'Subject_Name', ' ',  CASE when Attendance.Attendance_Status is null then 'No attendance taken' else Attendance.Attendance_Status end as 'Attendance_Status')
+
+                                    SELECT  DISTINCT student.Student_ID as 'Student_ID',
+                                    IFNULL (class.class_id, 0) as 'Class_ID',
+                                    IFNULL (Attendance.Attendance_Status, 0) as 'Class_ID'
+                                    FROM Student
+                                      LEFT JOIN Student_Has_Class ON(student_has_class.student_id = student.student_id)
+                                        LEFT JOIN class ON class.class_id = student_has_class.class_id
+                                            AND NOW() between class.class_start_timestamp and class.class_end_timestamp
+                                          LEFT JOIN Subject ON(class.subject_id = subject.subject_id)
+                                            LEFT JOIN Attendance on(Attendance.class_id = class.class_ID
+                                              AND Attendance.student_id = student.student_id)
+                                                WHERE Student.student_id = 1;
+
+
+
+
+
+/*
+              SELECT class.class_id as 'Class_ID',
+                      student.Student_ID as 'Student_ID',
+                      case when attendence.attendence_status is null then 'Not Present' else attendence.attendence_status end as 'attendence_status'
+              FROM Student
+              INNER JOIN Student_Has_Class ON(student_has_class.student_id = student.student_id)
+              INNER JOIN class ON(class.class_id = student_has_class.class_id)
+              INNER JOIN Subject ON(class.subject_id = subject.subject_id)
+              LEFT JOIN Attendence on(attendence.class_id = class.class_ID
+                                      AND attendence.student_id = student.student_id)
+              WHERE NOW() between class.class_start_timestamp and class.class_end_timestamp
+              AND Student.student_id like '1'
+*/
+
+
+--WORKING QUERY - NEEDS CHANGING THOUGH
+  SELECT DISTINCT student.Student_ID as 'Student_ID',
+    CONCAT( Student.Student_Fname, ' ' , Student.Student_Lname)  AS 'Student_Name',
+      Student.Student_Email AS 'Student_Email', Student.Student_Year AS 'Student_Year',
+        Student.Student_Username AS 'Student_Username',
+          CASE when Subject.Subject_Name is null then 'Student Has No Class' else Subject.Subject_Name end as 'Subject_Name',
+            CASE when Attendance.Attendance_Status is null then 'No Attendance Taken Yet' else Attendance.Attendance_Status end as 'Attendance_Status'
+  FROM Student
+    LEFT JOIN Student_Has_Class ON(student_has_class.student_id = student.student_id)
+      LEFT JOIN class ON class.class_id = student_has_class.class_id
+        AND NOW() between class.class_start_timestamp AND class.class_end_timestamp
+    LEFT JOIN Subject ON(class.subject_id = subject.subject_id)
+    LEFT JOIN Attendance ON(Attendance.class_id = class.class_ID
+        AND Attendance.student_id = student.student_id)
+    WHERE Student.student_id = 1;
+      ORDER BY class.class_id
+    DESC LIMIT 1
+
+
+    SELECT DISTINCT student.Student_ID as 'Student_ID', CONCAT( Student.Student_Fname, ' ' , Student.Student_Lname)  AS 'Student_Name', Student.Student_Email AS 'Student_Email', Student.Student_Year AS 'Student_Year', Student.Student_Username AS 'Student_Username', CASE when Subject.Subject_Name is null then 'Student Has No Class' else Subject.Subject_Name end as 'Subject_Name', CASE when Attendance.Attendance_Status is null then 'No Attendance Taken Yet' else Attendance.Attendance_Status end as 'Attendance_Status' FROM Student LEFT JOIN Student_Has_Class ON(student_has_class.student_id = student.student_id) LEFT JOIN class ON class.class_id = student_has_class.class_id AND NOW() between class.class_start_timestamp AND class.class_end_timestamp LEFT JOIN Subject ON(class.subject_id = subject.subject_id) LEFT JOIN Attendance ON(Attendance.class_id = class.class_ID AND Attendance.student_id = student.student_id) LEFT JOIN Student_has_Parent ON (Student_has_Parent.Student_Student_ID = Student.Student_ID) LEFT JOIN Parent ON (Parent.Parent_ID = Student_has_Parent.Parent_Parent_ID) WHERE Parent.Parent_ID = '${parentID}' ORDER BY class.class_id DESC LIMIT 2;

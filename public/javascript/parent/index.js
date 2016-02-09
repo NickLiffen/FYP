@@ -11,7 +11,11 @@ $(document).ready(function() {
     let tableContent;
     tableContent= $('<tbody></tbody>');
 
+    console.log(response);
+
     $.each(response, function(){
+
+
       tableContent.append(
                           `<tr>
                           <th><span rel="${this.Student_ID}" id="${this.Student_ID}" scope="row"">${this.Student_ID}</th>
@@ -19,7 +23,8 @@ $(document).ready(function() {
                           <td>${this.Student_Email}</td>
                           <td>${this.Student_Year}</td>
                           <td>${this.Student_Username}</td>
-                          <td>Stuff will come here later</td>
+                          <td>${this.Subject_Name}</td>
+                          <td>${this.Attendance_Status}</td>
                           <td><button type="button" id="${this.Student_ID}" class="btn btn-primary">Profile</button></td>
                           </tr>`
                       );
@@ -32,16 +37,13 @@ $(document).ready(function() {
     let studentID = this.id;
       window.location.href = `/student/${studentID}/attendance`;
   });
-
+/*
   $.ajax({
     type: 'GET',
     url: '/currentStudentStatus',
     dataType: 'JSON'
   }).done(function(response){
-
     console.log(response);
-
-
   });
-
+*/
 });

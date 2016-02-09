@@ -59,7 +59,7 @@ module.exports = function(app, passport) {
     });
 
     app.get('/currentStudentStatus', allowParents, function(req, res) {
-      databaseQuery.currentStudentStatus()
+      databaseQuery.currentStudentStatus(req.body.studentID)
           .then(function(data) {
               res.send(data);
           })
@@ -227,6 +227,32 @@ module.exports = function(app, passport) {
             });
       });
 
+      app.patch('/student/:id', function (req, res) {
+          let studentID = req.params.id;
+          databaseQuery.updateStudent(studentID)
+              .then(function(data) {
+                  res.send(data);
+              })
+              .catch(function(e) {
+                  res.status(500, {
+                      error: e
+                  });
+              });
+        });
+
+        app.delete('/student/:id', function (req, res) {
+            let studentID = req.params.id;
+            databaseQuery.deleteStudent(studentID)
+                .then(function(data) {
+                    res.send(data);
+                })
+                .catch(function(e) {
+                    res.status(500, {
+                        error: e
+                    });
+                });
+          });
+
       app.get('/student/:id/attendance', function (req, res) {
           let studentID = req.params.id;
           databaseQuery.getStudentProfile(studentID)
@@ -265,6 +291,140 @@ module.exports = function(app, passport) {
                   });
               });
         });
+
+        app.patch('/teacher/:id', function (req, res) {
+            let teacherID = req.params.id;
+            databaseQuery.updateTeacher(teacherID)
+                .then(function(data) {
+                    res.send(data);
+                })
+                .catch(function(e) {
+                    res.status(500, {
+                        error: e
+                    });
+                });
+          });
+
+          app.delete('/teacher/:id', function (req, res) {
+              let teacherID = req.params.id;
+              databaseQuery.deleteTeacher(teacherID)
+                  .then(function(data) {
+                      res.send(data);
+                  })
+                  .catch(function(e) {
+                      res.status(500, {
+                          error: e
+                      });
+                  });
+            });
+
+
+
+              app.patch('/class/:id', function (req, res) {
+                  let classID = req.params.id;
+                  databaseQuery.updateClass(classID)
+                      .then(function(data) {
+                          res.send(data);
+                      })
+                      .catch(function(e) {
+                          res.status(500, {
+                              error: e
+                          });
+                      });
+                });
+
+                app.delete('/class/:id', function (req, res) {
+                    let ClassID = req.params.id;
+                    databaseQuery.deleteClass(ClassID)
+                        .then(function(data) {
+                            res.send(data);
+                        })
+                        .catch(function(e) {
+                            res.status(500, {
+                                error: e
+                            });
+                        });
+                  });
+
+                  app.patch('/parent/:id', function (req, res) {
+                      let parentID = req.params.id;
+                      databaseQuery.updateParent(parentID)
+                          .then(function(data) {
+                              res.send(data);
+                          })
+                          .catch(function(e) {
+                              res.status(500, {
+                                  error: e
+                              });
+                          });
+                    });
+
+                    app.delete('/parent/:id', function (req, res) {
+                        let parentID = req.params.id;
+                        databaseQuery.deleteParent(parentID)
+                            .then(function(data) {
+                                res.send(data);
+                            })
+                            .catch(function(e) {
+                                res.status(500, {
+                                    error: e
+                                });
+                            });
+                      });
+
+                      app.patch('/subject/:id', function (req, res) {
+                          let subjectID = req.params.id;
+                          databaseQuery.updateSubject(subjectID)
+                              .then(function(data) {
+                                  res.send(data);
+                              })
+                              .catch(function(e) {
+                                  res.status(500, {
+                                      error: e
+                                  });
+                              });
+                        });
+
+                        app.delete('/subject/:id', function (req, res) {
+                            let subjectID = req.params.id;
+                            databaseQuery.deleteSubject(subjectID)
+                                .then(function(data) {
+                                    res.send(data);
+                                })
+                                .catch(function(e) {
+                                    res.status(500, {
+                                        error: e
+                                    });
+                                });
+                          });
+
+                          app.patch('/room/:id', function (req, res) {
+                              let roomID = req.params.id;
+                              databaseQuery.updateRoom(roomID)
+                                  .then(function(data) {
+                                      res.send(data);
+                                  })
+                                  .catch(function(e) {
+                                      res.status(500, {
+                                          error: e
+                                      });
+                                  });
+                            });
+
+                            app.delete('/room/:id', function (req, res) {
+                                let roomID = req.params.id;
+                                databaseQuery.deleteRoom(roomID)
+                                    .then(function(data) {
+                                        res.send(data);
+                                    })
+                                    .catch(function(e) {
+                                        res.status(500, {
+                                            error: e
+                                        });
+                                    });
+                              });
+
+
 
     app.get('/admin', allowAdmins, function(req, res) {
         res.render('admin/admin.ejs', {

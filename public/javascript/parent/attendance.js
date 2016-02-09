@@ -29,6 +29,17 @@ $(document).ready(function() {
             $toggle.text(($target.is(':visible') ? 'Hide' : 'Show') + ' Records');
         });
     });
+    $("#graphAttendanceButton").click(function() {
+        var $target = $('#graphAttendance'),
+            $toggle = $(this);
+
+        $target.slideToggle(500, function() {
+            $toggle.text(($target.is(':visible') ? 'Hide' : 'Show') + ' Records');
+        });
+        $('html, body').animate({
+        scrollTop: $("#graphAttendanceButton").offset().top
+    }, 2000);
+    });
 
     let student = {
         id: studentID
