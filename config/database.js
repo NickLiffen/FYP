@@ -99,10 +99,10 @@ module.exports = {
       });
     },
 
-    updateTeacher: function(Title, Fname, Lname, Email, Mobile_Number, Username, Password, ID){
+    updateTeacher: function(Title, Fname, Lname, Email, Mobile_Number, Username, ID){
       return new Promise(function(resolve, reject) {
           //Do a cheeky update query to my database to update the users profile.
-          connection.query('UPDATE Teacher SET Teacher_Title = ?, Teacher_Fname = ?, Teacher_Lname = ?, Teacher_Email = ?, Teacher_Mobile_Number = ?, Teacher_Username = ?, Teacher_Password = ? WHERE Teacher_ID = ?', [Title, Fname, Lname, Email, Mobile_Number, Username, Password, ID], function(err, results) {
+          connection.query('UPDATE Teacher SET Teacher_Title = ?, Teacher_Fname = ?, Teacher_Lname = ?, Teacher_Email = ?, Teacher_Mobile_Number = ?, Teacher_Username = ? WHERE Teacher_ID = ?', [Title, Fname, Lname, Email, Mobile_Number, Username, ID], function(err, results) {
               //If error with SQL Query throw error to console
               if (err) {
                   console.log("Problem Updating Teachers Profile: " + err);
@@ -120,11 +120,21 @@ module.exports = {
           connection.query(`DELETE FROM Teacher WHERE Teacher_ID = ${ID}`, function(err, results) {
               //If error with SQL Query throw error to console
               if (err) {
-                  console.log("Problem Deleting Teachers Profile: " + err);
-                  reject(Error(err));
+                  connection.query(`SELECT Class_ID FROM Class, Teacher WHERE Class.Teacher_ID = Teacher.Teacher_ID AND Teacher.Teacher_ID = ${ID}`, function(err, results) {
+                    if(err){
+                      console.log(err);
+                      reject(err);
+                    }
+                    else{
+                      console.log("Were about to resolve the results" + results);
+                      resolve(results);
+                    }
+                  });
               }
+              else {
               console.log("Deleted the teachers profile successfully", results);
               resolve(results);
+            }
           });
       });
     },
@@ -177,6 +187,21 @@ module.exports = {
     getIndividualSubject: function(ID){
       return new Promise(function(resolve, reject) {
           connection.query(`SELECT Subject_ID, Subject_Name, Subject_Description FROM Subject WHERE Subject_ID = ${ID}`, function(err, results) {
+              //If error reject the promise.
+              if (err) {
+                  console.log(err);
+                  reject(Error(err));
+              } else {
+                  console.log("Made it");
+                  resolve(results);
+              }
+          });
+      });
+    },
+
+    getIndividualTeacher: function(ID){
+      return new Promise(function(resolve, reject) {
+          connection.query(`SELECT * FROM Teacher WHERE Teacher_ID = ${ID}`, function(err, results) {
               //If error reject the promise.
               if (err) {
                   console.log(err);

@@ -107,7 +107,6 @@ $('#RoomList').on('click', '.btn ', function(){
   else{
     console.log("Theres a Problem");
   }
-
 });
 
 $('#addRoomForm').submit(function() {

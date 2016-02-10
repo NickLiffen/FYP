@@ -33,9 +33,9 @@ $(document).ready(function() {
           tableContent += '<th><span rel="' + this.Teacher_ID + '" id="' + this.Teacher_ID + '" scope="row"">' + this.Teacher_ID + '</th>';
           tableContent += '<td>' + concatName + '</td>';
           tableContent += '<td>' + this.Teacher_Email + '</td>';
-          tableContent += '<td><button type="button" id="' + this.Teacher_ID + '" class="btn btn-primary">Profile</button></td>';
-          tableContent += '<td><button type="button" id="' + this.Teacher_ID + '" class="btn btn-success">Update</button></td>';
-          tableContent += '<td><button type="button" id="' + this.Teacher_ID + '" class="btn btn-warning">Delete</button></td>';
+          tableContent += '<td><button type="button" id="' + this.Teacher_ID + '" value="Profile" class="btn btn-primary">Profile</button></td>';
+          tableContent += '<td><button type="button" id="' + this.Teacher_ID + '" value="Update" class="btn btn-success">Update</button></td>';
+          tableContent += '<td><button type="button" id="' + this.Teacher_ID + '" value="Delete" class="btn btn-warning" data-toggle="modal" data-target="#confirm-delete">Delete</button></td>';
           tableContent += '</tr>';
       });
 
@@ -43,22 +43,86 @@ $(document).ready(function() {
       $('#TeacherList table tbody').html(tableContent);
     });
 
-    //Load Parents into the input feild
-    $.ajax({
-        type: 'GET',
-        url: '/getStudent',
-        dataType: 'JSON'
-    }).done(function(response) {
-        //Loop through all the results and put them into the select box
-        $.each(response, function(i, d) {
-            //Concatination of the Users Name
-            let title = d.Stuent_Title;
-            let fName = d.Student_Fname;
-            let lName = d.Student_Lname;
-            let concatName = title + " ".concat(fName) + " ".concat(lName);
-            //Append results to the select box.
-            $('#studentPicker').append('<option value="' + d.Student_ID + '">' + concatName + '</option>');
+    $('#TeacherList').on('click', '.btn ', function(){
+      let teacherID = this.id;
+      let buttonValue = $(this).attr("value");
+
+      if(buttonValue === "Profile"){
+        console.log("Im in Profile");
+      }
+      else if(buttonValue === "Update"){
+        var $target = $('.hideUpdateTeacherForm'),
+            $toggle = $(this);
+
+        $target.slideToggle(500, function() {
+            $toggle.text(($target.is(':visible') ? 'Hide' : 'Show') + ' Update');
         });
+        console.log(teacherID);
+        $.ajax({
+                 url: `/teacherr/${teacherID}`,
+                 type: 'GET',
+                 success: function(result) {
+                   console.log(result);
+                  $('#TeacherTitleUpdate').val(result[0].Teacher_Title);
+                  $('#TeacherFNameUpdate').val(result[0].Teacher_Fname);
+                  $('#TeacherLNameUpdate').val(result[0].Teacher_Lname);
+                  $('#TeacherEmailUpdate').val(result[0].Teacher_Email);
+                  $('#TeacherMobileNumberUpdate').val(result[0].Teacher_Mobile_Number);
+                  $('#TeacherUsernameUpdate').val(result[0].Teacher_Username);
+                 }
+               });
+
+               $('#updateTeacherForm').submit(function() {
+                   //Stop the Form from submiting automatically
+                   event.preventDefault();
+                   //Declaring varibales
+                   let newTeacher;
+                   //Creating the new Teacher object will all information from the form
+                   newTeacher = {
+                       TeacherTitle: $('#updateTeacherForm input#TeacherTitleUpdate').val(),
+                       TeacherFName: $('#updateTeacherForm input#TeacherFNameUpdate').val(),
+                       TeacherLName: $('#updateTeacherForm input#TeacherLNameUpdate').val(),
+                       TeacherEmail: $('#updateTeacherForm input#TeacherEmailUpdate').val(),
+                       TeacherMobile: $('#updateTeacherForm input#TeacherMobileNumberUpdate').val(),
+                       TeacherUsername: $('#updateTeacherForm input#TeacherUsernameUpdate').val(),
+                   };
+
+                   //Send off the AJAX Request to the /pupil route
+                   $.ajax({
+                       type: 'PATCH',
+                       data: newTeacher,
+                       url: `/teacher/${teacherID}`,
+                       dataType: 'JSON'
+                   }).done(function() {
+                       $('#updateTeacherstatus').html("Teacher Update Okay");
+                   });
+               });
+      }
+      else if(buttonValue === "Delete"){
+           $('#confirm-delete').on('show.bs.modal', function() {
+             $('.debug-url').html("");
+             $("#confirmDelete").click(function(){
+               $.ajax({
+                        url: `/teacher/${teacherID}`,
+                        type: 'DELETE',
+                        success: function(result) {
+                          if(result[0].Class_ID){
+                            $('.debug-url').html(` <strong>Couldn't delete Teacher!!!! Teacher is in use in Class: ${result[0].Class_ID}. Please change Teacher for this class.</strong>`);
+                          }
+                          else{
+                          console.log(result);
+                            $('#confirm-delete').modal('hide');
+                            $('#teacherstatus').html("Teacher Action Completed");
+                          }
+                  }
+                });
+              });
+           });
+      }
+      else{
+        console.log("Theres a Problem");
+      }
+
     });
 
     $('#addTeacherForm').submit(function() {

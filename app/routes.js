@@ -284,10 +284,29 @@ module.exports = function(app, passport) {
                 });
             });
     });
+    //THIS IS SUCH A BAD HACK FIND ANOTHER WAY AROUND IT
+    app.get('/teacherr/:id', function(req, res) {
+      let teacherID = req.params.id;
+      databaseQuery.getIndividualTeacher(teacherID)
+          .then(function(data) {
+              res.send(data);
+          })
+          .catch(function(e) {
+              res.status(500, {
+                  error: e
+              });
+          });
+    });
 
     app.patch('/teacher/:id', function(req, res) {
         let teacherID = req.params.id;
-        databaseQuery.updateTeacher(teacherID)
+        let teacherTitle = req.body.TeacherTitle;
+        let teacherFname = req.body.TeacherFName;
+        let teacherLname = req.body.TeacherLName;
+        let teacherEmail = req.body.TeacherEmail;
+        let teacherMobile = req.body.TeacherMobile;
+        let teacherUsername= req.body.TeacherUsername;
+        databaseQuery.updateTeacher(teacherTitle, teacherFname, teacherLname, teacherEmail, teacherMobile, teacherUsername, teacherID)
             .then(function(data) {
                 res.send(data);
             })
