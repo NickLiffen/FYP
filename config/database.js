@@ -68,6 +68,7 @@ module.exports = {
     },
 
     updateStudent: function(Title, Fname, Lname, Email, Year, Username, Password, ID){
+
       return new Promise(function(resolve, reject) {
           //Do a cheeky update query to my database to update the users profile.
           connection.query('UPDATE Student SET Student_Title = ?, Student_Fname = ?, Student_Lname = ?, Student_Email = ?, Student_Year = ?, Student_Username = ?, Student_Password = ? WHERE Student_ID = ?', [Title, Fname, Lname, Email, Year, Username, Password, ID], function(err, results) {
@@ -77,6 +78,22 @@ module.exports = {
                   reject(Error(err));
               }
               console.log("Updated the users profile successfully", results);
+              resolve(results);
+          });
+      });
+    },
+
+    updateClass: function(Level, StartTime, EndTime, Subject, Room, Teacher, ID){
+      console.log(Level, StartTime, EndTime, Subject, Room, Teacher, ID);
+      return new Promise(function(resolve, reject) {
+          //Do a cheeky update query to my database to update the users profile.
+          connection.query('UPDATE Class SET Class_Level = ?, Class_Start_Timestamp = ?, Class_End_Timestamp = ?, Subject_ID = ?, Room_ID = ?, Teacher_ID = ? WHERE Class_ID = ?', [Level, StartTime, EndTime, Subject, Room, Teacher, ID], function(err, results) {
+              //If error with SQL Query throw error to console
+              if (err) {
+                  console.log("Something fucked up man :( ): " + err);
+                  reject(Error(err));
+              }
+              console.log("Updated the class  successfully", results);
               resolve(results);
           });
       });
@@ -208,6 +225,21 @@ module.exports = {
                   reject(Error(err));
               } else {
                   console.log("Made it");
+                  resolve(results);
+              }
+          });
+      });
+    },
+
+    getIndividualClass: function(ID){
+      return new Promise(function(resolve, reject) {
+          connection.query(`SELECT Class.Class_ID, Class.Class_Start_Timestamp, Class.Class_End_Timestamp, Class.Class_Level, Subject.Subject_Name, Room.Room_Name, Teacher.Teacher_Title, Teacher.Teacher_Fname, Teacher.Teacher_Lname FROM Class, Subject, Room, Teacher WHERE Class.Subject_ID = Subject.Subject_ID AND Class.Room_ID = Room.Room_ID AND Class.Teacher_ID = Teacher.Teacher_ID AND Class.Class_ID = ${ID}`, function(err, results) {
+              //If error reject the promise.
+              if (err) {
+                  console.log(err);
+                  reject(Error(err));
+              } else {
+                console.log(results);
                   resolve(results);
               }
           });

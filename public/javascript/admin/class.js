@@ -64,7 +64,100 @@ $(document).ready(function() {
         console.log("Im in Profile");
       }
       else if(buttonValue === "Update"){
-          console.log("Im in Update");
+        var $target = $('.hideUpdateClassForm'),
+            $toggle = $(this);
+
+        $target.slideToggle(500, function() {
+            $toggle.text(($target.is(':visible') ? 'Hide' : 'Show') + ' Update');
+        });
+        $.ajax({
+                 url: `/class/${ClassID}`,
+                 type: 'GET',
+                 success: function(result) {
+
+                   let newDate =      moment(result[0].Class_Start_Timestamp).format('YYYY-MM-DD');
+                   let newStartTime = moment(result[0].Class_Start_Timestamp).format('HH:mm');
+                   let newEndTime =   moment(result[0].Class_End_Timestamp).format('HH:mm');
+                   console.log(newDate);
+
+                   let title = result[0].Teacher_Title;
+                   let fName = result[0].Teacher_Fname;
+                   let lName = result[0].Teacher_Lname;
+                   let concatName = title + " ".concat(fName) + " ".concat(lName);
+
+                  $('#ClassLevelUpdate').val(result[0].Class_Level);
+                  $('#ClassDateUpdate').val(newDate);
+                  $('#ClassSTimeUpdate').val(newStartTime);
+                  $('#ClassETimeUpdate').val(newEndTime);
+                  $('#currentSubject').val(result[0].Subject_Name);
+                  $('#currentRoom').val(result[0].Room_Name);
+                  $('#currentTeacher').val(concatName);
+                  $(`select option:contains("${result[0].Subject_Name}")`).prop('selected',true);
+                  $(`select option:contains("${result[0].Room_Name}")`).prop('selected',true);
+                  $(`select option:contains("${concatName}")`).prop('selected',true);
+
+                 }
+               });
+
+               $("#showSubject").click(function(){
+                 var $target = $('#subjectFieldset'),
+                     $toggle = $(this);
+
+                 $target.slideToggle(500, function() {
+                     $toggle.text(($target.is(':visible') ? 'Hide' : 'Update') + ' Subject');
+                 });
+                });
+                $("#showRoom").click(function(){
+                  var $target = $('#roomFieldset'),
+                      $toggle = $(this);
+
+                  $target.slideToggle(500, function() {
+                      $toggle.text(($target.is(':visible') ? 'Hide' : 'Update') + ' Room');
+                  });
+                 });
+                 $("#showTeacher").click(function(){
+                   var $target = $('#teacherFieldset'),
+                       $toggle = $(this);
+
+                   $target.slideToggle(500, function() {
+                       $toggle.text(($target.is(':visible') ? 'Hide' : 'Update') + ' Teacher');
+                   });
+                  });
+
+               $('#updateClassForm').submit(function() {
+                 //Stop the Form from submiting automatically
+                 event.preventDefault();
+                 //Declaring varibales
+                 let newClass, date, inputStartTime, inputEndTime, startTimestamp, endTimestamp;
+
+                 date = $('#updateClassForm input#ClassDateUpdate').val();
+                 inputStartTime = $('#updateClassForm input#ClassSTimeUpdate').val();
+                 inputEndTime = $('#updateClassForm input#ClassETimeUpdate').val();
+
+                 date = date.split("/").reverse().join("-");
+
+                 startTimestamp = date + ' ' + inputStartTime;
+                 endTimestamp   = date + ' ' + inputEndTime;
+
+                 //Creating the new Class object will all information from the form
+                 newClass = {
+                     Class_Level:             $('#updateClassForm input#ClassLevelUpdate').val(),
+                     Class_Start_Timestamp:   startTimestamp,
+                     Class_End_Timestamp:     endTimestamp,
+                     Subject_ID:              $('#subjectPickerUpdate').val(),
+                     Room_ID:                 $('#roomPickerUpdate').val(),
+                     Teacher_ID:              $('#teacherPickerUpdate').val(),
+                 };
+                 console.log(newClass);
+                 $.ajax({
+                     type: 'PATCH',
+                     data: newClass,
+                     url: `/class/${ClassID}`,
+                     dataType: 'JSON'
+                 }).done(function() {
+                     $('#updateClassstatus').html("Class Update Okay");
+                 });
+               });
       }
       else if(buttonValue === "Delete"){
            $('#confirm-delete').on('show.bs.modal', function() {
@@ -102,6 +195,7 @@ $(document).ready(function() {
             let concatName = title + " ".concat(fName) + " ".concat(lName);
             //Append results to the select box.
             $('#teacherPicker').append('<option value="' + d.Teacher_ID + '">' + concatName + '</option>');
+            $('#teacherPickerUpdate').append('<option value="' + d.Teacher_ID + '">' + concatName + '</option>');
         });
     });
 
@@ -120,6 +214,7 @@ $(document).ready(function() {
             let concatName = title + " ".concat(fName) + " ".concat(lName);
             //Append results to the select box.
             $('#studentPicker').append('<option value="' + d.Student_ID + '">' + concatName + '</option>');
+            $('#studentPickerUpdate').append('<option value="' + d.Student_ID + '">' + concatName + '</option>');
         });
     });
 
@@ -133,6 +228,7 @@ $(document).ready(function() {
         $.each(response, function(i, d) {
             //Append results to the select box.
             $('#subjectPicker').append('<option value="' + d.Subject_ID + '">' + d.Subject_Name + '</option>');
+            $('#subjectPickerUpdate').append('<option value="' + d.Subject_ID + '">' + d.Subject_Name + '</option>');
         });
     });
 
@@ -146,6 +242,7 @@ $(document).ready(function() {
         $.each(response, function(i, d) {
             //Append results to the select box.
             $('#roomPicker').append('<option value="' + d.Room_ID + '">' + d.Room_Name + '</option>');
+            $('#roomPickerUpdate').append('<option value="' + d.Room_ID + '">' + d.Room_Name + '</option>');
         });
     });
 

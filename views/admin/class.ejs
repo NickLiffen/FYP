@@ -46,6 +46,8 @@
     </div>
 
   <!-- Add a Class Section -->
+  <div class='container'>
+    <div class='row'>
   <div class="hideAddClassForm">
   <section id='addClassForm'>
     <h2>Add Class</h2>
@@ -66,8 +68,6 @@
           <label for="InputETime">Class End Time</label>
           <input type="time" name="ClassETime" class="form-control" id="ClassETime" placeholder="Enter End Time">
       </fieldset>
-
-
       <fieldset class="form-group">
       <label for="sel2">Assign Subject?</label>
           <select class="form-control" id="subjectPicker">
@@ -98,8 +98,12 @@
     </form>
     </section>
   </div>
+</div>
+</div>
 
   <!-- View Class's Section -->
+  <div class='container'>
+    <div class='row'>
   <div class="hideViewClassList">
   <section class='alignLeft' id='viewClasss'>
     <!-- This is the DIV where all the dtudent data is going -->
@@ -124,6 +128,72 @@
       </div>
   </section>
   </div>
+</div>
+</div>
+
+  <!-- Update a Class Section -->
+  <div class='container'>
+    <div class='row'>
+  <div class="hideUpdateClassForm" style="display:none;">
+  <section id='updateClassForm'>
+    <h2>Update Class</h2>
+      <form id'updateClassForm' action="/pupil" method="post">
+      <fieldset class="form-group">
+          <label for="InputLevel">Class Level</label>
+          <input type="number" name="ClassLevelUpdate" class="form-control" id="ClassLevelUpdate" placeholder="Enter Level" autofocus>
+      </fieldset>
+      <fieldset class="form-group">
+          <label for="InputDate">Class Date</label>
+          <input type="date" name="ClassDateUpdate" class="form-control" id="ClassDateUpdate" placeholder="Enter Date">
+      </fieldset>
+      <fieldset class="form-group">
+          <label for="InputSTime">Class Start Time</label>
+          <input type="time" name="ClassSTimeUpdate" class="form-control" id="ClassSTimeUpdate" placeholder="Enter Start Time">
+      </fieldset>
+      <fieldset class="form-group">
+          <label for="InputETime">Class End Time</label>
+          <input type="time" name="ClassETimeUpdate" class="form-control" id="ClassETimeUpdate" placeholder="Enter End Time">
+      </fieldset>
+      <fieldset class="form-group">
+          <label for="currentSubject">Current Subject</label>
+          <input type="text" name="currentSubject" id="currentSubject" placeholder="Current Subject" disabled>
+          <button type="button" id="showSubject" value="Profile" class="btn btn-primary">Change Subject</button>
+      <fieldset id='subjectFieldset' class="form-group" style="display:none;">
+      <label for="sel2">Assign Subject?</label>
+          <select class="form-control" id="subjectPickerUpdate">
+          </select>
+      </fieldset>
+        </fieldset>
+        <fieldset class="form-group">
+      <label for="currenRoom">Current Room</label>
+      <input type="text" name="currentRoom" id="currentRoom" placeholder="Current Time" disabled>
+      <button type="button" id="showRoom" value="Profile" class="btn btn-primary">Change Room</button>
+      <fieldset id='roomFieldset' class="form-group" style="display:none;">
+      <label for="sel2">Assign Room?</label>
+          <select class="form-control" id="roomPickerUpdate">
+          </select>
+      </fieldset>
+      </fieldset>
+      <fieldset class="form-group">
+      <label for="currenTeacher">Current Teacher</label>
+      <input type="text" name="currentTeacher" id="currentTeacher" placeholder="Current Teacher" disabled>
+      <button type="button" id="showTeacher" value="Profile" class="btn btn-primary">Change Teacher</button>
+      <fieldset id='teacherFieldset' class="form-group" style="display:none;">
+      <label for="sel2">Assign Teacher?</label>
+          <select class="form-control" id="teacherPickerUpdate">
+          </select>
+      </fieldset>
+        </fieldset>
+
+      <p>Everything marked with a * is a mandatory field</p>
+      <button type="submit" id="updateClassForm" name="updateClassForm" class="btn btn-primary">Update</button>
+        <div id="updateClassstatus"></div>
+    </form>
+    </section>
+  </div>
+</div>
+</div>
+
   <script type="text/javascript" src="/javascript/admin/class.js"></script>
 
   </body>
