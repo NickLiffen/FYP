@@ -12,6 +12,29 @@
       <p>Your Options are Listed Below:</p>
   </div>
 
+  <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Confirm Delete</h4>
+                </div>
+
+                <div class="modal-body">
+                    <p>You are about to delete one track, this procedure is irreversible.</p>
+                    <p>Do you want to proceed?</p>
+                    <p class="debug-url"></p>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <a id='confirmDelete' class="btn btn-danger btn-ok">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
   <!-- Sends the View Parents and Add Parents navigation to the page -->
   <div class="btn-group btn-group-justified" role="group" aria-label="...">
     <div class="btn-group" role="group">
@@ -23,6 +46,8 @@
   </div>
 
 <!-- Add a Room Section -->
+<div class='container'>
+  <div class='row'>
 <div class="hideAddRoomForm">
 <section id='addRoomForm'>
   <h2>Add Room</h2>
@@ -41,8 +66,12 @@
   </form>
   </section>
 </div>
+</div>
+</div>
 
 <!-- View Room's Section -->
+<div class='container'>
+  <div class='row'>
 <div class="hideViewRoomList">
 <section class='alignLeft' id='viewRooms'>
   <!-- This is the DIV where all the dtudent data is going -->
@@ -57,11 +86,37 @@
           <th>Update</th>
           <th>Delete</th>
         </thead>
-        <tbody></tbody>
       </table>
     </div>
+    <div id="Roomstatus"></div>
 </section>
 </div>
+</div>
+</div>
+
+<div class='container'>
+  <div class='row'>
+    <div class="hideUpdateRoomForm" style="display:none;">
+      <section id='updateRoomForm'>
+        <h2>Update Room</h2>
+          <form id'addRoomForm' action="/pupil" method="post">
+            <fieldset class="form-group">
+              <label for="InputRoom">Room Name</label>
+              <input type="text" name="roomNameUpdate" class="form-control" id="roomNameUpdate" placeholder="Room Name" autofocus>
+            </fieldset>
+            <fieldset class="form-group">
+              <label for="InputDescription">Room Description</label>
+              <input type="text" name="roomDescriptionUpdate" class="form-control" id="roomDescriptionUpdate" placeholder="Room Description">
+            </fieldset>
+            <p>Everything marked with a * is a mandatory field</p>
+            <button type="submit" id="updateRoomForm" name="updateRoomForm" class="btn btn-primary">Submit</button>
+            <div id="updateRoomstatus"></div>
+          </form>
+        </section>
+      </div>
+    </div>
+  </div>
+
 <script type="text/javascript" src="/javascript/admin/room.js"></script>
 
 

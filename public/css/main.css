@@ -193,3 +193,7 @@ div.dataTables_wrapper {
     border:0;
     background:transparent;
 }
+
+.hideUpdateRoomForm{
+  padding-top: 10px;
+}

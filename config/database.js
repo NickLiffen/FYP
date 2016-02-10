@@ -67,6 +67,212 @@ module.exports = {
         });
     },
 
+    updateStudent: function(Title, Fname, Lname, Email, Year, Username, Password, ID){
+      return new Promise(function(resolve, reject) {
+          //Do a cheeky update query to my database to update the users profile.
+          connection.query('UPDATE Student SET Student_Title = ?, Student_Fname = ?, Student_Lname = ?, Student_Email = ?, Student_Year = ?, Student_Username = ?, Student_Password = ? WHERE Student_ID = ?', [Title, Fname, Lname, Email, Year, Username, Password, ID], function(err, results) {
+              //If error with SQL Query throw error to console
+              if (err) {
+                  console.log("Problem Updating User's Profile: " + err);
+                  reject(Error(err));
+              }
+              console.log("Updated the users profile successfully", results);
+              resolve(results);
+          });
+      });
+    },
+
+    deleteStudent: function(ID){
+      return new Promise(function(resolve, reject) {
+          //Do a cheeky update query to my database to update the users profile.
+          connection.query(`DELETE FROM Student WHERE Student_ID = ${ID}`, function(err, results) {
+              //If error with SQL Query throw error to console
+              if (err) {
+                  console.log("Problem Deleting Students Profile: " + err);
+                  reject(Error(err));
+              }
+              else{
+              console.log("Updated the users profile successfully", results);
+              resolve(results);
+            }
+          });
+      });
+    },
+
+    updateTeacher: function(Title, Fname, Lname, Email, Mobile_Number, Username, Password, ID){
+      return new Promise(function(resolve, reject) {
+          //Do a cheeky update query to my database to update the users profile.
+          connection.query('UPDATE Teacher SET Teacher_Title = ?, Teacher_Fname = ?, Teacher_Lname = ?, Teacher_Email = ?, Teacher_Mobile_Number = ?, Teacher_Username = ?, Teacher_Password = ? WHERE Teacher_ID = ?', [Title, Fname, Lname, Email, Mobile_Number, Username, Password, ID], function(err, results) {
+              //If error with SQL Query throw error to console
+              if (err) {
+                  console.log("Problem Updating Teachers Profile: " + err);
+                  reject(Error(err));
+              }
+              console.log("Updated the teachers profile successfully", results);
+              resolve(results);
+          });
+      });
+    },
+
+    deleteTeacher: function(ID){
+      return new Promise(function(resolve, reject) {
+          //Do a cheeky update query to my database to update the users profile.
+          connection.query(`DELETE FROM Teacher WHERE Teacher_ID = ${ID}`, function(err, results) {
+              //If error with SQL Query throw error to console
+              if (err) {
+                  console.log("Problem Deleting Teachers Profile: " + err);
+                  reject(Error(err));
+              }
+              console.log("Deleted the teachers profile successfully", results);
+              resolve(results);
+          });
+      });
+    },
+
+    deleteClass: function(ID){
+      return new Promise(function(resolve, reject) {
+          //Do a cheeky update query to my database to update the users profile.
+          connection.query(`DELETE FROM Class WHERE Class_ID = ${ID}`, function(err, results) {
+              //If error with SQL Query throw error to console
+              if (err) {
+                  console.log("Problem Deleting Class Profile: " + err);
+                  reject(Error(err));
+              }
+              console.log("Deleted the Class profile successfully", results);
+              resolve(results);
+          });
+      });
+    },
+
+    updateParent: function(Title, Fname, Lname, Email, Mobile_Number, Home_Number, Address, Username, Password, ID){
+      return new Promise(function(resolve, reject) {
+          //Do a cheeky update query to my database to update the users profile.
+          connection.query('UPDATE Parent SET Parent_Title = ?, Parent_Fname = ?, Parent_Lname = ?, Parent_Email = ?, Parent_Mobile_Number = ?, Parent_Home_Number = ?, Parent_Address = ?, Parent_Username = ?, Parent_Password = ? WHERE Parent_ID = ?', [Title, Fname, Lname, Email, Mobile_Number, Home_Number, Address, Username, Password, ID], function(err, results) {
+              //If error with SQL Query throw error to console
+              if (err) {
+                  console.log("Problem Updating Parents Profile: " + err);
+                  reject(Error(err));
+              }
+              console.log("Updated the parents profile successfully", results);
+              resolve(results);
+          });
+      });
+    },
+
+    deleteParent: function(ID){
+      return new Promise(function(resolve, reject) {
+          //Do a cheeky update query to my database to update the users profile.
+          connection.query(`DELETE FROM Parent WHERE Parent_ID = ${ID}`, function(err, results) {
+              //If error with SQL Query throw error to console
+              if (err) {
+                  console.log("Problem Deleting Parents Profile: " + err);
+                  reject(Error(err));
+              }
+              console.log("Deleted the Parents profile successfully", results);
+              resolve(results);
+          });
+      });
+    },
+
+    getIndividualSubject: function(ID){
+      return new Promise(function(resolve, reject) {
+          connection.query(`SELECT Subject_ID, Subject_Name, Subject_Description FROM Subject WHERE Subject_ID = ${ID}`, function(err, results) {
+              //If error reject the promise.
+              if (err) {
+                  console.log(err);
+                  reject(Error(err));
+              } else {
+                  console.log("Made it");
+                  resolve(results);
+              }
+          });
+      });
+    },
+
+    updateSubject: function(Name, Description, ID){
+      console.log(Name, Description, ID);
+      return new Promise(function(resolve, reject) {
+          //Do a cheeky update query to my database to update the users profile.
+          connection.query('UPDATE Subject SET Subject_Name = ?, Subject_Description = ? WHERE Subject_ID = ?', [Name, Description, ID], function(err, results) {
+              //If error with SQL Query throw error to console
+              if (err) {
+                  console.log("Problem Updating Subjects Profile: " + err);
+                  reject(Error(err));
+              }
+
+              console.log("Updated the Subects profile successfully", results);
+              resolve(results);
+          });
+      });
+    },
+
+    deleteSubject: function(ID){
+      return new Promise(function(resolve, reject) {
+          //Do a cheeky update query to my database to update the users profile.
+          connection.query(`DELETE FROM Subject WHERE Subject_ID = ${ID}`, function(err, results) {
+              //If error with SQL Query throw error to console
+              if (err) {
+                  connection.query(`SELECT Class_ID FROM Class, Subject WHERE Class.Subject_ID = Subject.Subject_ID AND Subject.Subject_ID = ${ID}`, function(err, results) {
+                    if(err){
+                      console.log(err);
+                      reject(err);
+                    }
+                    else{
+                      console.log("Were about to resolve the results" + results);
+                      resolve(results);
+                    }
+                  });
+              }
+              else{
+              console.log("Deleted the Subjects profile successfully", results);
+              resolve(results);
+            }
+          });
+      });
+    },
+
+    updateRoom: function(Name, Description, ID){
+      return new Promise(function(resolve, reject) {
+          //Do a cheeky update query to my database to update the users profile.
+          connection.query('UPDATE Room SET Room_Name = ?, Rom_Description = ? WHERE Room_ID = ?', [Name, Description, ID], function(err, results) {
+              //If error with SQL Query throw error to console
+              if (err) {
+                  console.log("Problem Updating Rooms Profile: " + err);
+                  reject(Error(err));
+              }
+              console.log("Updated the Rooms profile successfully", results);
+              resolve(results);
+          });
+      });
+    },
+
+    deleteRoom: function(ID){
+      console.log(ID);
+      return new Promise(function(resolve, reject) {
+          //Do a cheeky update query to my database to update the users profile.
+          connection.query(`DELETE FROM Room WHERE Room_ID = ${ID}`, function(err, results) {
+              //If error with SQL Query throw error to console
+              if (err) {
+                  connection.query(`SELECT Class_ID FROM Class, Room WHERE Class.Class_ID = Room.Room_ID AND Room.Room_ID = ${ID}`, function(err, results) {
+                    console.log(results);
+                    if(err){
+                      console.log(err);
+                      reject(err);
+                    }
+                    else{
+                      console.log("Were about to resolve the results");
+                      resolve(results);
+                    }
+                  });
+              }
+              else{
+              console.log("Deleted the Room profile successfully", results);
+              resolve(results);
+            }
+          });
+      });
+    },
+
     getParent: function() {
         // Return a new promise.
         return new Promise(function(resolve, reject) {
@@ -198,6 +404,21 @@ module.exports = {
                 }
             });
         });
+    },
+
+    getIndividualRoom: function(classID){
+      return new Promise(function(resolve, reject) {
+          connection.query(`SELECT Room_ID, Room_Name, Rom_Description FROM Room WHERE Room_ID = ${classID}`, function(err, results) {
+              //If error reject the promise.
+              if (err) {
+                  console.log(err);
+                  reject(Error(err));
+              } else {
+                  console.log("Made it");
+                  resolve(results);
+              }
+          });
+      });
     },
 
     addClass: function(newClass) {

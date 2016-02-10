@@ -45,14 +45,45 @@ $(document).ready(function() {
           tableContent += '<td>' + this.Subject_Name + '</td>';
           tableContent += '<td>' + this.Room_Name + '</td>';
           tableContent += '<td>' + concatName + '</td>';
-          tableContent += '<td><button type="button" id="' + this.Class_ID + '" class="btn btn-primary">Profile</button></td>';
-          tableContent += '<td><button type="button" id="' + this.Class_ID + '" class="btn btn-success">Update</button></td>';
-          tableContent += '<td><button type="button" id="' + this.Class_ID + '" class="btn btn-warning">Delete</button></td>';
+          tableContent += '<td><button type="button" id="' + this.Class_ID + '" value="Profile" class="btn btn-primary">Profile</button></td>';
+          tableContent += '<td><button type="button" id="' + this.Class_ID + '" value="Update" class="btn btn-success">Update</button></td>';
+          tableContent += '<td><button type="button" id="' + this.Class_ID + '" value="Delete" class="btn btn-warning" data-toggle="modal" data-target="#confirm-delete" >Delete</button></td>';
           tableContent += '</tr>';
       });
 
       // Inject the whole content string into our existing HTML table
       $('#ClassList table tbody').html(tableContent);
+    });
+
+    $('#ClassList').on('click', '.btn ', function(){
+      let ClassID = this.id;
+      let buttonValue = $(this).attr("value");
+
+
+      if(buttonValue === "Profile"){
+        console.log("Im in Profile");
+      }
+      else if(buttonValue === "Update"){
+          console.log("Im in Update");
+      }
+      else if(buttonValue === "Delete"){
+           $('#confirm-delete').on('show.bs.modal', function() {
+             $('.debug-url').html("");
+             $("#confirmDelete").click(function(){
+               $.ajax({
+                        url: `/class/${ClassID}`,
+                        type: 'DELETE',
+                        success: function(result) {
+                          console.log(result);
+                  }
+                });
+              });
+           });
+      }
+      else{
+        console.log("Theres a Problem");
+      }
+
     });
 
 

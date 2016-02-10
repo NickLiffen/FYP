@@ -128,18 +128,15 @@ CREATE TABLE IF NOT EXISTS `SchoolDatabase`.`Class` (
   CONSTRAINT `fk_Class_Subject1`
     FOREIGN KEY (`Subject_ID`)
     REFERENCES `SchoolDatabase`.`Subject` (`Subject_ID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE NO ACTION,
   CONSTRAINT `fk_Class_Room1`
     FOREIGN KEY (`Room_ID`)
     REFERENCES `SchoolDatabase`.`Room` (`Room_ID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE NO ACTION,
   CONSTRAINT `fk_Class_Teacher1`
     FOREIGN KEY (`Teacher_ID`)
     REFERENCES `SchoolDatabase`.`Teacher` (`Teacher_ID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE NO ACTION)
 ENGINE = InnoDB;
 
 -- -----------------------------------------------------
@@ -175,13 +172,11 @@ CREATE TABLE IF NOT EXISTS `SchoolDatabase`.`Student_has_Class` (
   CONSTRAINT `fk_Student_has_Class_Student`
     FOREIGN KEY (`Student_ID`)
     REFERENCES `SchoolDatabase`.`Student` (`Student_ID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE NO ACTION,
   CONSTRAINT `fk_Student_has_Class_Class1`
     FOREIGN KEY (`Class_ID`)
     REFERENCES `SchoolDatabase`.`Class` (`Class_ID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE NO ACTION)
 ENGINE = InnoDB;
 
 -- -----------------------------------------------------
@@ -198,13 +193,11 @@ CREATE TABLE IF NOT EXISTS `SchoolDatabase`.`Student_has_Parent` (
   CONSTRAINT `fk_Student_has_Parent_Student1`
     FOREIGN KEY (`Student_Student_ID`)
     REFERENCES `SchoolDatabase`.`Student` (`Student_ID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE NO ACTION,
   CONSTRAINT `fk_Student_has_Parent_Parent1`
     FOREIGN KEY (`Parent_Parent_ID`)
     REFERENCES `SchoolDatabase`.`Parent` (`Parent_ID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE NO ACTION)
 ENGINE = InnoDB;
 
 -- -----------------------------------------------------
@@ -225,13 +218,11 @@ CREATE TABLE IF NOT EXISTS `SchoolDatabase`.`Attendance` (
   CONSTRAINT `fk_Attendance_Class1`
     FOREIGN KEY (`Class_ID`)
     REFERENCES `SchoolDatabase`.`Class` (`Class_ID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON DELETE NO ACTION,
   CONSTRAINT `fk_Attendance_Student1`
     FOREIGN KEY (`Student_ID`)
     REFERENCES `SchoolDatabase`.`Student` (`Student_ID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE NO ACTION)
 ENGINE = InnoDB;
 
 

@@ -22,20 +22,18 @@ module.exports = function(app, passport) {
     }));
 
     app.get('/checkAuth', function(req, res) {
-      if (!req.user) {
-          req.flash('loginMessage', "Something went wrong, re-login please");
-          res.redirect('/login');
-      } else if (req.user.role === 'Admin') {
-          res.redirect('/admin');
+        if (!req.user) {
+            req.flash('loginMessage', "Something went wrong, re-login please");
+            res.redirect('/login');
+        } else if (req.user.role === 'Admin') {
+            res.redirect('/admin');
+        } else if (req.user.role === 'Teacher') {
+            res.redirect('/teacher');
+        } else if (req.user.role === 'Parent') {
+            res.redirect('/parent');
+        } else {
+            res.redirect('/login');
         }
-        else if (req.user.role === 'Teacher') {
-          res.redirect('/teacher');
-      }
-      else if (req.user.role === 'Parent') {
-        res.redirect('/parent');
-    } else {
-          res.redirect('/login');
-      }
     });
 
     app.get('/attendance', allowParents, function(req, res) {
@@ -43,8 +41,6 @@ module.exports = function(app, passport) {
             message: req.flash('appMessage')
         });
     });
-
-
 
     app.get('/parent', allowParents, function(req, res) {
         res.render('parent/index.ejs', {
@@ -59,29 +55,28 @@ module.exports = function(app, passport) {
     });
 
     app.get('/currentStudentStatus', allowParents, function(req, res) {
-      databaseQuery.currentStudentStatus(req.body.studentID)
-          .then(function(data) {
-              res.send(data);
-          })
-          .catch(function(e) {
-              res.status(500, {
-                  error: e
-              });
-          });
+        databaseQuery.currentStudentStatus(req.body.studentID)
+            .then(function(data) {
+                res.send(data);
+            })
+            .catch(function(e) {
+                res.status(500, {
+                    error: e
+                });
+            });
     });
 
     app.get('/getParentStudents', allowParents, function(req, res) {
-      databaseQuery.getParentStudents(req.user.id)
-          .then(function(data) {
-              res.send(data);
-          })
-          .catch(function(e) {
-              res.status(500, {
-                  error: e
-              });
-          });
+        databaseQuery.getParentStudents(req.user.id)
+            .then(function(data) {
+                res.send(data);
+            })
+            .catch(function(e) {
+                res.status(500, {
+                    error: e
+                });
+            });
     });
-
 
     app.get('/teacher', allowTeachers, function(req, res) {
         res.render('teacher/index.ejs', {
@@ -95,186 +90,184 @@ module.exports = function(app, passport) {
         });
     });
 
-
-    app.post('/teacherTimetable', allowTeachers, function(req, res){
-      let data;
-      if(Object.keys(req.body).length === 0 || !req.body.ID){
-        data = req.user.id;
-      }
-      else{
-        data = req.body.ID;
-      }
-      databaseQuery.teacherTimetable(data)
-          .then(function(data) {
-              res.send(data);
-          })
-          .catch(function(e) {
-              res.status(500, {
-                  error: e
-              });
-          });
-    });
-
-    app.post('/studentTimetable', allowTeachers, function(req, res){
-      databaseQuery.studentTimetable(req.body.ID)
-          .then(function(data) {
-              res.send(data);
-          })
-          .catch(function(e) {
-              res.status(500, {
-                  error: e
-              });
-          });
-    });
-
-    app.post('/getBarChartDetails', function(req, res){
-      databaseQuery.getBarChartDetails(req.body.id)
-          .then(function(data) {
-              res.send(data);
-          })
-          .catch(function(e) {
-              res.status(500, {
-                  error: e
-              });
-          });
-    });
-    app.post('/parentGraphRequest', function(req, res){
-      console.log(req.body);
-      databaseQuery.parentGraphRequest(req.body)
-          .then(function(data) {
-              res.send(data);
-          })
-          .catch(function(e) {
-              res.status(500, {
-                  error: e
-              });
-          });
-    });
-
-    app.post('/getRadarChartDetails', function(req, res){
-      databaseQuery.getRadarChartDetails(req.body.id)
-          .then(function(data) {
-              res.send(data);
-          })
-          .catch(function(e) {
-              res.status(500, {
-                  error: e
-              });
-          });
-    });
-
-    app.post('/studentTodayAttendance', function(req, res){
-        console.log(" day were here");
-      databaseQuery.studentTodayAttendance(req.body.id)
-          .then(function(data) {
-            console.log(data);
-              res.send(data);
-          })
-          .catch(function(e) {
-              res.status(500, {
-                  error: e
-              });
-          });
-    });
-
-    app.post('/studentWeekAttendance', function(req, res){
-      console.log(" week were here");
-      databaseQuery.studentWeekAttendance(req.body.id)
-          .then(function(data) {
-            console.log(data);
-              res.send(data);
-          })
-          .catch(function(e) {
-              res.status(500, {
-                  error: e
-              });
-          });
-    });
-
-    app.post('/studentMonthAttendance', function(req, res){
-      console.log("month were here");
-      databaseQuery.studentMonthAttendance(req.body.id)
-          .then(function(data) {
-            console.log(data);
-              res.send(data);
-          })
-          .catch(function(e) {
-              res.status(500, {
-                  error: e
-              });
-          });
-    });
-
-    app.get('/student/:id', function (req, res) {
-        let studentID = req.params.id;
-        databaseQuery.getStudentProfile(studentID)
+    app.post('/teacherTimetable', allowTeachers, function(req, res) {
+        let data;
+        if (Object.keys(req.body).length === 0 || !req.body.ID) {
+            data = req.user.id;
+        } else {
+            data = req.body.ID;
+        }
+        databaseQuery.teacherTimetable(data)
             .then(function(data) {
-              console.log(data);
-              res.render('teacher/student.ejs', {
-                  message: req.flash('user'),
-                  studentID: data[0].Student_ID,
-                  studentName: data[0].Student_Name,
-                  parentName: data[0].Parent_Name,
-                  studentYear: data[0].Student_Year,
-                  studentEmail: data[0].Student_Email,
-                  studentUsername: data[0].Student_Username
-              });
+                res.send(data);
             })
             .catch(function(e) {
                 res.status(500, {
                     error: e
                 });
             });
-      });
+    });
 
-      app.patch('/student/:id', function (req, res) {
-          let studentID = req.params.id;
-          databaseQuery.updateStudent(studentID)
-              .then(function(data) {
-                  res.send(data);
-              })
-              .catch(function(e) {
-                  res.status(500, {
-                      error: e
-                  });
-              });
-        });
-
-        app.delete('/student/:id', function (req, res) {
-            let studentID = req.params.id;
-            databaseQuery.deleteStudent(studentID)
-                .then(function(data) {
-                    res.send(data);
-                })
-                .catch(function(e) {
-                    res.status(500, {
-                        error: e
-                    });
+    app.post('/studentTimetable', allowTeachers, function(req, res) {
+        databaseQuery.studentTimetable(req.body.ID)
+            .then(function(data) {
+                res.send(data);
+            })
+            .catch(function(e) {
+                res.status(500, {
+                    error: e
                 });
-          });
+            });
+    });
 
-      app.get('/student/:id/attendance', function (req, res) {
-          let studentID = req.params.id;
-          databaseQuery.getStudentProfile(studentID)
-              .then(function(data) {
+    app.post('/getBarChartDetails', function(req, res) {
+        databaseQuery.getBarChartDetails(req.body.id)
+            .then(function(data) {
+                res.send(data);
+            })
+            .catch(function(e) {
+                res.status(500, {
+                    error: e
+                });
+            });
+    });
+    app.post('/parentGraphRequest', function(req, res) {
+        console.log(req.body);
+        databaseQuery.parentGraphRequest(req.body)
+            .then(function(data) {
+                res.send(data);
+            })
+            .catch(function(e) {
+                res.status(500, {
+                    error: e
+                });
+            });
+    });
+
+    app.post('/getRadarChartDetails', function(req, res) {
+        databaseQuery.getRadarChartDetails(req.body.id)
+            .then(function(data) {
+                res.send(data);
+            })
+            .catch(function(e) {
+                res.status(500, {
+                    error: e
+                });
+            });
+    });
+
+    app.post('/studentTodayAttendance', function(req, res) {
+        console.log(" day were here");
+        databaseQuery.studentTodayAttendance(req.body.id)
+            .then(function(data) {
+                console.log(data);
+                res.send(data);
+            })
+            .catch(function(e) {
+                res.status(500, {
+                    error: e
+                });
+            });
+    });
+
+    app.post('/studentWeekAttendance', function(req, res) {
+        console.log(" week were here");
+        databaseQuery.studentWeekAttendance(req.body.id)
+            .then(function(data) {
+                console.log(data);
+                res.send(data);
+            })
+            .catch(function(e) {
+                res.status(500, {
+                    error: e
+                });
+            });
+    });
+
+    app.post('/studentMonthAttendance', function(req, res) {
+        console.log("month were here");
+        databaseQuery.studentMonthAttendance(req.body.id)
+            .then(function(data) {
+                console.log(data);
+                res.send(data);
+            })
+            .catch(function(e) {
+                res.status(500, {
+                    error: e
+                });
+            });
+    });
+
+    app.get('/student/:id', function(req, res) {
+        let studentID = req.params.id;
+        databaseQuery.getStudentProfile(studentID)
+            .then(function(data) {
+                console.log(data);
+                res.render('teacher/student.ejs', {
+                    message: req.flash('user'),
+                    studentID: data[0].Student_ID,
+                    studentName: data[0].Student_Name,
+                    parentName: data[0].Parent_Name,
+                    studentYear: data[0].Student_Year,
+                    studentEmail: data[0].Student_Email,
+                    studentUsername: data[0].Student_Username
+                });
+            })
+            .catch(function(e) {
+                res.status(500, {
+                    error: e
+                });
+            });
+    });
+
+    app.get('/student/:id/attendance', function(req, res) {
+        let studentID = req.params.id;
+        databaseQuery.getStudentProfile(studentID)
+            .then(function(data) {
                 console.log(data);
                 res.render('parent/attendance.ejs', {
                     message: req.flash('user'),
                     studentID: data[0].Student_ID,
                     studentName: data[0].Student_Name
                 });
-              })
-              .catch(function(e) {
-                  res.status(500, {
-                      error: e
-                  });
-              });
-        });
+            })
+            .catch(function(e) {
+                res.status(500, {
+                    error: e
+                });
+            });
+    });
 
-      app.get('/teacher/:id', function (req, res) {
-          let teacherID = req.params.id;
-          databaseQuery.getTeacherProfile(teacherID)
-              .then(function(data) {
+    app.patch('/student/:id', function(req, res) {
+        let studentID = req.params.id;
+        databaseQuery.updateStudent(studentID)
+            .then(function(data) {
+                res.send(data);
+            })
+            .catch(function(e) {
+                res.status(500, {
+                    error: e
+                });
+            });
+    });
+
+    app.delete('/student/:id', function(req, res) {
+        let studentID = req.params.id;
+        databaseQuery.deleteStudent(studentID)
+            .then(function(data) {
+                res.send(data);
+            })
+            .catch(function(e) {
+                res.status(500, {
+                    error: e
+                });
+            });
+    });
+
+    app.get('/teacher/:id', function(req, res) {
+        let teacherID = req.params.id;
+        databaseQuery.getTeacherProfile(teacherID)
+            .then(function(data) {
                 console.log(data);
                 res.render('teacher/teacher.ejs', {
                     message: req.flash('user'),
@@ -284,147 +277,204 @@ module.exports = function(app, passport) {
                     teacherEmail: data[0].Teacher_Email,
                     teacherUsername: data[0].Teacher_Username
                 });
-              })
-              .catch(function(e) {
-                  res.status(500, {
-                      error: e
-                  });
-              });
-        });
-
-        app.patch('/teacher/:id', function (req, res) {
-            let teacherID = req.params.id;
-            databaseQuery.updateTeacher(teacherID)
-                .then(function(data) {
-                    res.send(data);
-                })
-                .catch(function(e) {
-                    res.status(500, {
-                        error: e
-                    });
+            })
+            .catch(function(e) {
+                res.status(500, {
+                    error: e
                 });
-          });
-
-          app.delete('/teacher/:id', function (req, res) {
-              let teacherID = req.params.id;
-              databaseQuery.deleteTeacher(teacherID)
-                  .then(function(data) {
-                      res.send(data);
-                  })
-                  .catch(function(e) {
-                      res.status(500, {
-                          error: e
-                      });
-                  });
             });
+    });
 
-
-
-              app.patch('/class/:id', function (req, res) {
-                  let classID = req.params.id;
-                  databaseQuery.updateClass(classID)
-                      .then(function(data) {
-                          res.send(data);
-                      })
-                      .catch(function(e) {
-                          res.status(500, {
-                              error: e
-                          });
-                      });
+    app.patch('/teacher/:id', function(req, res) {
+        let teacherID = req.params.id;
+        databaseQuery.updateTeacher(teacherID)
+            .then(function(data) {
+                res.send(data);
+            })
+            .catch(function(e) {
+                res.status(500, {
+                    error: e
                 });
+            });
+    });
 
-                app.delete('/class/:id', function (req, res) {
-                    let ClassID = req.params.id;
-                    databaseQuery.deleteClass(ClassID)
-                        .then(function(data) {
-                            res.send(data);
-                        })
-                        .catch(function(e) {
-                            res.status(500, {
-                                error: e
-                            });
-                        });
-                  });
+    app.delete('/teacher/:id', function(req, res) {
+        let teacherID = req.params.id;
+        databaseQuery.deleteTeacher(teacherID)
+            .then(function(data) {
+                res.send(data);
+            })
+            .catch(function(e) {
+                res.status(500, {
+                    error: e
+                });
+            });
+    });
 
-                  app.patch('/parent/:id', function (req, res) {
-                      let parentID = req.params.id;
-                      databaseQuery.updateParent(parentID)
-                          .then(function(data) {
-                              res.send(data);
-                          })
-                          .catch(function(e) {
-                              res.status(500, {
-                                  error: e
-                              });
-                          });
-                    });
+    app.get('/class/:id', function(req, res) {
+        let classID = req.params.id;
+        databaseQuery.getIndividualClass(classID)
+            .then(function(data) {
+                res.send(data);
+            })
+            .catch(function(e) {
+                res.status(500, {
+                    error: e
+                });
+            });
+    });
 
-                    app.delete('/parent/:id', function (req, res) {
-                        let parentID = req.params.id;
-                        databaseQuery.deleteParent(parentID)
-                            .then(function(data) {
-                                res.send(data);
-                            })
-                            .catch(function(e) {
-                                res.status(500, {
-                                    error: e
-                                });
-                            });
-                      });
+    app.patch('/class/:id', function(req, res) {
+        let classID = req.params.id;
+        databaseQuery.updateClass(classID)
+            .then(function(data) {
+                res.send(data);
+            })
+            .catch(function(e) {
+                res.status(500, {
+                    error: e
+                });
+            });
+    });
 
-                      app.patch('/subject/:id', function (req, res) {
-                          let subjectID = req.params.id;
-                          databaseQuery.updateSubject(subjectID)
-                              .then(function(data) {
-                                  res.send(data);
-                              })
-                              .catch(function(e) {
-                                  res.status(500, {
-                                      error: e
-                                  });
-                              });
-                        });
+    app.delete('/class/:id', function(req, res) {
+        let ClassID = req.params.id;
+        databaseQuery.deleteClass(ClassID)
+            .then(function(data) {
+                res.send(data);
+            })
+            .catch(function(e) {
+                res.status(500, {
+                    error: e
+                });
+            });
+    });
 
-                        app.delete('/subject/:id', function (req, res) {
-                            let subjectID = req.params.id;
-                            databaseQuery.deleteSubject(subjectID)
-                                .then(function(data) {
-                                    res.send(data);
-                                })
-                                .catch(function(e) {
-                                    res.status(500, {
-                                        error: e
-                                    });
-                                });
-                          });
+    app.get('/parent/:id', function(req, res) {
+        let parentID = req.params.id;
+        databaseQuery.getIndividualParent(parentID)
+            .then(function(data) {
+                res.send(data);
+            })
+            .catch(function(e) {
+                res.status(500, {
+                    error: e
+                });
+            });
+    });
 
-                          app.patch('/room/:id', function (req, res) {
-                              let roomID = req.params.id;
-                              databaseQuery.updateRoom(roomID)
-                                  .then(function(data) {
-                                      res.send(data);
-                                  })
-                                  .catch(function(e) {
-                                      res.status(500, {
-                                          error: e
-                                      });
-                                  });
-                            });
+    app.patch('/parent/:id', function(req, res) {
+        let parentID = req.params.id;
+        databaseQuery.updateParent(parentID)
+            .then(function(data) {
+                res.send(data);
+            })
+            .catch(function(e) {
+                res.status(500, {
+                    error: e
+                });
+            });
+    });
 
-                            app.delete('/room/:id', function (req, res) {
-                                let roomID = req.params.id;
-                                databaseQuery.deleteRoom(roomID)
-                                    .then(function(data) {
-                                        res.send(data);
-                                    })
-                                    .catch(function(e) {
-                                        res.status(500, {
-                                            error: e
-                                        });
-                                    });
-                              });
+    app.delete('/parent/:id', function(req, res) {
+        let parentID = req.params.id;
+        databaseQuery.deleteParent(parentID)
+            .then(function(data) {
+              console.log("Routes: ", data);
+                res.send(data);
+            })
+            .catch(function(e) {
+                res.status(500, {
+                    error: e
+                });
+            });
+    });
 
+    app.get('/subject/:id', function(req, res) {
+        let subjectID = req.params.id;
+        databaseQuery.getIndividualSubject(subjectID)
+            .then(function(data) {
+                res.send(data);
+            })
+            .catch(function(e) {
+                res.status(500, {
+                    error: e
+                });
+            });
+    });
 
+    app.patch('/subject/:id', function(req, res) {
+        let subjectID = req.params.id;
+        let subjectName = req.body.Subject_Name;
+        let subjectDescription = req.body.Subject_Description;
+
+        databaseQuery.updateSubject(subjectName, subjectDescription, subjectID)
+            .then(function(data) {
+                res.send(data);
+            })
+            .catch(function(e) {
+                res.status(500, {
+                    error: e
+                });
+            });
+    });
+
+    app.delete('/subject/:id', function(req, res) {
+        let subjectID = req.params.id;
+        databaseQuery.deleteSubject(subjectID)
+            .then(function(data) {
+              console.log("Routes: ", data);
+                res.send(data);
+            })
+            .catch(function(e) {
+                res.status(500, {
+                    error: e
+                });
+            });
+    });
+
+    app.get('/room/:id', function(req, res) {
+        let roomID = req.params.id;
+
+        databaseQuery.getIndividualRoom(roomID)
+            .then(function(data) {
+                res.send(data);
+            })
+            .catch(function(e) {
+                res.status(500, {
+                    error: e
+                });
+            });
+    });
+
+    app.patch('/room/:id', function(req, res) {
+        let roomID = req.params.id;
+        let roomName = req.body.Room_Name;
+        let roomDescription = req.body.Rom_Description;
+
+        databaseQuery.updateRoom(roomName, roomDescription, roomID)
+            .then(function(data) {
+                res.send(data);
+            })
+            .catch(function(e) {
+                res.status(500, {
+                    error: e
+                });
+            });
+    });
+
+    app.delete('/room/:id', function(req, res) {
+        let roomID = req.params.id;
+        databaseQuery.deleteRoom(roomID)
+            .then(function(data) {
+                res.send(data);
+            })
+            .catch(function(e) {
+                res.status(500, {
+                    error: e
+                });
+            });
+    });
 
     app.get('/admin', allowAdmins, function(req, res) {
         res.render('admin/admin.ejs', {
@@ -563,30 +613,30 @@ module.exports = function(app, passport) {
 
 
 
-    app.post('/takeAttendance', function(req, res){
-      databaseQuery.takeAttendance(req.body)
-          .then(function(data) {
-              res.send(data);
-          })
-          .catch(function(e) {
-              res.status(500, {
-                  error: e
-              });
-          });
+    app.post('/takeAttendance', function(req, res) {
+        databaseQuery.takeAttendance(req.body)
+            .then(function(data) {
+                res.send(data);
+            })
+            .catch(function(e) {
+                res.status(500, {
+                    error: e
+                });
+            });
     });
 
-    app.post('/getClassStudent', function(req, res){
-      //Add the Teahcer ID to the JSON Object to get specifc students;
-      req.body.teacherID = req.user.id;
-      databaseQuery.addClassStudent(req.body)
-          .then(function(data) {
-              res.send(data);
-          })
-          .catch(function(e) {
-              res.status(500, {
-                  error: e
-              });
-          });
+    app.post('/getClassStudent', function(req, res) {
+        //Add the Teahcer ID to the JSON Object to get specifc students;
+        req.body.teacherID = req.user.id;
+        databaseQuery.addClassStudent(req.body)
+            .then(function(data) {
+                res.send(data);
+            })
+            .catch(function(e) {
+                res.status(500, {
+                    error: e
+                });
+            });
     });
 
     app.post('/class', function(req, res) {
