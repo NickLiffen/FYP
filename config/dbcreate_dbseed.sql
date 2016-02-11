@@ -548,6 +548,14 @@ WHERE Student_has_Class.Student_ID = Student.Student_ID
                                                 WHERE Student.student_id = 1;
 
 
+SELECT Student.Student_ID,
+        CONCAT( Student.Student_Fname, ' ' , Student.Student_Lname)  AS 'Student_Name'
+
+FROM Student, Parent, Student_has_Parent
+
+WHERE Student_has_Parent.Student_Student_ID = Student.Student_ID
+  AND Student_has_Parent.Parent_Parent_ID = Parent.Parent_ID
+    AND LOWER( Parent_ID ) = 1;
 
 
 

@@ -168,6 +168,18 @@
          <label for="InputUsername">Parent Username</label>
          <input type="text" name="ParentUsernameUpdate" class="form-control" id="ParentUsernameUpdate" placeholder="Enter Username">
      </fieldset>
+
+     <fieldset class="form-group">
+       <label for="currenStudent">Current Students</label>
+       <select class="form-control" id="currentStudent" multiple disabled></select>
+       <button type="button" id="showStudent" value="Profile" class="btn btn-primary">Change Students</button>
+         <fieldset id='studentFieldset' class="form-group" style="display:none;">
+         <label for="sel2">Assign Parents?</label>
+         <select class="form-control" id="studentPickerUpdate" multiple>
+         </select>
+     </fieldset>
+     </fieldset>
+
      <p>Everything marked with a * is a mandatory field</p>
      <button type="submit" id="update" name="update" class="btn btn-primary">Update</button>
        <div id="updateParentstatus"></div>

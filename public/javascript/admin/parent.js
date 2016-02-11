@@ -40,23 +40,6 @@ $(document).ready(function() {
         $('#ParentList table tbody').html(tableContent);
     });
 
-    //Load Students into the input feild
-    $.ajax({
-        type: 'GET',
-        url: '/getStudent',
-        dataType: 'JSON'
-    }).done(function(response) {
-        //Loop through all the results and put them into the select box
-        $.each(response, function(i, d) {
-            //Concatination of the Users Name
-            let title = d.Student_Title;
-            let fName = d.Student_Fname;
-            let lName = d.Student_Lname;
-            let concatName = title + " ".concat(fName) + " ".concat(lName);
-            //Append results to the select box.
-            $('#studentPicker').append('<option value="' + d.Student_ID + '">' + concatName + '</option>');
-        });
-    });
 
     $('#ParentList').on('click', '.btn ', function() {
         let parentID = this.id;
@@ -85,8 +68,24 @@ $(document).ready(function() {
                     $('#ParentHomeNumberUpdate').val(result[0].Parent_Home_Number);
                     $('#ParentUsernameUpdate').val(result[0].Parent_Username);
                     $('#ParentAddressUpdate').val(result[0].Parent_Address);
+
+                    let studentInfo = result.splice(1,result.length);
+
+                    $.each(studentInfo, function(i, d) {
+                      $(`select option:contains("${d.Student_Name}")`).prop('selected',true);
+                        $('#currentStudent').append('<option value="' + d.Student_ID + '">' + d.Student_Name + '</option>');
+                    });
                 }
             });
+
+            $("#showStudent").click(function(){
+              var $target = $('#studentFieldset'),
+                  $toggle = $(this);
+
+              $target.slideToggle(500, function() {
+                  $toggle.text(($target.is(':visible') ? 'Hide' : 'Update') + ' Student');
+              });
+             });
 
             $('#updateParentForm').submit(function() {
                 //Stop the Form from submiting automatically
@@ -103,6 +102,7 @@ $(document).ready(function() {
                     ParentHome: $('#updateParentForm input#ParentHomeNumberUpdate').val(),
                     ParentAddress: $('#updateParentForm input#ParentAddressUpdate').val(),
                     ParentUsername: $('#updateParentForm input#ParentUsernameUpdate').val(),
+                    Student:      $('#studentPickerUpdate').val()
                 };
 
                 //Send off the AJAX Request to the /pupil route
@@ -137,7 +137,25 @@ $(document).ready(function() {
         } else {
             console.log("Theres a Problem");
         }
+    });
 
+    //Load Students into the input feild
+    $.ajax({
+        type: 'GET',
+        url: '/getStudent',
+        dataType: 'JSON'
+    }).done(function(response) {
+        //Loop through all the results and put them into the select box
+        $.each(response, function(i, d) {
+            //Concatination of the Users Name
+            let title = d.Student_Title;
+            let fName = d.Student_Fname;
+            let lName = d.Student_Lname;
+            let concatName = title + " ".concat(fName) + " ".concat(lName);
+            //Append results to the select box.
+            $('#studentPicker').append('<option value="' + d.Student_ID + '">' + concatName + '</option>');
+            $('#studentPickerUpdate').append('<option value="' + d.Student_ID + '">' + concatName + '</option>');
+        });
     });
 
     $('#addParentForm').submit(function() {

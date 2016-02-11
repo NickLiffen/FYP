@@ -414,8 +414,8 @@ module.exports = function(app, passport) {
     });
 
     app.patch('/parent/:id', function(req, res) {
-      console.log("WERE IN THIS ROUTE");
         let parentID        = req.params.id;
+        let parentObject    = req.body;
         let ParentTitle     = req.body.ParentTitle;
         let ParentFName     = req.body.ParentFName;
         let ParentLName     = req.body.ParentLName;
@@ -425,7 +425,7 @@ module.exports = function(app, passport) {
         let ParentAddress   = req.body.ParentAddress;
         let ParentUsername  = req.body.ParentUsername;
 
-        databaseQuery.updateParent(ParentTitle, ParentFName, ParentLName, ParentEmail, ParentMobile, ParentHome, ParentAddress, ParentUsername, parentID)
+        databaseQuery.updateParent(ParentTitle, ParentFName, ParentLName, ParentEmail, ParentMobile, ParentHome, ParentAddress, ParentUsername, parentID, parentObject)
             .then(function(data) {
                 res.send(data);
             })
