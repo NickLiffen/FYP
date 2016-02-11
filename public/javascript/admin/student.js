@@ -34,17 +34,114 @@ $(document).ready(function() {
           tableContent += '<td>' + concatName + '</td>';
           tableContent += '<td>' + this.Student_Email + '</td>';
           tableContent += '<td>' + this.Student_Year + '</td>';
-          tableContent += '<td><button type="button" id="' + this.Student_ID + '" class="btn btn-primary">Profile</button></td>';
-          tableContent += '<td><button type="button" id="' + this.Student_ID + '" class="btn btn-success">Update</button></td>';
-          tableContent += '<td><button type="button" id="' + this.Student_ID + '" class="btn btn-warning">Delete</button></td>';
+          tableContent += '<td><button type="button" id="' + this.Student_ID + '" value="Profile" class="btn btn-primary">Profile</button></td>';
+          tableContent += '<td><button type="button" id="' + this.Student_ID + '" value="Update" class="btn btn-success">Update</button></td>';
+          tableContent += '<td><button type="button" id="' + this.Student_ID + '" value="Delete" class="btn btn-warning" data-toggle="modal" data-target="#confirm-delete">Delete</button></td>';
           tableContent += '</tr>';
       });
 
       // Inject the whole content string into our existing HTML table
       $('#studentList table tbody').html(tableContent);
+
+
     });
 
+    $('#studentList').on('click', '.btn ', function() {
+        let studentID = this.id;
+        let buttonValue = $(this).attr("value");
 
+        if (buttonValue === "Profile") {
+            console.log("Im in Profile");
+        } else if (buttonValue === "Update") {
+            var $target = $('.hideUpdateStudentForm'),
+                $toggle = $(this);
+
+            $target.slideToggle(500, function() {
+                $toggle.text(($target.is(':visible') ? 'Hide' : 'Show') + ' Update');
+            });
+            console.log(studentID);
+            $.ajax({
+                url: `/studentt/${studentID}`,
+                type: 'GET',
+                success: function(result) {
+                  console.log(result);
+
+                    $('#studentTitleUpdate').val(result[0].Student_Title);
+                    $('#studentFNameUpdate').val(result[0].Student_Fname);
+                    $('#studentLNameUpdate').val(result[0].Student_Lname);
+                    $('#studentEmailUpdate').val(result[0].Student_Email);
+                    $('#studentYearUpdate').val(result[0].Student_Year);
+                    $('#studentUsernameUpdate').val(result[0].Student_Username);
+
+                    let parentInfo = result.splice(1,result.length);
+
+                    $.each(parentInfo, function(i, d) {
+                      $(`select option:contains("${d.Parent_Name}")`).prop('selected',true);
+                        $('#currentParent').append('<option value="' + d.Parent_ID + '">' + d.Parent_Name + '</option>');
+                    });
+                }
+            });
+
+            $("#showParent").click(function(){
+              var $target = $('#parentFieldset'),
+                  $toggle = $(this);
+
+              $target.slideToggle(500, function() {
+                  $toggle.text(($target.is(':visible') ? 'Hide' : 'Update') + ' Parent');
+              });
+             });
+
+            $('#updateStudentForm').submit(function() {
+                //Stop the Form from submiting automatically
+                event.preventDefault();
+                //Declaring varibales
+                let newStudent;
+                //Creating the new Teacher object will all information from the form
+                newStudent = {
+                    StudentTitle:     $('#updateStudentForm input#studentTitleUpdate').val(),
+                    StudentFName:     $('#updateStudentForm input#studentFNameUpdate').val(),
+                    StudentLName:     $('#updateStudentForm input#studentLNameUpdate').val(),
+                    StudentEmail:     $('#updateStudentForm input#studentEmailUpdate').val(),
+                    StudentYear:      $('#updateStudentForm input#studentYearUpdate').val(),
+                    StudentUsername:  $('#updateStudentForm input#studentUsernameUpdate').val(),
+                    Parent:           $('#parentPickerUpdate').val()
+                };
+
+                console.log(newStudent);
+                //Send off the AJAX Request to the /pupil route
+                $.ajax({
+                    type: 'PATCH',
+                    data: newStudent,
+                    url: `/student/${studentID}`,
+                    dataType: 'JSON'
+                }).done(function() {
+                    $('#updateStudentstatus').html("Student Update Okay");
+                });
+            });
+        } else if (buttonValue === "Delete") {
+            $('#confirm-delete').on('show.bs.modal', function() {
+                $('.debug-url').html("");
+                $("#confirmDelete").click(function() {
+                    $.ajax({
+                        url: `/student/${studentID}`,
+                        type: 'DELETE',
+                        success: function(result) {
+                            if (result[0].Student_ID) {
+                                $('.debug-url').html(` <strong>Couldn't delete Student!!!! Parent Username is assigned to this student:: ${result[0].Student_ID}. Please Unassign from Student.</strong>`);
+                            } else {
+                                console.log(result);
+                                $('#confirm-delete').modal('hide');
+                                $('#teacherstatus').html("Teacher Action Completed");
+                            }
+                        }
+                    });
+                });
+            });
+        } else {
+            console.log("Theres a Problem");
+        }
+
+    });
 
     //Load Parents into the input feild
     $.ajax({
@@ -61,6 +158,7 @@ $(document).ready(function() {
             let concatName = title + " ".concat(fName) + " ".concat(lName);
             //Append results to the select box.
             $('#parentPicker').append('<option value="' + d.Parent_ID + '">' + concatName + '</option>');
+            $('#parentPickerUpdate').append('<option value="' + d.Parent_ID + '">' + concatName + '</option>');
         });
     });
 

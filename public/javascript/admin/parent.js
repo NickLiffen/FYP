@@ -14,33 +14,30 @@ $(document).ready(function() {
 
     //AJAX function to go and collect information about all parents.
     $.ajax({
-      type: 'GET',
-      url: '/getParent',
-      dataType: 'JSON'
-    }).done(function(response){
-      console.log(response);
+        type: 'GET',
+        url: '/getParent',
+        dataType: 'JSON'
+    }).done(function(response) {
 
-      let tableContent = '';
+        let tableContent = '';
 
-      $.each(response, function(){
-
-          let title = this.Parent_Title;
-          let fName = this.Parent_Fname;
-          let lName = this.Parent_Lname;
-          let concatName = title + " ".concat(fName) + " ".concat(lName);
-
-          tableContent += '<tr>';
-          tableContent += '<th><span rel="' + this.Parent_ID + '" id="' + this.Parent_ID + '" scope="row"">' + this.Parent_ID + '</th>';
-          tableContent += '<td>' + concatName + '</td>';
-          tableContent += '<td>' + this.Parent_Email + '</td>';
-          tableContent += '<td><button type="button" id="' + this.Parent_ID + '" class="btn btn-primary">Profile</button></td>';
-          tableContent += '<td><button type="button" id="' + this.Parent_ID + '" class="btn btn-success">Update</button></td>';
-          tableContent += '<td><button type="button" id="' + this.Parent_ID + '" class="btn btn-warning">Delete</button></td>';
-          tableContent += '</tr>';
-      });
-
-      // Inject the whole content string into our existing HTML table
-      $('#ParentList table tbody').html(tableContent);
+        $.each(response, function() {
+            let title = this.Parent_Title;
+            let fName = this.Parent_Fname;
+            let lName = this.Parent_Lname;
+            let concatName = title + " ".concat(fName) + " ".concat(lName);
+            //Start Adding the data to our table.
+            tableContent += '<tr>';
+            tableContent += '<th><span rel="' + this.Parent_ID + '" id="' + this.Parent_ID + '" scope="row"">' + this.Parent_ID + '</th>';
+            tableContent += '<td>' + concatName + '</td>';
+            tableContent += '<td>' + this.Parent_Email + '</td>';
+            tableContent += '<td><button type="button" id="' + this.Parent_ID + '" value="Profile" class="btn btn-primary">Profile</button></td>';
+            tableContent += '<td><button type="button" id="' + this.Parent_ID + '" value="Update" class="btn btn-success">Update</button></td>';
+            tableContent += '<td><button type="button" id="' + this.Parent_ID + '" value="Delete" class="btn btn-warning" data-toggle="modal" data-target="#confirm-delete">Delete</button></td>';
+            tableContent += '</tr>';
+        });
+        // Inject the whole content string into our existing HTML table
+        $('#ParentList table tbody').html(tableContent);
     });
 
     //Load Students into the input feild
@@ -61,6 +58,88 @@ $(document).ready(function() {
         });
     });
 
+    $('#ParentList').on('click', '.btn ', function() {
+        let parentID = this.id;
+        let buttonValue = $(this).attr("value");
+
+        if (buttonValue === "Profile") {
+            console.log("Im in Profile");
+        } else if (buttonValue === "Update") {
+            var $target = $('.hideUpdateParentForm'),
+                $toggle = $(this);
+
+            $target.slideToggle(500, function() {
+                $toggle.text(($target.is(':visible') ? 'Hide' : 'Show') + ' Update');
+            });
+            console.log(parentID);
+            $.ajax({
+                url: `/parent/${parentID}`,
+                type: 'GET',
+                success: function(result) {
+                    console.log(result);
+                    $('#ParentTitleUpdate').val(result[0].Parent_Title);
+                    $('#ParentFNameUpdate').val(result[0].Parent_Fname);
+                    $('#ParentLNameUpdate').val(result[0].Parent_Lname);
+                    $('#ParentEmailUpdate').val(result[0].Parent_Email);
+                    $('#ParentMobileNumberUpdate').val(result[0].Parent_Mobile_Number);
+                    $('#ParentHomeNumberUpdate').val(result[0].Parent_Home_Number);
+                    $('#ParentUsernameUpdate').val(result[0].Parent_Username);
+                    $('#ParentAddressUpdate').val(result[0].Parent_Address);
+                }
+            });
+
+            $('#updateParentForm').submit(function() {
+                //Stop the Form from submiting automatically
+                event.preventDefault();
+                //Declaring varibales
+                let newParent;
+                //Creating the new Teacher object will all information from the form
+                newParent = {
+                    ParentTitle: $('#updateParentForm input#ParentTitleUpdate').val(),
+                    ParentFName: $('#updateParentForm input#ParentFNameUpdate').val(),
+                    ParentLName: $('#updateParentForm input#ParentLNameUpdate').val(),
+                    ParentEmail: $('#updateParentForm input#ParentEmailUpdate').val(),
+                    ParentMobile: $('#updateParentForm input#ParentMobileNumberUpdate').val(),
+                    ParentHome: $('#updateParentForm input#ParentHomeNumberUpdate').val(),
+                    ParentAddress: $('#updateParentForm input#ParentAddressUpdate').val(),
+                    ParentUsername: $('#updateParentForm input#ParentUsernameUpdate').val(),
+                };
+
+                //Send off the AJAX Request to the /pupil route
+                $.ajax({
+                    type: 'PATCH',
+                    data: newParent,
+                    url: `/parent/${parentID}`,
+                    dataType: 'JSON'
+                }).done(function() {
+                    $('#updateParentstatus').html("Teacher Update Okay");
+                });
+            });
+        } else if (buttonValue === "Delete") {
+            $('#confirm-delete').on('show.bs.modal', function() {
+                $('.debug-url').html("");
+                $("#confirmDelete").click(function() {
+                    $.ajax({
+                        url: `/teacher/${parentID}`,
+                        type: 'DELETE',
+                        success: function(result) {
+                            if (result[0].Student_ID) {
+                                $('.debug-url').html(` <strong>Couldn't delete Parent!!!! Parent Username is assigned to this student:: ${result[0].Student_ID}. Please Unassign from Student.</strong>`);
+                            } else {
+                                console.log(result);
+                                $('#confirm-delete').modal('hide');
+                                $('#teacherstatus').html("Teacher Action Completed");
+                            }
+                        }
+                    });
+                });
+            });
+        } else {
+            console.log("Theres a Problem");
+        }
+
+    });
+
     $('#addParentForm').submit(function() {
         //Stop the Form from submiting automatically
         event.preventDefault();
@@ -68,15 +147,15 @@ $(document).ready(function() {
         let newParent;
         //Creating the new Parent object will all information from the form
         newParent = {
-            Parent_Title:         $('#addParentForm input#ParentTitle').val(),
-            Parent_Fname:         $('#addParentForm input#ParentFName').val(),
-            Parent_Lname:         $('#addParentForm input#ParentLName').val(),
-            Parent_Email:         $('#addParentForm input#ParentEmail').val(),
+            Parent_Title: $('#addParentForm input#ParentTitle').val(),
+            Parent_Fname: $('#addParentForm input#ParentFName').val(),
+            Parent_Lname: $('#addParentForm input#ParentLName').val(),
+            Parent_Email: $('#addParentForm input#ParentEmail').val(),
             Parent_Mobile_Number: $('#addParentForm input#ParentMobileNumber').val(),
-            Parent_Home_Number:   $('#addParentForm input#ParentHomeNumber').val(),
-            Parent_Address:       $('#addParentForm input#ParentAddress').val(),
-            Parent_Username:      $('#addParentForm input#ParentUsername').val(),
-            Parent_Password:      $('#addParentForm input#ParentPassword').val(),
+            Parent_Home_Number: $('#addParentForm input#ParentHomeNumber').val(),
+            Parent_Address: $('#addParentForm input#ParentAddress').val(),
+            Parent_Username: $('#addParentForm input#ParentUsername').val(),
+            Parent_Password: $('#addParentForm input#ParentPassword').val(),
             Role: "Parent"
         };
 
@@ -99,7 +178,7 @@ $(document).ready(function() {
             url: '/parent',
             dataType: 'JSON'
         }).done(function(response) {
-          console.log("Were back!!" + response);
+            console.log("Were back!!" + response);
             //Do nothing for the time being
             $('#addParentstatus').html("Parent Created Okay" + response);
         });

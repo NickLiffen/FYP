@@ -67,24 +67,52 @@ module.exports = {
         });
     },
 
-    updateStudent: function(Title, Fname, Lname, Email, Year, Username, Password, ID){
-
+    updateStudent: function(Title, Fname, Lname, Email, Year, Username, ID, newUser){
       return new Promise(function(resolve, reject) {
-          //Do a cheeky update query to my database to update the users profile.
-          connection.query('UPDATE Student SET Student_Title = ?, Student_Fname = ?, Student_Lname = ?, Student_Email = ?, Student_Year = ?, Student_Username = ?, Student_Password = ? WHERE Student_ID = ?', [Title, Fname, Lname, Email, Year, Username, Password, ID], function(err, results) {
-              //If error with SQL Query throw error to console
-              if (err) {
-                  console.log("Problem Updating User's Profile: " + err);
-                  reject(Error(err));
+      let parent, output, parentObjectLength, sqlStatement;
+      //Extracts the parent part of the Object and stores it in the parent variable
+      if (newUser.Parent) {
+          parent = newUser.Parent;
+          delete newUser.Parent;
+      }
+      //Adding the new student to the database
+      connection.query('UPDATE Student SET Student_Title = ?, Student_Fname = ?, Student_Lname = ?, Student_Email = ?, Student_Year = ?, Student_Username = ? WHERE Student_ID = ?', [Title, Fname, Lname, Email, Year, Username, ID], function(err) {
+          //If error inserting student to database throw error.
+          if (err) {
+              console.log("Problem Updating User's Profile: " + err);
+              reject(Error(err));
+          }
+          else {
+          connection.query(`DELETE FROM Student_has_Parent WHERE Student_Student_ID = ${ID};`, function(err, results) {
+            console.log("Delete Results", results);
+            if (err) {
+                console.log("Problem Updating User's Profile: " + err);
+                reject(Error(err));
+            }
+            else {
+            //Loops through the Parent Array and pushed the Parent_ID to the Student_ID.
+                parentObjectLength = parent.length;
+                  output=[];
+                for (var i = 0; i < parent.length; i++) {
+                    output.push([ID, parent[i]]);
+                }
+                //Prepares a SQL statement for inserting student and parent ID to the Student_has_Parent table.
+                sqlStatement = "INSERT INTO Student_has_Parent (Student_Student_ID, Parent_Parent_ID) VALUES ?";
+                connection.query(sqlStatement, [output], function(err, result) {
+                    if (err) {
+                        console.log("Problem Adding to Parents_Has_Student table: " + err);
+                        reject(Error(err));
+                    }
+                    resolve(result);
+                });
               }
-              console.log("Updated the users profile successfully", results);
-              resolve(results);
+          });
+        }
           });
       });
     },
 
     updateClass: function(Level, StartTime, EndTime, Subject, Room, Teacher, ID){
-      console.log(Level, StartTime, EndTime, Subject, Room, Teacher, ID);
       return new Promise(function(resolve, reject) {
           //Do a cheeky update query to my database to update the users profile.
           connection.query('UPDATE Class SET Class_Level = ?, Class_Start_Timestamp = ?, Class_End_Timestamp = ?, Subject_ID = ?, Room_ID = ?, Teacher_ID = ? WHERE Class_ID = ?', [Level, StartTime, EndTime, Subject, Room, Teacher, ID], function(err, results) {
@@ -171,10 +199,10 @@ module.exports = {
       });
     },
 
-    updateParent: function(Title, Fname, Lname, Email, Mobile_Number, Home_Number, Address, Username, Password, ID){
+    updateParent: function(Title, Fname, Lname, Email, Mobile_Number, Home_Number, Address, Username, ID){
       return new Promise(function(resolve, reject) {
           //Do a cheeky update query to my database to update the users profile.
-          connection.query('UPDATE Parent SET Parent_Title = ?, Parent_Fname = ?, Parent_Lname = ?, Parent_Email = ?, Parent_Mobile_Number = ?, Parent_Home_Number = ?, Parent_Address = ?, Parent_Username = ?, Parent_Password = ? WHERE Parent_ID = ?', [Title, Fname, Lname, Email, Mobile_Number, Home_Number, Address, Username, Password, ID], function(err, results) {
+          connection.query('UPDATE Parent SET Parent_Title = ?, Parent_Fname = ?, Parent_Lname = ?, Parent_Email = ?, Parent_Mobile_Number = ?, Parent_Home_Number = ?, Parent_Address = ?, Parent_Username = ? WHERE Parent_ID = ?', [Title, Fname, Lname, Email, Mobile_Number, Home_Number, Address, Username, ID], function(err, results) {
               //If error with SQL Query throw error to console
               if (err) {
                   console.log("Problem Updating Parents Profile: " + err);
@@ -204,6 +232,47 @@ module.exports = {
     getIndividualSubject: function(ID){
       return new Promise(function(resolve, reject) {
           connection.query(`SELECT Subject_ID, Subject_Name, Subject_Description FROM Subject WHERE Subject_ID = ${ID}`, function(err, results) {
+              //If error reject the promise.
+              if (err) {
+                  console.log(err);
+                  reject(Error(err));
+              } else {
+                  console.log("Made it");
+                  resolve(results);
+              }
+          });
+      });
+    },
+
+    getIndividualStudent: function(ID){
+      return new Promise(function(resolve, reject) {
+          connection.query(`SELECT * FROM Student WHERE Student_ID = ${ID}`, function(err, results) {
+              //If error reject the promise.
+              if (err) {
+                  console.log(err);
+                  reject(Error(err));
+              } else {
+
+                const studentID = results[0].Student_ID;
+
+                connection.query(`SELECT Parent.Parent_ID, CONCAT( Parent.Parent_Fname, ' ' , Parent.Parent_Lname)  AS 'Parent_Name' FROM Parent, Student, Student_has_Parent WHERE Student_has_Parent.Student_Student_ID = Student.Student_ID AND Student_has_Parent.Parent_Parent_ID = Parent.Parent_ID AND LOWER( Student_ID ) = ${studentID}`, function(err, result) {
+                  if (err) {
+                      console.log(err);
+                      reject(Error(err));
+                  } else {
+                    const newArray = results.concat(result);
+                    resolve(newArray);
+                  }
+
+                });
+              }
+          });
+      });
+    },
+
+    getIndividualParent: function(ID){
+      return new Promise(function(resolve, reject) {
+          connection.query(`SELECT * FROM Parent WHERE Parent_ID = ${ID}`, function(err, results) {
               //If error reject the promise.
               if (err) {
                   console.log(err);
@@ -661,13 +730,11 @@ module.exports = {
                         console.log("Problem Adding to Parents_Has_Student table: " + err);
                         reject(Error(err));
                     }
-
                     resolve(results);
                 });
 
 
             } else {
-              console.log("We should be here");
                 let sqlStatement = "INSERT INTO Attendance (Attendance_Status, Attendance_Remarks, Class_ID, Student_ID) VALUES ?";
                 connection.query(sqlStatement, [attendanceInfo], function(err, results) {
                     if (err) {

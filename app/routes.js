@@ -198,6 +198,19 @@ module.exports = function(app, passport) {
             });
     });
 
+    app.get('/studentt/:id', function(req, res) {
+      let studentID = req.params.id;
+      databaseQuery.getIndividualStudent(studentID)
+          .then(function(data) {
+              res.send(data);
+          })
+          .catch(function(e) {
+              res.status(500, {
+                  error: e
+              });
+          });
+    });
+
     app.get('/student/:id', function(req, res) {
         let studentID = req.params.id;
         databaseQuery.getStudentProfile(studentID)
@@ -239,8 +252,17 @@ module.exports = function(app, passport) {
     });
 
     app.patch('/student/:id', function(req, res) {
-        let studentID = req.params.id;
-        databaseQuery.updateStudent(studentID)
+      console.log("ROUTES");
+        let studentID       = req.params.id;
+        let studentObject   = req.body;
+        let StudentTitle    = req.body.StudentTitle;
+        let StudentFName    = req.body.StudentFName;
+        let StudentLName    = req.body.StudentLName;
+        let StudentEmail    = req.body.StudentEmail;
+        let StudentYear     = req.body.StudentYear;
+        let StudentUsername = req.body.StudentUsername;
+        console.log(studentObject);
+        databaseQuery.updateStudent(StudentTitle, StudentFName, StudentLName, StudentEmail, StudentYear, StudentUsername, studentID, studentObject)
             .then(function(data) {
                 res.send(data);
             })
@@ -263,6 +285,7 @@ module.exports = function(app, passport) {
                 });
             });
     });
+
 
     app.get('/teacher/:id', function(req, res) {
         let teacherID = req.params.id;
@@ -390,8 +413,18 @@ module.exports = function(app, passport) {
     });
 
     app.patch('/parent/:id', function(req, res) {
-        let parentID = req.params.id;
-        databaseQuery.updateParent(parentID)
+      console.log("WERE IN THIS ROUTE");
+        let parentID        = req.params.id;
+        let ParentTitle     = req.body.ParentTitle;
+        let ParentFName     = req.body.ParentFName;
+        let ParentLName     = req.body.ParentLName;
+        let ParentEmail     = req.body.ParentEmail;
+        let ParentMobile    = req.body.ParentMobile;
+        let ParentHome      = req.body.ParentHome;
+        let ParentAddress   = req.body.ParentAddress;
+        let ParentUsername  = req.body.ParentUsername;
+
+        databaseQuery.updateParent(ParentTitle, ParentFName, ParentLName, ParentEmail, ParentMobile, ParentHome, ParentAddress, ParentUsername, parentID)
             .then(function(data) {
                 res.send(data);
             })

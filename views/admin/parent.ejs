@@ -1,6 +1,5 @@
 <% include header %>
   <!-- End of Navigation Bar -->
-
   <div class="jumbotron text-center">
       <h1><span class="glyphicon glyphicon-home"></span> Parent Page</h1>
 
@@ -12,9 +11,28 @@
       <p>Your Options are Listed Below:</p>
   </div>
 
-  <div class="container">
+  <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
 
- </div>
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Confirm Delete</h4>
+                </div>
+
+                <div class="modal-body">
+                    <p>You are about to delete one track, this procedure is irreversible.</p>
+                    <p>Do you want to proceed?</p>
+                    <p class="debug-url"></p>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <a id='confirmDelete' class="btn btn-danger btn-ok">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
  <!-- Sends the View Parents and Add Parents navigation to the page -->
  <div class="btn-group btn-group-justified" role="group" aria-label="...">
@@ -27,6 +45,8 @@
  </div>
 
  <!-- Add a Parent Section -->
+ <div class="container">
+   <div class="row">
  <div class="hideAddParentForm">
  <section id='addParentForm'>
  <h2>Add Parent</h2>
@@ -81,8 +101,12 @@
  </form>
  </section>
  </div>
+ </div>
+ </div>
 
  <!-- View Parent's Section -->
+ <div class="container">
+   <div class="row">
  <div class="hideViewParentList">
  <section class='alignLeft' id='viewParents'>
  <!-- This is the DIV where all the dtudent data is going -->
@@ -102,6 +126,56 @@
    </div>
  </section>
  </div>
+  </div>
+   </div>
+
+   <!-- Add a Parent Section -->
+   <div class="container">
+     <div class="row">
+   <div class="hideUpdateParentForm" style="display:none;">
+   <section id='updateParentForm'>
+   <h2>Add Parent</h2>
+     <form id'updateParentForm' action="/pupil" method="post">
+     <fieldset class="form-group">
+         <label for="InputTitle">Parent Title</label>
+         <input type="text" name="ParentTitleUpdate" class="form-control" id="ParentTitleUpdate" placeholder="Enter Title" autofocus>
+     </fieldset>
+     <fieldset class="form-group">
+         <label for="InputFname">Parent First Name</label>
+         <input type="text" name="ParentFNameUpdate" class="form-control" id="ParentFNameUpdate" placeholder="Enter First Name">
+     </fieldset>
+     <fieldset class="form-group">
+         <label for="InputLname">Parent Last Name</label>
+         <input type="text" name="ParentLNameUpdate" class="form-control" id="ParentLNameUpdate" placeholder="Enter Last Name">
+     </fieldset>
+     <fieldset class="form-group">
+         <label for="InputEmail">Parent Email</label>
+         <input type="email" name="ParentEmailUpdate" class="form-control" id="ParentEmailUpdate" placeholder="Enter Email">
+     </fieldset>
+     <fieldset class="form-group">
+         <label for="InputMobilePhone">Parent Mobile Number</label>
+         <input type="text" name="ParentMobileNumberUpdate" class="form-control" id="ParentMobileNumberUpdate" placeholder="Enter Mobile Phone">
+     </fieldset>
+     <fieldset class="form-group">
+         <label for="InputHomePhone">Parent Home Number</label>
+         <input type="text" name="ParentHomeNumberUpdate" class="form-control" id="ParentHomeNumberUpdate" placeholder="Enter Home Phone">
+     </fieldset>
+     <fieldset class="form-group">
+         <label for="InputAddress">Parent Address</label>
+         <input type="text" name="ParentAddressUpdate" class="form-control" id="ParentAddressUpdate" placeholder="Enter Address">
+     </fieldset>
+     <fieldset class="form-group">
+         <label for="InputUsername">Parent Username</label>
+         <input type="text" name="ParentUsernameUpdate" class="form-control" id="ParentUsernameUpdate" placeholder="Enter Username">
+     </fieldset>
+     <p>Everything marked with a * is a mandatory field</p>
+     <button type="submit" id="update" name="update" class="btn btn-primary">Update</button>
+       <div id="updateParentstatus"></div>
+   </form>
+   </section>
+   </div>
+   </div>
+   </div>
  <script type="text/javascript" src="/javascript/admin/parent.js"></script>
 
 </body>

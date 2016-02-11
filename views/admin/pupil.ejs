@@ -12,6 +12,29 @@
       <div class="alert alert-danger"><%= message %></div>
   <% } %>
 
+  <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Confirm Delete</h4>
+                </div>
+
+                <div class="modal-body">
+                    <p>You are about to delete one track, this procedure is irreversible.</p>
+                    <p>Do you want to proceed?</p>
+                    <p class="debug-url"></p>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <a id='confirmDelete' class="btn btn-danger btn-ok">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
   <!-- Sends the View Parents and Add Parents navigation to the page -->
   <div class="btn-group btn-group-justified" role="group" aria-label="...">
     <div class="btn-group" role="group">
@@ -23,6 +46,8 @@
   </div>
 
 <!-- Add a Student Section -->
+<div class='container'>
+  <div class='row'>
 <div class="hideAddStudentForm">
 <section id='addStudentForm'>
   <h2>Add Student</h2>
@@ -69,8 +94,12 @@
   </form>
   </section>
 </div>
+</div>
+</div>
 
 <!-- View Student's Section -->
+<div class='container'>
+  <div class='row'>
 <div class="hideViewStudentList">
 <section class='alignLeft' id='viewStudents'>
   <!-- This is the DIV where all the dtudent data is going -->
@@ -90,6 +119,59 @@
       </table>
     </div>
 </section>
+</div>
+</div>
+</div>
+
+<div class='container'>
+  <div class='row'>
+<div class="hideUpdateStudentForm" style="display:none;">
+<section id='updateStudentForm'>
+  <h2>Update Student</h2>
+    <form id'updateStudentForm' action="/pupil" method="post">
+    <fieldset class="form-group">
+        <label for="InputTitle">Student Title</label>
+        <input type="text" name="studentTitleUpdate" class="form-control" id="studentTitleUpdate" placeholder="Enter Title" autofocus>
+    </fieldset>
+    <fieldset class="form-group">
+        <label for="InputFname">Student First Name</label>
+        <input type="text" name="studentFNameUpdate" class="form-control" id="studentFNameUpdate" placeholder="Enter First Name">
+    </fieldset>
+    <fieldset class="form-group">
+        <label for="InputLname">Student Last Name</label>
+        <input type="text" name="studentLNameUpdate" class="form-control" id="studentLNameUpdate" placeholder="Enter Last Name">
+    </fieldset>
+    <fieldset class="form-group">
+        <label for="InputEmail">Student Email</label>
+        <input type="email" name="studentEmailUpdate" class="form-control" id="studentEmailUpdate" placeholder="Enter Email">
+    </fieldset>
+    <fieldset class="form-group">
+        <label for="InputYear">Student Year</label>
+        <input type="text" name="studentYearUpdate" class="form-control" id="studentYearUpdate" placeholder="Enter Year">
+    </fieldset>
+    <fieldset class="form-group">
+        <label for="InputUsername">Student Username</label>
+        <input type="text" name="studentUsernameUpdate" class="form-control" id="studentUsernameUpdate" placeholder="Enter Username">
+    </fieldset>
+
+    <fieldset class="form-group">
+      <label for="currenParent">Current Parents</label>
+      <select class="form-control" id="currentParent" multiple disabled></select>
+      <button type="button" id="showParent" value="Profile" class="btn btn-primary">Change Parents</button>
+        <fieldset id='parentFieldset' class="form-group" style="display:none;">
+        <label for="sel2">Assign Parents?</label>
+        <select class="form-control" id="parentPickerUpdate" multiple>
+        </select>
+    </fieldset>
+    </fieldset>
+
+    <p>Everything marked with a * is a mandatory field</p>
+    <button type="submit" id="update" name="update" class="btn btn-primary">Update</button>
+      <div id="updateStudentstatus"></div>
+  </form>
+  </section>
+</div>
+</div>
 </div>
 <script type="text/javascript" src="/javascript/admin/student.js"></script>
 </body>

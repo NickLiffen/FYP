@@ -359,6 +359,8 @@ LIMIT 0 , 100;
 
 -----GET STUDENT PARENT INFORMATION-----
 SELECT CONCAT( Student.Student_Fname, ' ' , Student.Student_Lname)  AS 'Student_Name', Student.Student_Email, Student.Student_Year, Student.Student_Username FROM Parent, Student, Student_has_Parent WHERE Student_has_Parent.Student_Student_ID = Student.Student_ID AND Student_has_Parent.Parent_Parent_ID = Parent.Parent_ID AND LOWER( Parent_ID ) LIKE  '1'
+-----GET Parent Student INFORMATION-----
+SELECT CONCAT( Parent.Parent_Fname, ' ' , Parent.Parent_Lname)  AS 'Parent_Name', Parent.Parent_Email, Parent.Parent_Username FROM Parent, Student, Student_has_Parent WHERE Student_has_Parent.Student_Student_ID = Student.Student_ID AND Student_has_Parent.Parent_Parent_ID = Parent.Parent_ID AND LOWER( Parent_ID ) LIKE  '1'
 
 
 SELECT LOWER(  Subject.Subject_Name ) AS 'Subject_Name', LOWER(  Attendance.Attendance_Status )AS 'Attendance_Info', COUNT(  Attendance.Attendance_Status) AS 'Attendance_Count' FROM Student, Attendance, Class, Subject WHERE Attendance.Class_ID = Class.Class_ID AND Attendance.Student_ID = Student.Student_ID AND Class.Subject_ID = Subject.Subject_ID AND LOWER( Student.Student_ID ) = '4' AND LOWER( Subject.Subject_ID ) = '1' GROUP BY Subject.Subject_Name, Attendance.Attendance_Status;
