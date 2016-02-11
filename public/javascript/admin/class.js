@@ -96,6 +96,13 @@ $(document).ready(function() {
                   $(`select option:contains("${result[0].Room_Name}")`).prop('selected',true);
                   $(`select option:contains("${concatName}")`).prop('selected',true);
 
+                  let studentInfo = result.splice(1,result.length);
+
+                  $.each(studentInfo, function(i, d) {
+                    $(`select option:contains("${d.Student_Name}")`).prop('selected',true);
+                      $('#currentStudent').append('<option value="' + d.Student_ID + '">' + d.Student_Name + '</option>');
+                  });
+
                  }
                });
 
@@ -107,6 +114,16 @@ $(document).ready(function() {
                      $toggle.text(($target.is(':visible') ? 'Hide' : 'Update') + ' Subject');
                  });
                 });
+
+                $("#showStudent").click(function(){
+                  var $target = $('#studentFieldset'),
+                      $toggle = $(this);
+
+                  $target.slideToggle(500, function() {
+                      $toggle.text(($target.is(':visible') ? 'Hide' : 'Update') + ' Student');
+                  });
+                 });
+
                 $("#showRoom").click(function(){
                   var $target = $('#roomFieldset'),
                       $toggle = $(this);
@@ -147,6 +164,7 @@ $(document).ready(function() {
                      Subject_ID:              $('#subjectPickerUpdate').val(),
                      Room_ID:                 $('#roomPickerUpdate').val(),
                      Teacher_ID:              $('#teacherPickerUpdate').val(),
+                     Student:                 $('#studentPickerUpdate').val()
                  };
                  console.log(newClass);
                  $.ajax({

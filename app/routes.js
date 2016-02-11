@@ -368,6 +368,7 @@ module.exports = function(app, passport) {
 
     app.patch('/class/:id', function(req, res) {
         let classID = req.params.id;
+        let classObject = req.body;
         let Class_Level = req.body.Class_Level;
         let Class_Start_Timestamp = req.body.Class_Start_Timestamp;
         let Class_End_Timestamp = req.body.Class_End_Timestamp;
@@ -375,7 +376,7 @@ module.exports = function(app, passport) {
         let Room_ID = req.body.Room_ID;
         let Teacher_ID = req.body.Teacher_ID;
 
-        databaseQuery.updateClass(Class_Level, Class_Start_Timestamp, Class_End_Timestamp, Subject_ID, Room_ID, Teacher_ID, classID)
+        databaseQuery.updateClass(Class_Level, Class_Start_Timestamp, Class_End_Timestamp, Subject_ID, Room_ID, Teacher_ID, classID, classObject)
             .then(function(data) {
                 res.send(data);
             })

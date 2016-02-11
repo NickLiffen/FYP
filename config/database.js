@@ -86,7 +86,7 @@ module.exports = {
           connection.query(`DELETE FROM Student_has_Parent WHERE Student_Student_ID = ${ID};`, function(err, results) {
             console.log("Delete Results", results);
             if (err) {
-                console.log("Problem Updating User's Profile: " + err);
+                console.log("Problem Deleting Class: " + err);
                 reject(Error(err));
             }
             else {
@@ -112,17 +112,50 @@ module.exports = {
       });
     },
 
-    updateClass: function(Level, StartTime, EndTime, Subject, Room, Teacher, ID){
+    updateClass: function(Level, StartTime, EndTime, Subject, Room, Teacher, ID, newUser){
       return new Promise(function(resolve, reject) {
+        let student, output, studentObjectLength, sqlStatement;
+        //Extracts the parent part of the Object and stores it in the parent variable
+        if (newUser.Student) {
+            student = newUser.Student;
+            delete newUser.Student;
+        }
           //Do a cheeky update query to my database to update the users profile.
           connection.query('UPDATE Class SET Class_Level = ?, Class_Start_Timestamp = ?, Class_End_Timestamp = ?, Subject_ID = ?, Room_ID = ?, Teacher_ID = ? WHERE Class_ID = ?', [Level, StartTime, EndTime, Subject, Room, Teacher, ID], function(err, results) {
               //If error with SQL Query throw error to console
+              console.log(results);
               if (err) {
                   console.log("Something fucked up man :( ): " + err);
                   reject(Error(err));
               }
-              console.log("Updated the class  successfully", results);
-              resolve(results);
+              else {
+              connection.query(`DELETE FROM Student_has_Class WHERE Class_ID = ${ID};`, function(err, results) {
+                console.log("Delete Results", results);
+                if (err) {
+                    console.log("Problem Deleting Class: " + err);
+                    reject(Error(err));
+                }
+                else {
+                //Loops through the Parent Array and pushed the Parent_ID to the Student_ID.
+                    studentObjectLength = student.length;
+                      output=[];
+                    for (var i = 0; i < student.length; i++) {
+                        output.push([student[i], ID]);
+                    }
+                    console.log(output);
+                    //Prepares a SQL statement for inserting student and parent ID to the Student_has_Parent table.
+                    sqlStatement = "INSERT INTO Student_has_Class (Student_ID, Class_ID) VALUES ?";
+                    connection.query(sqlStatement, [output], function(err, result) {
+                        if (err) {
+                            console.log("Problem Adding to Student_Has_Class table: " + err);
+                            reject(Error(err));
+                        }
+                        resolve(result);
+                    });
+                  }
+              });
+            }
+
           });
       });
     },
@@ -308,8 +341,19 @@ module.exports = {
                   console.log(err);
                   reject(Error(err));
               } else {
-                console.log(results);
-                  resolve(results);
+
+                const classID = results[0].Class_ID;
+
+                connection.query(`Select Student.Student_ID, CONCAT( Student.Student_Fname, ' ' , Student.Student_Lname)  AS 'Student_Name' FROM Student, Class, Student_Has_Class WHERE Student_Has_Class.Student_ID = Student.Student_ID AND Student_Has_Class.Class_ID = Class.Class_ID AND Class.Class_ID = ${classID}`, function(err, result) {
+                  if (err) {
+                      console.log(err);
+                      reject(Error(err));
+                  } else {
+                    const newArray = results.concat(result);
+                    resolve(newArray);
+                  }
+
+                });
               }
           });
       });
