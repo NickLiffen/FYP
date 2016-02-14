@@ -120,9 +120,10 @@ $(document).ready(function() {
                 $('.debug-url').html("");
                 $("#confirmDelete").click(function() {
                     $.ajax({
-                        url: `/teacher/${parentID}`,
+                        url: `/parent/${parentID}`,
                         type: 'DELETE',
                         success: function(result) {
+                          console.log(result);
                             if (result[0].Student_ID) {
                                 $('.debug-url').html(` <strong>Couldn't delete Parent!!!! Parent Username is assigned to this student:: ${result[0].Student_ID}. Please Unassign from Student.</strong>`);
                             } else {

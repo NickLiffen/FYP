@@ -173,13 +173,16 @@ div.dataTables_wrapper {
   {margin-top:20px;
   }
 
-
+.strong{
+  font-weight: bold;
+}
 
 .attendanceHeaders{
   display: inline-block;
   padding-right: 20px;
 }
 
+UPDATE Class SET Active='false' WHERE Class_ID=1;
 
 .stylish-input-group .input-group-addon{
     background: white !important;

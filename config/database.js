@@ -162,14 +162,14 @@ module.exports = {
     deleteStudent: function(ID){
       return new Promise(function(resolve, reject) {
           //Do a cheeky update query to my database to update the users profile.
-          connection.query(`DELETE FROM Student WHERE Student_ID = ${ID}`, function(err, results) {
+          connection.query(`UPDATE Student SET Active='false' WHERE Student_ID= ${ID}`, function(err, results) {
               //If error with SQL Query throw error to console
               if (err) {
                   console.log("Problem Deleting Students Profile: " + err);
                   reject(Error(err));
               }
               else{
-              console.log("Updated the users profile successfully", results);
+              console.log("Deleted the students profile successfully", results);
               resolve(results);
             }
           });
@@ -219,7 +219,7 @@ module.exports = {
     deleteClass: function(ID){
       return new Promise(function(resolve, reject) {
           //Do a cheeky update query to my database to update the users profile.
-          connection.query(`DELETE FROM Class WHERE Class_ID = ${ID}`, function(err, results) {
+          connection.query(`UPDATE Class SET Active='false' WHERE Class_ID= ${ID}`, function(err, results) {
               //If error with SQL Query throw error to console
               if (err) {
                   console.log("Problem Deleting Class Profile: " + err);
@@ -280,13 +280,25 @@ module.exports = {
       return new Promise(function(resolve, reject) {
           //Do a cheeky update query to my database to update the users profile.
           connection.query(`DELETE FROM Parent WHERE Parent_ID = ${ID}`, function(err, results) {
+            console.log(results);
               //If error with SQL Query throw error to console
               if (err) {
-                  console.log("Problem Deleting Parents Profile: " + err);
-                  reject(Error(err));
+                  connection.query(`SELECT DISTINCT Student.Student_ID FROM Student, Parent, Student_Has_Parent WHERE Student_Has_Parent.Student_Student_ID = Student.Student_ID AND Student_Has_Parent.Parent_Parent_ID = Parent.Parent_ID AND Parent.Parent_ID = ${ID}`, function(err, result) {
+                    console.log("Results" + result);
+                    if(err){
+                      console.log(err);
+                      reject(err);
+                    }
+                    else{
+                      console.log("Were about to resolve the results" + result);
+                      resolve(result);
+                    }
+                  });
               }
+              else{
               console.log("Deleted the Parents profile successfully", results);
               resolve(results);
+            }
           });
       });
     },
@@ -501,7 +513,7 @@ module.exports = {
     getStudent: function() {
         //Return a new promise
         return new Promise(function(resolve, reject) {
-            connection.query('SELECT Student_ID, Student_Title, Student_Fname, Student_Lname, Student_Email, Student_Year, Student_Username FROM Student', function(err, results) {
+            connection.query(`SELECT Student_ID, Student_Title, Student_Fname, Student_Lname, Student_Email, Student_Year, Student_Username FROM Student WHERE Active='true'`, function(err, results) {
                 //If error reject the promise.
                 if (err) {
                     reject(Error(err));
@@ -674,7 +686,7 @@ module.exports = {
 
     getClass: function() {
         return new Promise(function(resolve, reject) {
-            connection.query('SELECT Class.Class_ID, Class.Class_Start_Timestamp, Class.Class_End_Timestamp, Class.Class_Level, Subject.Subject_Name, Room.Room_Name, Teacher.Teacher_Title, Teacher.Teacher_Fname, Teacher.Teacher_Lname FROM Class, Subject, Room, Teacher WHERE Class.Subject_ID = Subject.Subject_ID AND Class.Room_ID = Room.Room_ID AND Class.Teacher_ID = Teacher.Teacher_ID', function(err, results) {
+            connection.query(`SELECT Class.Class_ID, Class.Class_Start_Timestamp, Class.Class_End_Timestamp, Class.Class_Level, Subject.Subject_Name, Room.Room_Name, Teacher.Teacher_Title, Teacher.Teacher_Fname, Teacher.Teacher_Lname FROM Class, Subject, Room, Teacher WHERE Class.Subject_ID = Subject.Subject_ID AND Class.Room_ID = Room.Room_ID AND Class.Teacher_ID = Teacher.Teacher_ID AND Class.Active = 'true'`, function(err, results) {
                 if (err) {
                     console.log("Problem getting class information. Check getClass Function. database.js: " + err);
                     reject(Error(err));

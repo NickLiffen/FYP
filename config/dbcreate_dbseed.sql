@@ -7,6 +7,15 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ALLOW_INVALID_DATES';
 
+
+
+SELECT DISTINCT Student.Student_ID
+  FROM Student, Parent, Student_Has_Parent
+WHERE Student_Has_Parent.Student_Student_ID = Student.Student_ID
+  AND Student_Has_Parent.Parent_Parent_ID = Parent.Parent_ID
+  AND Parent.Parent_ID = 1;
+
+
 -- -----------------------------------------------------
 -- Schema SchoolDatabase
 -- -----------------------------------------------------

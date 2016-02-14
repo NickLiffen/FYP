@@ -47,7 +47,7 @@ $(document).ready(function() {
           tableContent += '<td>' + concatName + '</td>';
           tableContent += '<td><button type="button" id="' + this.Class_ID + '" value="Profile" class="btn btn-primary">Profile</button></td>';
           tableContent += '<td><button type="button" id="' + this.Class_ID + '" value="Update" class="btn btn-success">Update</button></td>';
-          tableContent += '<td><button type="button" id="' + this.Class_ID + '" value="Delete" class="btn btn-warning" data-toggle="modal" data-target="#confirm-delete" >Delete</button></td>';
+          tableContent += '<td><button type="button" id="' + this.Class_ID + '" value="Discard" class="btn btn-warning" data-toggle="modal" data-target="#confirm-delete">Discard</button></td>';
           tableContent += '</tr>';
       });
 
@@ -177,7 +177,7 @@ $(document).ready(function() {
                  });
                });
       }
-      else if(buttonValue === "Delete"){
+      else if(buttonValue === "Discard"){
            $('#confirm-delete').on('show.bs.modal', function() {
              $('.debug-url').html("");
              $("#confirmDelete").click(function(){
@@ -185,7 +185,13 @@ $(document).ready(function() {
                         url: `/class/${ClassID}`,
                         type: 'DELETE',
                         success: function(result) {
-                          console.log(result);
+                          if(!result[0]){
+                            $('#confirm-delete').modal('hide');
+                            $('#updateClassstatus').html("Class Action Completed");
+                          }
+                          else{
+                            $('.debug-url').html(` <strong>Couldn't delete class!!!! Room is in use in Class: ${result[0].Class_ID}. Please change room for this class.</strong>`);
+                          }
                   }
                 });
               });

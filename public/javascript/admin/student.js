@@ -36,7 +36,7 @@ $(document).ready(function() {
           tableContent += '<td>' + this.Student_Year + '</td>';
           tableContent += '<td><button type="button" id="' + this.Student_ID + '" value="Profile" class="btn btn-primary">Profile</button></td>';
           tableContent += '<td><button type="button" id="' + this.Student_ID + '" value="Update" class="btn btn-success">Update</button></td>';
-          tableContent += '<td><button type="button" id="' + this.Student_ID + '" value="Delete" class="btn btn-warning" data-toggle="modal" data-target="#confirm-delete">Delete</button></td>';
+          tableContent += '<td><button type="button" id="' + this.Student_ID + '" value="Discard" class="btn btn-warning" data-toggle="modal" data-target="#confirm-delete">Discard</button></td>';
           tableContent += '</tr>';
       });
 
@@ -118,7 +118,7 @@ $(document).ready(function() {
                     $('#updateStudentstatus').html("Student Update Okay");
                 });
             });
-        } else if (buttonValue === "Delete") {
+        } else if (buttonValue === "Discard") {
             $('#confirm-delete').on('show.bs.modal', function() {
                 $('.debug-url').html("");
                 $("#confirmDelete").click(function() {
@@ -126,13 +126,13 @@ $(document).ready(function() {
                         url: `/student/${studentID}`,
                         type: 'DELETE',
                         success: function(result) {
-                            if (result[0].Student_ID) {
-                                $('.debug-url').html(` <strong>Couldn't delete Student!!!! Parent Username is assigned to this student:: ${result[0].Student_ID}. Please Unassign from Student.</strong>`);
-                            } else {
-                                console.log(result);
-                                $('#confirm-delete').modal('hide');
-                                $('#teacherstatus').html("Teacher Action Completed");
-                            }
+                          if(!result[0]){
+                            $('#confirm-delete').modal('hide');
+                            $('#updateStudentstatus').html("Student Action Completed");
+                          }
+                          else{
+                            $('.debug-url').html(` <strong>Couldn't delete class!!!! Room is in use in Class: ${result[0].Class_ID}. Please change room for this class.</strong>`);
+                          }
                         }
                     });
                 });
