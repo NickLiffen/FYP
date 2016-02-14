@@ -7,15 +7,6 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ALLOW_INVALID_DATES';
 
-
-
-SELECT DISTINCT Student.Student_ID
-  FROM Student, Parent, Student_Has_Parent
-WHERE Student_Has_Parent.Student_Student_ID = Student.Student_ID
-  AND Student_Has_Parent.Parent_Parent_ID = Parent.Parent_ID
-  AND Parent.Parent_ID = 1;
-
-
 -- -----------------------------------------------------
 -- Schema SchoolDatabase
 -- -----------------------------------------------------
@@ -83,6 +74,7 @@ CREATE TABLE IF NOT EXISTS `SchoolDatabase`.`Student` (
   `Student_Username` VARCHAR(45) NULL,
   `Student_Password` VARCHAR(300) NULL,
   `Role` VARCHAR(45) NOT NULL,
+  `Active` VARCHAR(10) NOT NULL DEFAULT 'True',
   PRIMARY KEY (`Student_ID`),
   UNIQUE INDEX `Student_ID_UNIQUE` (`Student_ID` ASC))
 ENGINE = InnoDB;
@@ -129,6 +121,7 @@ CREATE TABLE IF NOT EXISTS `SchoolDatabase`.`Class` (
   `Subject_ID` INT NOT NULL,
   `Room_ID` INT NOT NULL,
   `Teacher_ID` INT NOT NULL,
+  `Active` VARCHAR(10) NOT NULL DEFAULT 'True',
   PRIMARY KEY (`Class_ID`, `Subject_ID`, `Room_ID`, `Teacher_ID`),
   INDEX `fk_Class_Subject1_idx` (`Subject_ID` ASC),
   INDEX `fk_Class_Room1_idx` (`Room_ID` ASC),
@@ -360,11 +353,31 @@ LIMIT 0 , 10;
 
 SELECT Class.Class_ID AS 'id', Subject.Subject_Name AS 'title', CONCAT( Class.Class_Date, ' ' , Class.Class_Start_Time) AS 'start', CONCAT( Class.Class_Date, ' ' , Class.Class_End_Time) AS 'end' FROM Student, Student_has_Class, Subject, Class, Room WHERE Student_has_Class.Student_ID = Student.Student_ID AND Student_has_Class.Class_ID = Class.Class_ID AND Class.Subject_ID = Subject.Subject_ID AND Class.Room_ID = Room.Room_ID AND Student.Student_ID LIKE 1;
 
+---ADMIN HOME PAGE
 
------GET ATTENDNACE INFORMATION-----
-SELECT LOWER(  Attendance.Attendance_Status )AS 'Attendance_Info', COUNT(  Attendance.Attendance_Status) AS 'Attendance_Count' FROM Student, Attendance, Class, Subject WHERE Attendance.Class_ID = Class.Class_ID AND Attendance.Student_ID = Student.Student_ID AND Class.Subject_ID = Subject.Subject_ID AND LOWER( Student_Fname ) LIKE  'Nick' AND LOWER( Student_Lname ) LIKE 'Liffen' GROUP BY Attendance.Attendance_Status;
+-----GET ATTENDNACE INFORMATION / ABSENT ACROSS ALL YEARS-----
+SELECT LOWER(  Student.Student_Year ) AS 'Student Year', COUNT(  Attendance.Attendance_Status) AS 'Attendance_Count' FROM Student, Attendance, Class, Subject WHERE Attendance.Class_ID = Class.Class_ID AND Attendance.Student_ID = Student.Student_ID AND Class.Subject_ID = Subject.Subject_ID AND Attendance.Attendance_Status = 'absent' GROUP BY Student.Student_Year;
 
-LIMIT 0 , 100;
+-----Number of Students Across All Years-----
+SELECT LOWER( Student_Year ) AS 'Student Year', COUNT( Student_ID ) AS 'Number Of Students' FROM Student GROUP BY Student_Year;
+
+---3 most popular people how truant-----
+SELECT CONCAT( Student.Student_Fname, ' ' , Student.Student_Lname)  AS 'Student_Name', COUNT(  Attendance.Attendance_Status) AS 'Attendance_Count' FROM Student, Attendance, Class WHERE Attendance.Student_ID = Student.Student_ID AND Attendance.Class_ID = Class.Class_ID AND Attendance.Attendance_Status = 'absent' GROUP BY Student_Name ORDER BY Attendance_Count DESC LIMIT 3
+
+--GET ATTENDANCE INFORMATION ACROSS ALL SUBJECTS
+SELECT LOWER(  Subject.Subject_Name ) AS 'Subject Name', COUNT(  Attendance.Attendance_Status) AS 'Attendance_Count' FROM Student, Attendance, Class, Subject WHERE Attendance.Class_ID = Class.Class_ID AND Attendance.Student_ID = Student.Student_ID AND Class.Subject_ID = Subject.Subject_ID AND Attendance.Attendance_Status = 'absent' GROUP BY Subject.Subject_Name;
+
+
+---TEACHER HOME PAGE
+
+--Gets a teachers current class and if the teacher has taken register for that class --
+SELECT LOWER( Class.Class_ID ) AS 'Class_ID', LOWER(  Subject.Subject_Name ) AS 'Subject Name', LOWER(  Class.Class_Start_Timestamp ) AS 'Class Start Time', LOWER(  Class.Class_End_Timestamp ) AS 'Class End Time', LOWER(  Class.Class_Level ) AS 'Class Level', TIMEDIFF(NOW(), Class.Class_Start_Timestamp) AS 'Time Difference', CASE when Attendance.Attendance_Status is null then 'No' else 'Yes' end as 'Has_Attendance_Been_Taken' FROM Class LEFT JOIN Attendance ON(Attendance.Class_id = Class.Class_ID) INNER JOIN Teacher ON(Teacher.Teacher_ID = Class.Teacher_ID) INNER JOIN Subject ON(Subject.Subject_ID = Class.Subject_ID) INNER JOIN Room ON(Room.Room_ID = Class.Room_ID) WHERE Teacher.Teacher_ID = '1' AND NOW() between class.class_start_timestamp and class.class_end_timestamp LIMIT 1;
+
+--Gets todays classes for an individual teacher
+SELECT LOWER( Class.Class_ID ) AS 'Class_ID', LOWER(  Subject.Subject_Name ) AS 'Subject Name', LOWER(  Class.Class_Start_Timestamp ) AS 'Class Start Time', LOWER(  Class.Class_End_Timestamp ) AS 'Class End Time', LOWER(  Class.Class_Level ) AS 'Class Level' FROM Class INNER JOIN Subject ON(Subject.Subject_id = Class.Subject_id) WHERE DATE(Class_Start_Timestamp) = CURDATE();
+
+---PARENT HOME PAGE
+
 
 -----GET STUDENT PARENT INFORMATION-----
 SELECT CONCAT( Student.Student_Fname, ' ' , Student.Student_Lname)  AS 'Student_Name', Student.Student_Email, Student.Student_Year, Student.Student_Username FROM Parent, Student, Student_has_Parent WHERE Student_has_Parent.Student_Student_ID = Student.Student_ID AND Student_has_Parent.Parent_Parent_ID = Parent.Parent_ID AND LOWER( Parent_ID ) LIKE  '1'
@@ -380,19 +393,7 @@ SELECT Student_ID, CONCAT( Student.Student_Fname, ' ' , Student.Student_Lname)  
 
 
 ------GET ALL THE TEACHERS CLASSES------
-SELECT CONCAT( Teacher.Teacher_Fname, ' ' , Teacher.Teacher_Lname)    AS 'Teacher Name',
-       LOWER(  Subject.Subject_Name ) 		                            AS 'Subject Name',
-       LOWER(  Class.Class_Start_Time ) 	                            AS 'Class Start Time',
-       LOWER(  Class.Class_End_Time ) 	                              AS 'Class End Time',
-       LOWER(  Class.Class_Date ) 	                                  AS 'Class Date',
-       LOWER(  Class.Class_Level ) 	                                  AS 'Class Level'
-
-FROM Teacher, Subject, Class, Room
-
-WHERE Class.Teacher_ID = Teacher.Teacher_ID
-  AND Class.Subject_ID = Subject.Subject_ID
-  AND Class.Room_ID = Room.Room_ID
-  AND LOWER( Teacher.Teacher_ID ) LIKE  '3';
+SELECT LOWER(  Subject.Subject_Name ) AS 'Subject Name', LOWER(  Class.Class_Start_Timestamp ) AS 'Class Start Time', LOWER(  Class.Class_End_Timestamp ) AS 'Class End Time', LOWER(  Class.Class_Level ) AS 'Class Level', TIMEDIFF(NOW(), Class.Class_Start_Timestamp) AS 'Time Difference' FROM Teacher, Subject, Class, Room WHERE Class.Teacher_ID = Teacher.Teacher_ID AND Class.Subject_ID = Subject.Subject_ID AND Class.Room_ID = Room.Room_ID AND LOWER( Teacher.Teacher_ID ) LIKE  '1' AND NOW() between class.class_start_timestamp and class.class_end_timestamp;
 
 
 
@@ -600,6 +601,5 @@ WHERE Student_has_Parent.Student_Student_ID = Student.Student_ID
     WHERE Student.student_id = 1;
       ORDER BY class.class_id
     DESC LIMIT 1
-
 
     SELECT DISTINCT student.Student_ID as 'Student_ID', CONCAT( Student.Student_Fname, ' ' , Student.Student_Lname)  AS 'Student_Name', Student.Student_Email AS 'Student_Email', Student.Student_Year AS 'Student_Year', Student.Student_Username AS 'Student_Username', CASE when Subject.Subject_Name is null then 'Student Has No Class' else Subject.Subject_Name end as 'Subject_Name', CASE when Attendance.Attendance_Status is null then 'No Attendance Taken Yet' else Attendance.Attendance_Status end as 'Attendance_Status' FROM Student LEFT JOIN Student_Has_Class ON(student_has_class.student_id = student.student_id) LEFT JOIN class ON class.class_id = student_has_class.class_id AND NOW() between class.class_start_timestamp AND class.class_end_timestamp LEFT JOIN Subject ON(class.subject_id = subject.subject_id) LEFT JOIN Attendance ON(Attendance.class_id = class.class_ID AND Attendance.student_id = student.student_id) LEFT JOIN Student_has_Parent ON (Student_has_Parent.Student_Student_ID = Student.Student_ID) LEFT JOIN Parent ON (Parent.Parent_ID = Student_has_Parent.Parent_Parent_ID) WHERE Parent.Parent_ID = '${parentID}' ORDER BY class.class_id DESC LIMIT 2;
