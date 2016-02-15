@@ -9,12 +9,40 @@
           <div class="alert alert-danger"><%= message %></div>
       <% } %>
 
-      <p>Your Options are Listed Below:</p>
-
-
-
+      <p>Your Dashboard:</p>
   </div>
 
+<div class='col-md-6'>
+      <h3 class='center'> Total Number of Students in all Years </h3>
+    <canvas id="searchClass"></canvas>
+</div>
+
+<div class='col-md-6'>
+    <h3 class='center'> Amount of Absences Across All Years </h3>
+  <canvas id="totalAbsencesAllYears"></canvas>
+</div>
+
+
+<div class='col-md-6'>
+    <h3 class='center'> Amount of Absences Across All Subjects </h3>
+  <canvas id="totalAbsencesAllSubjects"></canvas>
+</div>
+
+<div class='col-md-6'>
+    <h3 class='center'> Most Popular Truanters </h3>
+<div id="studentList">
+  <table class="table table-bordered">
+    <thead>
+      <th>#</th>
+      <th>Student Name</th>
+      <th>Total Number of Absences</th>
+      <th>Profile</th>
+    </thead>
+    <tbody></tbody>
+  </table>
+</div>
+
+  <script type="text/javascript" src="/javascript/admin/index.js"></script>
 
 
 </body>

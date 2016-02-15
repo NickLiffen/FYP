@@ -1,5 +1,10 @@
-<% include header %>
-
+<% if (user.role === 'Teacher') { %>
+    <% include ../teacher/header %>
+<% } else if (user.role === 'Parent'){ %>
+    <% include ../parent/header %>
+<% } else{ %>
+   <% include ../admin/header %>
+<% } %>
 
 <div class="jumbotron text-center">
     <h1>Student Information <span class="glyphicon glyphicon-info-sign"></span></h1>

@@ -359,7 +359,7 @@ SELECT Class.Class_ID AS 'id', Subject.Subject_Name AS 'title', CONCAT( Class.Cl
 SELECT LOWER(  Student.Student_Year ) AS 'Student Year', COUNT(  Attendance.Attendance_Status) AS 'Attendance_Count' FROM Student, Attendance, Class, Subject WHERE Attendance.Class_ID = Class.Class_ID AND Attendance.Student_ID = Student.Student_ID AND Class.Subject_ID = Subject.Subject_ID AND Attendance.Attendance_Status = 'absent' GROUP BY Student.Student_Year;
 
 -----Number of Students Across All Years-----
-SELECT LOWER( Student_Year ) AS 'Student Year', COUNT( Student_ID ) AS 'Number Of Students' FROM Student GROUP BY Student_Year;
+SELECT LOWER( Student_Year ) AS 'Student_Year', COUNT( Student_ID ) AS 'Number Of Students' FROM Student GROUP BY Student_Year;
 
 ---3 most popular people how truant-----
 SELECT CONCAT( Student.Student_Fname, ' ' , Student.Student_Lname)  AS 'Student_Name', COUNT(  Attendance.Attendance_Status) AS 'Attendance_Count' FROM Student, Attendance, Class WHERE Attendance.Student_ID = Student.Student_ID AND Attendance.Class_ID = Class.Class_ID AND Attendance.Attendance_Status = 'absent' GROUP BY Student_Name ORDER BY Attendance_Count DESC LIMIT 3

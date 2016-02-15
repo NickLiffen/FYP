@@ -216,6 +216,59 @@ module.exports = {
       });
     },
 
+    absenceAllYears: function(){
+      return new Promise(function(resolve, reject) {
+        let sqlStatement = `SELECT LOWER(  Student.Student_Year ) AS 'Student_Year', COUNT(  Attendance.Attendance_Status) AS 'Attendance_Count' FROM Student, Attendance, Class, Subject WHERE Attendance.Class_ID = Class.Class_ID AND Attendance.Student_ID = Student.Student_ID AND Class.Subject_ID = Subject.Subject_ID AND Attendance.Attendance_Status = 'absent' GROUP BY Student.Student_Year`;
+        connection.query(sqlStatement, function(err, results) {
+            if (err) {
+                console.log("Problem Getting Absences Acorss All Years : " + err);
+                reject(Error(err));
+            }
+            resolve(results);
+          });
+        });
+    },
+
+    totalStudents: function(){
+      return new Promise(function(resolve, reject) {
+        let sqlStatement = `SELECT LOWER( Student_Year ) AS 'Student_Year', COUNT( Student_ID ) AS 'Number_Of_Students' FROM Student GROUP BY Student_Year`;
+        connection.query(sqlStatement, function(err, results) {
+            if (err) {
+                console.log("Problem Getting Total Number of Students : " + err);
+                reject(Error(err));
+            }
+            resolve(results);
+          });
+        });
+    },
+
+    absencesPerSubject: function(){
+      return new Promise(function(resolve, reject) {
+        let sqlStatement = `SELECT LOWER(  Subject.Subject_Name ) AS 'Subject_Name', COUNT(  Attendance.Attendance_Status) AS 'Attendance_Count' FROM Student, Attendance, Class, Subject WHERE Attendance.Class_ID = Class.Class_ID AND Attendance.Student_ID = Student.Student_ID AND Class.Subject_ID = Subject.Subject_ID AND Attendance.Attendance_Status = 'absent' GROUP BY Subject.Subject_Name`;
+        connection.query(sqlStatement, function(err, results) {
+            if (err) {
+                console.log("Problem Getting Total Number of Students : " + err);
+                reject(Error(err));
+            }
+            resolve(results);
+          });
+        });
+    },
+
+    mostPopularTruenters: function(){
+      return new Promise(function(resolve, reject) {
+        let sqlStatement = `SELECT Student.Student_ID AS 'Student_ID', CONCAT( Student.Student_Fname, ' ' , Student.Student_Lname)  AS 'Student_Name', COUNT(  Attendance.Attendance_Status) AS 'Attendance_Count' FROM Student, Attendance, Class WHERE Attendance.Student_ID = Student.Student_ID AND Attendance.Class_ID = Class.Class_ID AND Attendance.Attendance_Status = 'absent' GROUP BY Student_Name ORDER BY Attendance_Count DESC LIMIT 3`;
+        connection.query(sqlStatement, function(err, results) {
+            if (err) {
+                console.log("Problem Getting Most Populat Truanters : " + err);
+                reject(Error(err));
+            }
+            resolve(results);
+          });
+        });
+    },
+
+
     deleteClass: function(ID){
       return new Promise(function(resolve, reject) {
           //Do a cheeky update query to my database to update the users profile.

@@ -44,12 +44,14 @@ module.exports = function(app, passport) {
 
     app.get('/parent', allowParents, function(req, res) {
         res.render('parent/index.ejs', {
+            user: req.user,
             message: req.flash('appMessage')
         });
     });
 
     app.get('/parent/record', allowParents, function(req, res) {
         res.render('parent/record.ejs', {
+            user: req.user,
             message: req.flash('recordMessage')
         });
     });
@@ -80,12 +82,14 @@ module.exports = function(app, passport) {
 
     app.get('/teacher', allowTeachers, function(req, res) {
         res.render('teacher/index.ejs', {
+            user: req.user,
             message: req.flash('appMessage')
         });
     });
 
     app.get('/teacher/attendance', allowTeachers, function(req, res) {
         res.render('teacher/attendance.ejs', {
+            user: req.user,
             message: req.flash('atattendanceMessage')
         });
     });
@@ -108,7 +112,7 @@ module.exports = function(app, passport) {
             });
     });
 
-    app.post('/studentTimetable', allowTeachers, function(req, res) {
+    app.post('/studentTimetable', function(req, res) {
         databaseQuery.studentTimetable(req.body.ID)
             .then(function(data) {
                 res.send(data);
@@ -134,6 +138,54 @@ module.exports = function(app, passport) {
     app.post('/parentGraphRequest', function(req, res) {
         console.log(req.body);
         databaseQuery.parentGraphRequest(req.body)
+            .then(function(data) {
+                res.send(data);
+            })
+            .catch(function(e) {
+                res.status(500, {
+                    error: e
+                });
+            });
+    });
+
+    app.get('/absenceAllYears', function(req, res) {
+        databaseQuery.absenceAllYears()
+            .then(function(data) {
+                res.send(data);
+            })
+            .catch(function(e) {
+                res.status(500, {
+                    error: e
+                });
+            });
+    });
+
+    app.get('/mostPopularTruenters', function(req, res) {
+        databaseQuery.mostPopularTruenters()
+            .then(function(data) {
+                res.send(data);
+            })
+            .catch(function(e) {
+                res.status(500, {
+                    error: e
+                });
+            });
+    });
+
+    app.get('/totalStudents', function(req, res) {
+        databaseQuery.totalStudents()
+            .then(function(data) {
+                res.send(data);
+            })
+            .catch(function(e) {
+                res.status(500, {
+                    error: e
+                });
+            });
+    });
+
+    app.get('/absencesPerSubject', function(req, res) {
+        databaseQuery.absencesPerSubject()
             .then(function(data) {
                 res.send(data);
             })
@@ -215,8 +267,9 @@ module.exports = function(app, passport) {
         let studentID = req.params.id;
         databaseQuery.getStudentProfile(studentID)
             .then(function(data) {
-                console.log(data);
+                console.log(req.user);
                 res.render('teacher/student.ejs', {
+                    user: req.user,
                     message: req.flash('user'),
                     studentID: data[0].Student_ID,
                     studentName: data[0].Student_Name,

@@ -124,7 +124,9 @@ div.dataTables_wrapper {
   display: block;
 }
 
-
+.center{
+  text-align: center;
+}
 
 #ClassList td {
   text-align: center;
