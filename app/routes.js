@@ -80,6 +80,19 @@ module.exports = function(app, passport) {
             });
     });
 
+    app.get('/teacherCurrentClassStatus', function(req, res) {
+        databaseQuery.teacherCurrentClassStatus(req.user.id)
+            .then(function(data) {
+                res.send(data);
+            })
+            .catch(function(e) {
+                res.status(500, {
+                    error: e
+                });
+            });
+    });
+
+
     app.get('/teacher', allowTeachers, function(req, res) {
         res.render('teacher/index.ejs', {
             user: req.user,
@@ -93,6 +106,7 @@ module.exports = function(app, passport) {
             message: req.flash('atattendanceMessage')
         });
     });
+
 
     app.post('/teacherTimetable', allowTeachers, function(req, res) {
         let data;
@@ -183,6 +197,20 @@ module.exports = function(app, passport) {
                 });
             });
     });
+
+    app.get('/teacherTodayClasses', function(req, res) {
+
+      databaseQuery.teacherTodayClasses(req.user.id)
+          .then(function(data) {
+              res.send(data);
+          })
+          .catch(function(e) {
+              res.status(500, {
+                  error: e
+              });
+          });
+    });
+
 
     app.get('/absencesPerSubject', function(req, res) {
         databaseQuery.absencesPerSubject()

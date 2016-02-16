@@ -255,6 +255,19 @@ module.exports = {
         });
     },
 
+    teacherTodayClasses: function(ID){
+      return new Promise(function(resolve, reject) {
+        let sqlStatement = `SELECT LOWER( Class.Class_ID ) AS 'Class_ID', LOWER(  Subject.Subject_Name ) AS 'Subject_Name', LOWER(  Class.Class_Start_Timestamp ) AS 'Class_Start_Time', LOWER(  Class.Class_End_Timestamp ) AS 'Class_End_Time', LOWER(  Class.Class_Level ) AS 'Class_Level', Room.Room_Name As 'Room_Name' FROM Class INNER JOIN Subject ON(Subject.Subject_ID = Class.Subject_ID) INNER JOIN Teacher ON(Teacher.Teacher_ID = Class.Teacher_ID) INNER JOIN Room ON(Room.Room_ID = Class.Room_ID) WHERE DATE(Class_Start_Timestamp) = CURDATE() AND Teacher.Teacher_ID = '${ID}'`;
+        connection.query(sqlStatement, function(err, results) {
+            if (err) {
+                console.log("Problem Getting Teachers Today Scedule: " + err);
+                reject(Error(err));
+            }
+            resolve(results);
+          });
+        });
+    },
+
     mostPopularTruenters: function(){
       return new Promise(function(resolve, reject) {
         let sqlStatement = `SELECT Student.Student_ID AS 'Student_ID', CONCAT( Student.Student_Fname, ' ' , Student.Student_Lname)  AS 'Student_Name', COUNT(  Attendance.Attendance_Status) AS 'Attendance_Count' FROM Student, Attendance, Class WHERE Attendance.Student_ID = Student.Student_ID AND Attendance.Class_ID = Class.Class_ID AND Attendance.Attendance_Status = 'absent' GROUP BY Student_Name ORDER BY Attendance_Count DESC LIMIT 3`;
@@ -426,6 +439,21 @@ module.exports = {
     getIndividualTeacher: function(ID){
       return new Promise(function(resolve, reject) {
           connection.query(`SELECT * FROM Teacher WHERE Teacher_ID = ${ID}`, function(err, results) {
+              //If error reject the promise.
+              if (err) {
+                  console.log(err);
+                  reject(Error(err));
+              } else {
+                  console.log("Made it");
+                  resolve(results);
+              }
+          });
+      });
+    },
+
+    teacherCurrentClassStatus: function(ID){
+      return new Promise(function(resolve, reject) {
+          connection.query(`SELECT LOWER( Class.Class_ID ) AS 'Class_ID', Subject.Subject_Name AS 'Subject_Name', LOWER(  Class.Class_Start_Timestamp ) AS 'Class Start Time', LOWER(  Class.Class_End_Timestamp ) AS 'Class End Time', LOWER(  Class.Class_Level ) AS 'Class Level', TIMEDIFF(NOW(), Class.Class_Start_Timestamp) AS 'Time_Difference', CASE when Attendance.Attendance_Status is null then 'No' else 'Yes' end as 'Has_Attendance_Been_Taken' FROM Class LEFT JOIN Attendance ON(Attendance.Class_id = Class.Class_ID) INNER JOIN Teacher ON(Teacher.Teacher_ID = Class.Teacher_ID) INNER JOIN Subject ON(Subject.Subject_ID = Class.Subject_ID) INNER JOIN Room ON(Room.Room_ID = Class.Room_ID) WHERE Teacher.Teacher_ID = ${ID} AND NOW() between class.class_start_timestamp and class.class_end_timestamp LIMIT 1;`, function(err, results) {
               //If error reject the promise.
               if (err) {
                   console.log(err);
