@@ -2,6 +2,13 @@
 
 $(document).ready(function() {
 
+  let parentID = $('.parentID').attr("id");
+
+    $("#contactParents").click(function(){
+        window.location.href = `/parent/${parentID}/contact`;
+});
+
+
   $(".calendarEffect").fadeOut();
 
     var panels = $('.user-infos');

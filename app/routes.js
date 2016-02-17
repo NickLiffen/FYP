@@ -301,10 +301,11 @@ module.exports = function(app, passport) {
                     message: req.flash('user'),
                     studentID: data[0].Student_ID,
                     studentName: data[0].Student_Name,
-                    parentName: data[0].Parent_Name,
                     studentYear: data[0].Student_Year,
                     studentEmail: data[0].Student_Email,
-                    studentUsername: data[0].Student_Username
+                    studentUsername: data[0].Student_Username,
+                    parentName: data[0].Parent_Name,
+                    parentID: data[0].Parent_ID
                 });
             })
             .catch(function(e) {
@@ -315,6 +316,43 @@ module.exports = function(app, passport) {
     });
 
     app.get('/parent/:id', function(req, res) {
+        let parentID = req.params.id;
+        databaseQuery.getIndividualParent(parentID)
+            .then(function(data) {
+              res.render('teacher/parent.ejs', {
+                  user: req.user,
+                  message: req.flash('user'),
+                  parentID: data[0].Parent_ID
+              });
+            })
+            .catch(function(e) {
+                res.status(500, {
+                    error: e
+                });
+            });
+    });
+
+    app.get('/parent/:id/contact', function(req, res) {
+        let parentID = req.params.id;
+        databaseQuery.getIndividualParent(parentID)
+            .then(function(data) {
+              res.render('contact.ejs', {
+                  user: req.user,
+                  message: req.flash('user'),
+                  contactEmail: data[0].Parent_Email,
+                  contactName: data[0].Parent_Title + " ".concat(data[0].Parent_Fname) + " ".concat(data[0].Parent_Lname)
+                  //parentID: data[0].Parent_ID
+              });
+            })
+            .catch(function(e) {
+                res.status(500, {
+                    error: e
+                });
+            });
+    });
+
+
+    app.get('/parent/:id/contact', function(req, res) {
         let parentID = req.params.id;
         databaseQuery.getIndividualParent(parentID)
             .then(function(data) {
