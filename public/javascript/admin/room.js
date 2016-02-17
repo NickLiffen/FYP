@@ -29,7 +29,6 @@ $(document).ready(function() {
           <th><span rel="${this.Room_ID}" id="${this.Room_ID}" scope="row"">${this.Room_ID}</th>
           <td>${this.Room_Name}</td>
           <td>${this.Rom_Description}</td>
-          <td><button type="button" id="${this.Room_ID}" value="Profile" class="btn btn-primary">Profile</button></td>
           <td><button type="button" id="${this.Room_ID}" value="Update"  class="btn btn-success">Update</button></td>
           <td><button type="button" id="${this.Room_ID}" value="Delete"  class="btn btn-warning" data-toggle="modal" data-target="#confirm-delete">Delete</button></td>
           </tr>`);

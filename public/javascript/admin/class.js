@@ -45,7 +45,6 @@ $(document).ready(function() {
           tableContent += '<td>' + this.Subject_Name + '</td>';
           tableContent += '<td>' + this.Room_Name + '</td>';
           tableContent += '<td>' + concatName + '</td>';
-          tableContent += '<td><button type="button" id="' + this.Class_ID + '" value="Profile" class="btn btn-primary">Profile</button></td>';
           tableContent += '<td><button type="button" id="' + this.Class_ID + '" value="Update" class="btn btn-success">Update</button></td>';
           tableContent += '<td><button type="button" id="' + this.Class_ID + '" value="Discard" class="btn btn-warning" data-toggle="modal" data-target="#confirm-delete">Discard</button></td>';
           tableContent += '</tr>';

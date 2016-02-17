@@ -48,7 +48,7 @@ $(document).ready(function() {
       let buttonValue = $(this).attr("value");
 
       if(buttonValue === "Profile"){
-        console.log("Im in Profile");
+        window.location.href = `/teacher/${teacherID}/`;
       }
       else if(buttonValue === "Update"){
         var $target = $('.hideUpdateTeacherForm'),

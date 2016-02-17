@@ -46,7 +46,7 @@ $(document).ready(function() {
         let buttonValue = $(this).attr("value");
 
         if (buttonValue === "Profile") {
-            console.log("Im in Profile");
+          window.location.href = `/parent/${parentID}/`;
         } else if (buttonValue === "Update") {
             var $target = $('.hideUpdateParentForm'),
                 $toggle = $(this);
@@ -56,10 +56,9 @@ $(document).ready(function() {
             });
             console.log(parentID);
             $.ajax({
-                url: `/parent/${parentID}`,
+                url: `/parentt/${parentID}`,
                 type: 'GET',
                 success: function(result) {
-                    console.log(result);
                     $('#ParentTitleUpdate').val(result[0].Parent_Title);
                     $('#ParentFNameUpdate').val(result[0].Parent_Fname);
                     $('#ParentLNameUpdate').val(result[0].Parent_Lname);

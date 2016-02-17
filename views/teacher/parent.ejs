@@ -7,7 +7,7 @@
 <% } %>
 
 <div class="jumbotron text-center">
-    <h1>Teacher Information <span class="glyphicon glyphicon-info-sign"></span></h1>
+    <h1>Parent Information <span class="glyphicon glyphicon-info-sign"></span></h1>
     <!-- show any messages that come back with authentication -->
     <% if (message.length > 0) { %>
         <div class="alert alert-danger"><%= message %></div>
@@ -20,8 +20,8 @@
           <div class="panel panel-info">
             <div class="panel-heading">
               <h3 class="panel-title">
-                <span class='teacherID' id="<%= teacherID %>"></span>
-                <td><%= teacherName %></td>
+                <span class='parentID' id="<%= parentID %>"></span>
+                <td><div id='parentName'></div></td>
               </h3>
             </div>
             <div class="panel-body">
@@ -31,28 +31,40 @@
                   <table class="table table-user-information">
                     <tbody>
                       <tr>
-                        <td>Teacher Name: </td>
-                        <td><%= teacherName %></td>
+                        <td>Parent Name: </td>
+                        <td><div id='parentNamee'></div></td>
                       </tr>
                       <tr>
                       <tr>
-                        <td>Teacher Email: </td>
-                        <td><%= teacherEmail %></td>
+                        <td>Parent Email: </td>
+                        <td><div id='parentEmail'></div></td>
                       </tr>
                          <tr>
-                             <tr>
-                       <td>Teacher Phone Number: </td>
-                       <td><%= teacherNumber %></td>
+                      <tr>
+                       <td>Parent Mobile Number: </td>
+                       <td><div id='parentMNumber'></div></td>
+                      </tr>
+                      <tr>
+                       <td>Parent Home Number: </td>
+                       <td><div id='parentHNumber'></div></td>
+                      </tr>
+                      <tr>
+                       <td>Parent Address: </td>
+                       <td><div id='parentAddress'></div></td>
                       </tr>
                         <tr>
-                        <td>Teacher Username: </td>
-                        <td><%= teacherUsername %></td>
-                      </tr>
+                        <td>Parent Username: </td>
+                        <td><div id='parentUsername'></div></td>
+                        </tr>
+                        <tr>
+                         <td>Current Children: </td>
+                         <td><select class="form-control" id="currentStudent" multiple disabled></select></td>
+                        </tr>
                         </td>
                       </tr>
                     </tbody>
                   </table>
-                  <button type="button" class="btn btn-primary" id="getTimetable">Teacher Timetable</button>
+                  <button type="button" class="btn btn-primary" id="getTimetable">parent Timetable</button>
                 </div>
               </div>
             </div>
@@ -68,14 +80,6 @@
             </div>
         </div>
 
-    <div class='calendarEffect'>
-        <div id ='paddingBottom' class="text-center"><button id="hidecalendar" name="hideAttendance" class="btn btn-primary">Back to Teacher Profile!</button></div>
-  <div id='paddingTop'></div>
-    <div id='calendar'></div>
-    </div>
-
-
-
-    <script type="text/javascript" src="/javascript/user.js"></script>
+    <script type="text/javascript" src="/javascript/parent.js"></script>
     </body>
     </html>

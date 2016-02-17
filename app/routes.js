@@ -314,6 +314,23 @@ module.exports = function(app, passport) {
             });
     });
 
+    app.get('/parent/:id', function(req, res) {
+        let parentID = req.params.id;
+        databaseQuery.getIndividualParent(parentID)
+            .then(function(data) {
+              res.render('teacher/parent.ejs', {
+                  user: req.user,
+                  message: req.flash('user'),
+                  parentID: data[0].Parent_ID
+              });
+            })
+            .catch(function(e) {
+                res.status(500, {
+                    error: e
+                });
+            });
+    });
+
     app.get('/student/:id/attendance', function(req, res) {
         let studentID = req.params.id;
         databaseQuery.getStudentProfile(studentID)
@@ -333,7 +350,6 @@ module.exports = function(app, passport) {
     });
 
     app.patch('/student/:id', function(req, res) {
-      console.log("ROUTES");
         let studentID       = req.params.id;
         let studentObject   = req.body;
         let StudentTitle    = req.body.StudentTitle;
@@ -481,17 +497,17 @@ module.exports = function(app, passport) {
             });
     });
 
-    app.get('/parent/:id', function(req, res) {
-        let parentID = req.params.id;
-        databaseQuery.getIndividualParent(parentID)
-            .then(function(data) {
-                res.send(data);
-            })
-            .catch(function(e) {
-                res.status(500, {
-                    error: e
-                });
-            });
+    app.get('/parentt/:id', function(req, res) {
+      let parentID = req.params.id;
+      databaseQuery.getIndividualParent(parentID)
+          .then(function(data) {
+              res.send(data);
+          })
+          .catch(function(e) {
+              res.status(500, {
+                  error: e
+              });
+          });
     });
 
     app.patch('/parent/:id', function(req, res) {
@@ -680,6 +696,7 @@ module.exports = function(app, passport) {
 
 
     app.get('/getParent', function(req, res) {
+      console.log(req);
         databaseQuery.getParent(req.body)
             .then(function(data) {
                 res.send(data);

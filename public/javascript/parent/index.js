@@ -25,7 +25,8 @@ $(document).ready(function() {
                           <td>${this.Student_Username}</td>
                           <td>${this.Subject_Name}</td>
                           <td>${this.Attendance_Status}</td>
-                          <td><button type="button" id="${this.Student_ID}" class="btn btn-primary">Profile</button></td>
+                          <td><button type="button" id="${this.Student_ID}" value="Profile" class="btn btn-primary">Profile</button></td>
+                          <td><button type="button" id="${this.Student_ID}" value="Attendance" class="btn btn-primary">Attendance</button></td>
                           </tr>`
                       );
       });
@@ -34,8 +35,18 @@ $(document).ready(function() {
   });
 
   $('#ClassList').on('click', '.btn ', function(){
-    let studentID = this.id;
+    let buttonValue = $(this).attr("value");
+let studentID = this.id;
+
+    if(buttonValue === "Profile"){
+      window.location.href = `/student/${studentID}/`;
+
+    }
+    else{
       window.location.href = `/student/${studentID}/attendance`;
+    }
+
+
   });
 /*
   $.ajax({

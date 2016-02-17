@@ -576,10 +576,11 @@ module.exports = {
       });
     },
 
-    getParent: function() {
+    getParent: function(parentID) {
         // Return a new promise.
         return new Promise(function(resolve, reject) {
-            //Query to get parent information to put into the select box.
+          console.log("Were in getParent", parentID);
+          if (Object.keys(parentID).length === 0) {
             connection.query('SELECT Parent_ID, Parent_Title, Parent_Fname, Parent_Lname, Parent_Email FROM Parent', function(err, results) {
                 //If error reject the promise.
                 if (err) {
@@ -588,6 +589,17 @@ module.exports = {
                     resolve(results);
                 }
             });
+          }
+          else{
+            connection.query(`SELECT Parent_ID, Parent_Title, Parent_Fname, Parent_Lname, Parent_Email FROM Parent WHERE Parent_ID = ${parentID}`, function(err, results) {
+                //If error reject the promise.
+                if (err) {
+                    reject(Error(err));
+                } else {
+                    resolve(results);
+                }
+            });
+          }
         });
     },
 
