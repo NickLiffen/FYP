@@ -3,7 +3,7 @@
 var databaseQuery = require('../config/database.js');
 const bcrypt = require('bcrypt-nodejs');
 
-module.exports = function(app, passport) {
+module.exports = function(app, passport, sendgridClient, twilioClient) {
 
     app.get('/', function(req, res) {
         res.render('index.ejs'); // load the login.ejs file
@@ -340,6 +340,7 @@ module.exports = function(app, passport) {
                   user: req.user,
                   message: req.flash('user'),
                   contactEmail: data[0].Parent_Email,
+                  contactNumber: data[0].Parent_Mobile_Number,
                   contactName: data[0].Parent_Title + " ".concat(data[0].Parent_Fname) + " ".concat(data[0].Parent_Lname)
                   //parentID: data[0].Parent_ID
               });
@@ -869,6 +870,46 @@ module.exports = function(app, passport) {
                     error: e
                 });
             });
+    });
+
+    app.post('/contact', function(req, res) {
+      console.log(req.body);
+      if(req.body.contactMethod ==='Email'){
+          const email = new sendgridClient.Email();
+
+              email.addTo(req.body.recipientEmail);
+              email.setFrom('admin@schooltool.com');
+              email.setSubject('Message From School');
+              email.setHtml(`<p>${req.body.message}<p>`);
+
+          sendgridClient.send(email, function(err, json) {
+              if(err){
+                console.log(err);
+              }
+              res.send(json);
+           });
+      }
+      else if(req.body.contactMethod ==='Text'){
+        twilioClient.sendMessage({
+
+            to:`${req.body.recipientNumber}`, // Any number Twilio can deliver to
+            from: '+441143599282', // A number you bought from Twilio and can use for outbound communication
+            body: `${req.body.message}` // body of the SMS message
+
+        }, function(err, responseData) { //this function is executed when a response is received from Twilio
+
+            if (!err) {
+              res.send(responseData);
+            }
+            else{
+              console.log(err);
+            }
+          });
+      }
+
+      else{
+        res.send("ERROR");
+      }
     });
 
 

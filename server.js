@@ -21,6 +21,10 @@ const port = process.env.PORT || 8080;
 
 //Load my SQL connection file
 var connection = require('./config/connection.js');
+//Load my SendGrid Connection file
+var sendgridClient = require('./config/emailConnection.js');
+//Load my Twilio connection file
+var twilioClient = require('./config/textConnection.js');
 
 //Pass Information to our Passport File for Authentication
 require('./config/passport')(passport, connection); // pass passport & for configuration
@@ -44,7 +48,7 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 
 
 //Passing our Passport Information and Application Information to our routes
-require('./app/routes.js')(app, passport);
+require('./app/routes.js')(app, passport, sendgridClient, twilioClient);
 
 app.listen(port);
 console.log('Server connection established');

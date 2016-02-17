@@ -23,8 +23,9 @@
     "passport": "~0.1.17",
     "passport-local": "~0.1.6",
     "request": "^2.65.0",
+    "sendgrid": "^2.0.0",
     "serve-favicon": "^2.3.0",
-    "twilio": "latest"
+    "twilio": "^3.3.0-edge"
   },
   "scripts": {
     "start": "nodemon index.js || node index.js",
