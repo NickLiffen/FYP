@@ -29,7 +29,7 @@
   },
   "scripts": {
     "start": "nodemon index.js || node index.js",
-    "test": "./node_modules/.bin/mocha --reporter spec"
+    "test": "./node_modules/jshint/bin/jshint index.js"
   },
   "version": "0.0.1",
   "description": "Node App",
@@ -39,7 +39,8 @@
   },
   "devDependencies": {
     "babel-core": "^6.1.21",
-    "gulp": "^3.9.0"
+    "gulp": "^3.9.0",
+    "jshint": "^2.9.1"
   },
   "keywords": [
     "node"
