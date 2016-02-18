@@ -184,7 +184,9 @@ div.dataTables_wrapper {
   padding-right: 20px;
 }
 
-UPDATE Class SET Active='false' WHERE Class_ID=1;
+.hightlight{
+    background-color: #FBCA36;
+}
 
 .stylish-input-group .input-group-addon{
     background: white !important;

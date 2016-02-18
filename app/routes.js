@@ -108,7 +108,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
     });
 
 
-    app.post('/teacherTimetable', allowTeachers, function(req, res) {
+    app.post('/teacherTimetable', function(req, res) {
         let data;
         if (Object.keys(req.body).length === 0 || !req.body.ID) {
             data = req.user.id;
@@ -429,6 +429,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
             .then(function(data) {
                 console.log(data);
                 res.render('teacher/teacher.ejs', {
+                    user: req.user,
                     message: req.flash('user'),
                     teacherID: data[0].Teacher_ID,
                     teacherName: data[0].Teacher_Name,
@@ -885,8 +886,10 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
           sendgridClient.send(email, function(err, json) {
               if(err){
                 console.log(err);
-              }
+              }else{
+              console.log("About to go back to front end.....");
               res.send(json);
+            }
            });
       }
       else if(req.body.contactMethod ==='Text'){
@@ -897,7 +900,6 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
             body: `${req.body.message}` // body of the SMS message
 
         }, function(err, responseData) { //this function is executed when a response is received from Twilio
-
             if (!err) {
               res.send(responseData);
             }

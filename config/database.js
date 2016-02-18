@@ -257,7 +257,7 @@ module.exports = {
 
     teacherTodayClasses: function(ID){
       return new Promise(function(resolve, reject) {
-        let sqlStatement = `SELECT LOWER( Class.Class_ID ) AS 'Class_ID', LOWER(  Subject.Subject_Name ) AS 'Subject_Name', LOWER(  Class.Class_Start_Timestamp ) AS 'Class_Start_Time', LOWER(  Class.Class_End_Timestamp ) AS 'Class_End_Time', LOWER(  Class.Class_Level ) AS 'Class_Level', Room.Room_Name As 'Room_Name' FROM Class INNER JOIN Subject ON(Subject.Subject_ID = Class.Subject_ID) INNER JOIN Teacher ON(Teacher.Teacher_ID = Class.Teacher_ID) INNER JOIN Room ON(Room.Room_ID = Class.Room_ID) WHERE DATE(Class_Start_Timestamp) = CURDATE() AND Teacher.Teacher_ID = '${ID}'`;
+        let sqlStatement = `SELECT LOWER( Class.Class_ID ) AS 'Class_ID', Subject.Subject_Name AS 'Subject_Name', time(Class.Class_Start_Timestamp) AS 'Class_Start_Time', time(Class.Class_End_Timestamp) AS 'Class_End_Time', LOWER(  Class.Class_Level ) AS 'Class_Level', Room.Room_Name As 'Room_Name' FROM Class INNER JOIN Subject ON(Subject.Subject_ID = Class.Subject_ID) INNER JOIN Teacher ON(Teacher.Teacher_ID = Class.Teacher_ID) INNER JOIN Room ON(Room.Room_ID = Class.Room_ID) WHERE DATE(Class_Start_Timestamp) = CURDATE() AND Teacher.Teacher_ID = '${ID}' ORDER BY Class.Class_Start_Timestamp`;
         connection.query(sqlStatement, function(err, results) {
             if (err) {
                 console.log("Problem Getting Teachers Today Scedule: " + err);

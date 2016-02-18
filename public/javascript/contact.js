@@ -22,8 +22,10 @@ $("#contactForm").submit(function(event) {
         url: '/contact',
         dataType: 'JSON'
     }).done(function(response) {
-      console.log("Were back!!" + response);
-        $('#addClassstatus').html("Class Created Okay");
+        console.log("were back front end", response);
+      $('#contactState').addClass('alert alert-success');
+      $('#contactState').addClass('center');
+      $('#contactState').html(`Message Successfully Sent`);
     });
 
 
