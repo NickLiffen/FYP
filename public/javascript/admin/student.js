@@ -115,7 +115,10 @@ $(document).ready(function() {
                     url: `/student/${studentID}`,
                     dataType: 'JSON'
                 }).done(function() {
-                    $('#updateStudentstatus').html("Student Update Okay");
+                  $('html, body').animate({
+                  scrollTop: $("#hide").offset().top
+              }, 2000);
+                  $("#hide").attr('id', 'show');
                 });
             });
         } else if (buttonValue === "Discard") {
@@ -128,6 +131,9 @@ $(document).ready(function() {
                         success: function(result) {
                           if(result[0] === undefined){
                             $('#confirm-delete').modal('hide');
+                            $('html, body').animate({
+                            scrollTop: $("#hide").offset().top
+                        }, 2000);
                             $("#hide").attr('id', 'show');
                           }
                           else if(result[0].Class_ID){
@@ -203,7 +209,10 @@ $(document).ready(function() {
             dataType: 'JSON'
         }).done(function(response) {
           console.log("Were back!!" + response);
-            $('#addStudentstatus').html("Student Created Okay" + response);
+          $('html, body').animate({
+          scrollTop: $("#hide").offset().top
+      }, 2000);
+            $("#hide").attr('id', 'show');
         });
     });
 });

@@ -111,7 +111,10 @@ $(document).ready(function() {
                     url: `/parent/${parentID}`,
                     dataType: 'JSON'
                 }).done(function() {
-                    $('#updateParentstatus').html("Teacher Update Okay");
+                  $('html, body').animate({
+                  scrollTop: $("#hide").offset().top
+              }, 2000);
+                  $("#hide").attr('id', 'show');
                 });
             });
         } else if (buttonValue === "Delete") {
@@ -124,6 +127,9 @@ $(document).ready(function() {
                         success: function(result) {
                           if(result[0] === undefined){
                             $('#confirm-delete').modal('hide');
+                            $('html, body').animate({
+                            scrollTop: $("#hide").offset().top
+                        }, 2000);
                             $("#hide").attr('id', 'show');
                           }
                           else if(result[0].Student_ID){
@@ -199,8 +205,10 @@ $(document).ready(function() {
             dataType: 'JSON'
         }).done(function(response) {
             console.log("Were back!!" + response);
-            //Do nothing for the time being
-            $('#addParentstatus').html("Parent Created Okay" + response);
+            $('html, body').animate({
+            scrollTop: $("#hide").offset().top
+        }, 2000);
+              $("#hide").attr('id', 'show');
         });
     });
 });

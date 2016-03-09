@@ -114,7 +114,10 @@ $(document).ready(() => {
 								contentType: "application/json; charset=utf-8"
 						}).done(function(response) {
 							console.log("Were back!!" + response);
-								$('#attendanceStatus').html("Attendance Recordes Successfully");
+							$('html, body').animate({
+							scrollTop: $("#hide").offset().top
+					}, 2000);
+							$("#hide").attr('id', 'show');
 						});
 					}
 			});

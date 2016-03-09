@@ -172,7 +172,10 @@ $(document).ready(function() {
                      url: `/class/${ClassID}`,
                      dataType: 'JSON'
                  }).done(function() {
-                     $('#updateClassstatus').html("Class Update Okay");
+                   $('html, body').animate({
+                   scrollTop: $("#hide").offset().top
+               }, 2000);
+                   $("#hide").attr('id', 'show');
                  });
                });
       }
@@ -186,6 +189,9 @@ $(document).ready(function() {
                         success: function(result) {
                           if(result[0] === undefined){
                             $('#confirm-delete').modal('hide');
+                            $('html, body').animate({
+                            scrollTop: $("#hide").offset().top
+                        }, 2000);
                             $("#hide").attr('id', 'show');
                           }
                           else if(result[0].Class_ID){
@@ -306,7 +312,10 @@ $(document).ready(function() {
             dataType: 'JSON'
         }).done(function(response) {
           console.log("Were back!!" + response);
-            $('#addClassstatus').html("Class Created Okay");
+          $('html, body').animate({
+          scrollTop: $("#hide").offset().top
+      }, 2000);
+            $("#hide").attr('id', 'show');
         });
     });
 });

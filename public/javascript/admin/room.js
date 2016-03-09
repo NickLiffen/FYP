@@ -78,7 +78,10 @@ $('#RoomList').on('click', '.btn ', function(){
                    url: `/room/${roomID}`,
                    dataType: 'JSON'
                }).done(function() {
-                   $('#updateRoomstatus').html("Room Update Okay");
+                 $('html, body').animate({
+                 scrollTop: $("#hide").offset().top
+             }, 2000);
+                 $("#hide").attr('id', 'show');
                });
            });
   }
@@ -92,6 +95,9 @@ $('#RoomList').on('click', '.btn ', function(){
                     success: function(result) {
                       if(result[0] === undefined){
                         $('#confirm-delete').modal('hide');
+                        $('html, body').animate({
+                        scrollTop: $("#hide").offset().top
+                    }, 2000);
                         $("#hide").attr('id', 'show');
                       }
                       else if(result[0].Class_ID){
@@ -129,7 +135,10 @@ $('#addRoomForm').submit(function() {
         url: '/room',
         dataType: 'JSON'
     }).done(function() {
-        $('#addRoomstatus').html("Room Created Okay");
+      $('html, body').animate({
+      scrollTop: $("#hide").offset().top
+  }, 2000);
+        $("#hide").attr('id', 'show');
     });
 });
 });

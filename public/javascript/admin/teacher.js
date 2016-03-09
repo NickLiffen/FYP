@@ -94,7 +94,10 @@ $(document).ready(function() {
                        url: `/teacher/${teacherID}`,
                        dataType: 'JSON'
                    }).done(function() {
-                       $('#updateTeacherstatus').html("Teacher Update Okay");
+                     $('html, body').animate({
+                     scrollTop: $("#hide").offset().top
+                 }, 2000);
+                     $("#hide").attr('id', 'show');
                    });
                });
       }
@@ -108,6 +111,9 @@ $(document).ready(function() {
                         success: function(result) {
                           if(result[0] === undefined){
                             $('#confirm-delete').modal('hide');
+                            $('html, body').animate({
+                            scrollTop: $("#hide").offset().top
+                        }, 2000);
                             $("#hide").attr('id', 'show');
                           }
                           else if(result[0].Class_ID){
@@ -152,7 +158,10 @@ $(document).ready(function() {
             url: '/teacher',
             dataType: 'JSON'
         }).done(function() {
-            $('#addTeacherstatus').html("Teacher Created Okay");
+          $('html, body').animate({
+          scrollTop: $("#hide").offset().top
+      }, 2000);
+            $("#hide").attr('id', 'show');
         });
     });
 });
