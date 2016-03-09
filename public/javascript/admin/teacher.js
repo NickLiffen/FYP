@@ -106,13 +106,15 @@ $(document).ready(function() {
                         url: `/teacher/${teacherID}`,
                         type: 'DELETE',
                         success: function(result) {
-                          if(result[0].Class_ID){
+                          if(result[0] === undefined){
+                            $('#confirm-delete').modal('hide');
+                            $("#hide").attr('id', 'show');
+                          }
+                          else if(result[0].Class_ID){
                             $('.debug-url').html(` <strong>Couldn't delete Teacher!!!! Teacher is in use in Class: ${result[0].Class_ID}. Please change Teacher for this class.</strong>`);
                           }
                           else{
-                          console.log(result);
-                            $('#confirm-delete').modal('hide');
-                            $('#teacherstatus').html("Teacher Action Completed");
+                            console.log("waaa");
                           }
                   }
                 });

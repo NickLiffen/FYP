@@ -126,12 +126,15 @@ $(document).ready(function() {
                         url: `/student/${studentID}`,
                         type: 'DELETE',
                         success: function(result) {
-                          if(!result[0]){
+                          if(result[0] === undefined){
                             $('#confirm-delete').modal('hide');
-                            $('#updateStudentstatus').html("Student Action Completed");
+                            $("#hide").attr('id', 'show');
+                          }
+                          else if(result[0].Class_ID){
+                            $('.debug-url').html(`<strong>Couldn't delete class!!!! Room is in use in Class: ${result[0].Class_ID}. Please change room for this class.</strong>`);
                           }
                           else{
-                            $('.debug-url').html(` <strong>Couldn't delete class!!!! Room is in use in Class: ${result[0].Class_ID}. Please change room for this class.</strong>`);
+                            console.log("waaa");
                           }
                         }
                     });

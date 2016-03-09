@@ -92,14 +92,15 @@ $(document).ready(function() {
                         url: `/Subject/${SubjectID}`,
                         type: 'DELETE',
                         success: function(result) {
-                          console.log(result);
-                          if(result[0].Class_ID){
-                            $('.debug-url').html(` <strong>Couldn't delete class!!!! Subject is in use in Class: ${result[0].Class_ID}. Please change Subject for this class.</strong>`);
+                          if(result[0] === undefined){
+                            $('#confirm-delete').modal('hide');
+                            $("#hide").attr('id', 'show');
+                          }
+                          else if(result[0].Class_ID){
+                            $('.debug-url').html(`<strong>Couldn't delete class!!!! Subject is in use in Class: ${result[0].Class_ID}. Please change Subject for this class.</strong>`);
                           }
                           else{
-                          console.log(result);
-                            $('#confirm-delete').modal('hide');
-                            $('#Subjectstatus').html("Subject Action Completed");
+                            console.log("waaa");
                           }
                   }
                 });

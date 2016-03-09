@@ -122,14 +122,16 @@ $(document).ready(function() {
                         url: `/parent/${parentID}`,
                         type: 'DELETE',
                         success: function(result) {
-                          console.log(result);
-                            if (result[0].Student_ID) {
-                                $('.debug-url').html(` <strong>Couldn't delete Parent!!!! Parent Username is assigned to this student:: ${result[0].Student_ID}. Please Unassign from Student.</strong>`);
-                            } else {
-                                console.log(result);
-                                $('#confirm-delete').modal('hide');
-                                $('#teacherstatus').html("Teacher Action Completed");
-                            }
+                          if(result[0] === undefined){
+                            $('#confirm-delete').modal('hide');
+                            $("#hide").attr('id', 'show');
+                          }
+                          else if(result[0].Student_ID){
+                            $('.debug-url').html(` <strong>Couldn't delete Parent!!!! Parent Username is assigned to this student:: ${result[0].Student_ID}. Please Unassign from Student.</strong>`);
+                          }
+                          else{
+                            console.log("waaa");
+                          }
                         }
                     });
                 });
