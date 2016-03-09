@@ -1,6 +1,11 @@
 "use strict";
 $(document).ready(function() {
 
+  $('#studentList').on('click', '.btn ', function(){
+    let studentID = this.id;
+      window.location.href = `/student/${studentID}`;
+  });
+
   const randomColorFactor = function() {
       return Math.round(Math.random() * 255);
   };
@@ -32,7 +37,7 @@ $.ajax({
         labels,
         datasets: [
           {
-            label: "Absent",
+            label: "Total Number of Absences",
             data: dataArray,
             fill: false,
             borderDash: [5, 5],
@@ -107,7 +112,7 @@ $.ajax({
         labels,
         datasets: [
           {
-            label: "Absent",
+            label: "Total Number of Students",
             data: dataArray,
             fill: false,
             borderDash: [5, 5],

@@ -32,9 +32,9 @@ $(document).ready(() => {
 
 							tableContent.append(
 											            `<tr>
-											            <th><span rel="${this.Student_ID}" id="${this.Student_ID}" scope="row"">${this.Student_ID}</th>
+											            <th><span rel="${this.Student_ID}" id="${this.Student_ID}" scope="row">${this.Student_ID}</th>
 											            <td>${this.Student_Name}</td>
-																	<td><label><input type="radio" value='Present' id='${this.Student_ID} ${this.Class_ID} ${this.Attendance_ID}' name='optradio${this.Student_ID}' required> Present</label></td>
+																	<td><label><input type="radio" value='Present' id='${this.Student_ID} ${this.Class_ID} ${this.Attendance_ID}' name='optradio${this.Student_ID}' checked="checked" required> Present</label></td>
 																	<td><label><input type="radio" value='Late' id='${this.Student_ID} ${this.Class_ID} ${this.Attendance_ID}' name="optradio${this.Student_ID}" required> Late</label></td>
 																	<td><label><input type="radio" value='Absent' id='${this.Student_ID} ${this.Class_ID} ${this.Attendance_ID}' name="optradio${this.Student_ID}" required> Absent</label></td>
 																	<td><button type="button" id="${this.Student_ID}" class="btn btn-primary">Profile</button></td>

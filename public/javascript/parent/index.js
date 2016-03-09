@@ -6,29 +6,25 @@ $(document).ready(function() {
     url: '/getParentStudents',
     dataType: 'JSON'
   }).done(function(response){
-    console.log(response);
 
     let tableContent;
     tableContent= $('<tbody></tbody>');
 
-    console.log(response);
-
     $.each(response, function(){
 
-
-      tableContent.append(
-                          `<tr>
-                          <th><span rel="${this.Student_ID}" id="${this.Student_ID}" scope="row"">${this.Student_ID}</th>
-                          <td>${this.Student_Name}</td>
-                          <td>${this.Student_Email}</td>
-                          <td>${this.Student_Year}</td>
-                          <td>${this.Student_Username}</td>
-                          <td>${this.Subject_Name}</td>
-                          <td>${this.Attendance_Status}</td>
-                          <td><button type="button" id="${this.Student_ID}" value="Profile" class="btn btn-primary">Profile</button></td>
-                          <td><button type="button" id="${this.Student_ID}" value="Attendance" class="btn btn-primary">Attendance</button></td>
-                          </tr>`
-                      );
+          tableContent.append(
+                              `<tr>
+                              <th><span rel="${this.Student_ID}" id="${this.Student_ID}" scope="row"">${this.Student_ID}</th>
+                              <td>${this.Student_Name}</td>
+                              <td>${this.Student_Email}</td>
+                              <td>${this.Student_Year}</td>
+                              <td>${this.Student_Username}</td>
+                              <td>${this.Subject_Name}</td>
+                              <td>${this.Attendance_Status}</td>
+                              <td><button type="button" id="${this.Student_ID}" value="Profile" class="btn btn-primary">Profile</button></td>
+                              <td><button type="button" id="${this.Student_ID}" value="Attendance" class="btn btn-primary">Attendance</button></td>
+                              </tr>`
+                          );
       });
 
       $('#ClassList table').append(tableContent);

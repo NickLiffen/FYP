@@ -23,11 +23,14 @@ $("#searchForm").submit(function(event) {
     let searchValue, userID;
 
     searchValue = $('#typeahead').val();
+    console.log("Search Value" + searchValue);
+    if(searchValue === ''){
 
+    }
+    else{
     userID = searchValue.charAt(1);
-
     window.location.href = `/student/${userID}`;
-
+  }
   });
 
 });
