@@ -63,8 +63,10 @@ $(document).ready(function() {
             "data": "Teacher_Name"
         }, {
             "data": "Attendance_Status"
-        }]
+        }
+      ],
     });
+
 
     $('#weekTable').dataTable({
         responsive: true,

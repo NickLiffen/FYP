@@ -42,9 +42,8 @@ $(document).ready(function() {
 
       // Inject the whole content string into our existing HTML table
       $('#studentList table tbody').html(tableContent);
-
-
     });
+
 
     $('#studentList').on('click', '.btn ', function() {
         let studentID = this.id;

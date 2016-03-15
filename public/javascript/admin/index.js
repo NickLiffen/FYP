@@ -34,7 +34,7 @@ $.ajax({
     const config = {
     type: 'bar',
     data: {
-        labels,
+        labels: labels.map(label => `Year ${label}`),
         datasets: [
           {
             label: "Total Number of Absences",
@@ -97,7 +97,7 @@ $.ajax({
   console.log(attendance);
 
     // create some arrays for our graph
-    const labels = [];
+    let labels = [];
     const dataArray = [];
 
     $.each(attendance, function(){
@@ -105,11 +105,13 @@ $.ajax({
         dataArray.push(this.Number_Of_Students);
     });
 
+    console.log(labels);
+    console.log(dataArray);
 
     const config = {
     type: 'bar',
     data: {
-        labels,
+        labels: labels.map(label => `Year ${label}`),
         datasets: [
           {
             label: "Total Number of Students",
@@ -168,8 +170,6 @@ $.ajax({
     dataType: 'JSON'
 }).done(function(attendance) {
 
-  console.log(attendance);
-
     // create some arrays for our graph
     const labels = [];
     const dataArray = [];
@@ -178,7 +178,6 @@ $.ajax({
         labels.push(this.Subject_Name);
         dataArray.push(this.Attendance_Count);
     });
-
 
     const config = {
     type: 'bar',
