@@ -603,3 +603,9 @@ WHERE Student_has_Parent.Student_Student_ID = Student.Student_ID
     DESC LIMIT 1
 
     SELECT DISTINCT student.Student_ID as 'Student_ID', CONCAT( Student.Student_Fname, ' ' , Student.Student_Lname)  AS 'Student_Name', Student.Student_Email AS 'Student_Email', Student.Student_Year AS 'Student_Year', Student.Student_Username AS 'Student_Username', CASE when Subject.Subject_Name is null then 'Student Has No Class' else Subject.Subject_Name end as 'Subject_Name', CASE when Attendance.Attendance_Status is null then 'No Attendance Taken Yet' else Attendance.Attendance_Status end as 'Attendance_Status' FROM Student LEFT JOIN Student_Has_Class ON(student_has_class.student_id = student.student_id) LEFT JOIN class ON class.class_id = student_has_class.class_id AND NOW() between class.class_start_timestamp AND class.class_end_timestamp LEFT JOIN Subject ON(class.subject_id = subject.subject_id) LEFT JOIN Attendance ON(Attendance.class_id = class.class_ID AND Attendance.student_id = student.student_id) LEFT JOIN Student_has_Parent ON (Student_has_Parent.Student_Student_ID = Student.Student_ID) LEFT JOIN Parent ON (Parent.Parent_ID = Student_has_Parent.Parent_Parent_ID) WHERE Parent.Parent_ID = '${parentID}' ORDER BY class.class_id DESC LIMIT 2;
+
+
+
+
+
+SELECT Student_ID, Student_Title, Student_Fname, Student_Lname, Student_Email, Student_Year, Student_Username FROM Student INNER JOIN Student_has_Parent ON(Student_has_Parent.Student_Student_ID = student.student_id) INNER JOIN Parent ON(parent.parent_ID = Student_has_Parent.Parent_Parent_ID) WHERE Parent.Parent_ID = 1 AND Student.Active='true';

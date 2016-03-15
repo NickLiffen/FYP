@@ -25,7 +25,7 @@ $("#searchForm").submit(function(event) {
     searchValue = $('#typeahead').val();
     console.log("Search Value" + searchValue);
     if(searchValue === ''){
-
+      console.log("Do Nothing");
     }
     else{
     userID = searchValue.charAt(1);

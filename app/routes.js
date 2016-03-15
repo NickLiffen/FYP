@@ -750,7 +750,19 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
 
 
     app.get('/getStudent', function(req, res) {
-        databaseQuery.getStudent(req)
+            databaseQuery.getStudent(req.user.role, req.user.id)
+            .then(function(data) {
+                res.send(data);
+            })
+            .catch(function(e) {
+                res.status(500, {
+                    error: e
+                });
+            });
+    });
+
+    app.get('/getStudentParentSide', function(req, res) {
+        databaseQuery.getStudentParentSide(req.body)
             .then(function(data) {
                 res.send(data);
             })

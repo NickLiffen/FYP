@@ -603,9 +603,19 @@ module.exports = {
         });
     },
 
-    getStudent: function() {
-        //Return a new promise
-        return new Promise(function(resolve, reject) {
+    getStudent: function(role, id) {
+      return new Promise(function(resolve, reject) {
+        if(role === 'Parent'){
+          connection.query(`SELECT Student_ID, Student_Title, Student_Fname, Student_Lname, Student_Email, Student_Year, Student_Username FROM Student INNER JOIN Student_has_Parent ON(Student_has_Parent.Student_Student_ID = student.student_id) INNER JOIN Parent ON(parent.parent_ID = Student_has_Parent.Parent_Parent_ID) WHERE Parent.Parent_ID = ${id} AND Student.Active='true';`, function(err, results) {
+              //If error reject the promise.
+              if (err) {
+                  reject(Error(err));
+              } else {
+                  resolve(results);
+              }
+          });
+        }
+        else {
             connection.query(`SELECT Student_ID, Student_Title, Student_Fname, Student_Lname, Student_Email, Student_Year, Student_Username FROM Student WHERE Active='true'`, function(err, results) {
                 //If error reject the promise.
                 if (err) {
@@ -614,7 +624,8 @@ module.exports = {
                     resolve(results);
                 }
             });
-        });
+          }
+      });
     },
 
     getStudentProfile: function(studentID) {
