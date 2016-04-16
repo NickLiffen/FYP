@@ -14,7 +14,14 @@ This project is based around a school attendance system primaryly focused on sec
 
 1. Run `npm install` to install all the node dependicies.
 2. Use .env-sample to create your own .env
+3. Run `npm run db-build` to create the database.
+4. Run `npm run db-seed` to seed the database with data.
 
 # Run
 
 1. Run `npm start` to run the application
+
+# Extras
+
+1. If at any time you need to flush the database run `npm run db-remove` to remove the database. Then run steps 3 & 4 of the install to 
+  create the database from scratch again.
