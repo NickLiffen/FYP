@@ -29,7 +29,10 @@
   },
   "scripts": {
     "start": "nodemon index.js || node index.js",
-    "test": "./node_modules/jshint/bin/jshint index.js"
+    "test": "./node_modules/jshint/bin/jshint index.js",
+    "db-build": "./bin/createDatabase.js",
+    "db-seed": "/bin/insertDatabase.js",
+    "db-remove": "/bin/removeDatabase.js",
   },
   "version": "0.0.1",
   "description": "Node App",
