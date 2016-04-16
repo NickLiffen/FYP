@@ -465,7 +465,6 @@ WHERE Student_has_Class.Student_ID = Student.Student_ID
 SELECT Class.Class_ID AS 'Class_ID',
           Student.Student_ID AS 'Student_ID',
           IFNULL(Attendance.Attendance_Status, 0) AS 'Attendance'
-
 FROM Class
   INNER JOIN Student
     ON Subject.Subject_ID=Class.Subject_ID
