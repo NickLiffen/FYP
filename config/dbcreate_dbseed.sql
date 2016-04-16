@@ -306,7 +306,7 @@ INSERT INTO Student_has_Class (Student_ID, Class_ID)
 VALUES ('3', '3');
 --Student_has_Parent
 INSERT INTO Student_has_Parent (Student_Student_ID, Parent_Parent_ID)
-VALUES ('2', '1');
+VALUES ('1', '1');
 INSERT INTO Student_has_Parent (Student_Student_ID, Parent_Parent_ID)
 VALUES ('2', '2');
 INSERT INTO Student_has_Parent (Student_Student_ID, Parent_Parent_ID)

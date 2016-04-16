@@ -24,7 +24,7 @@ function connect(){
 
 function insetIntoTeacherTable() {
     connection.query({
-        sql: "CREATE TABLE IF NOT EXISTS `testFYP`.`Teacher` ( `Teacher_ID` INT NOT NULL AUTO_INCREMENT, `Teacher_Title` VARCHAR(45) NOT NULL, `Teacher_Fname` VARCHAR(45) NOT NULL, `Teacher_Lname` VARCHAR(45) NOT NULL, `Teacher_Email` VARCHAR(45) NOT NULL, `Teacher_Mobile_Number` VARCHAR(45) NULL, `Teacher_Username` VARCHAR(45) NOT NULL, `Teacher_Password` VARCHAR(300) NOT NULL, `Role` VARCHAR(45) NOT NULL, PRIMARY KEY (`Teacher_ID`)) ENGINE = InnoDB;",
+        sql: "INSERT INTO Teacher (Teacher_Title, Teacher_Fname, Teacher_Lname, Teacher_Email, Teacher_Mobile_Number, Teacher_Username, Teacher_Password, Role) VALUES ('Mr', 'Robert','Sonny','Robert.Sonny@hotmail.com','07981691495','RobertSonny', '$2a$08$gnA71gTP.S2.DW51s0dpG.G1uBlN6sKM4anblcvFAZoWUrNLnaaWe', 'Teacher'); INSERT INTO Teacher (Teacher_Title, Teacher_Fname, Teacher_Lname, Teacher_Email, Teacher_Mobile_Number, Teacher_Username, Teacher_Password, Role) VALUES ('Mrs', 'Rachel','Green','Rachel.Green@hotmail.com','07981691795','RachelGreen', '$2a$08$gnA71gTP.S2.DW51s0dpG.G1uBlN6sKM4anblcvFAZoWUrNLnaaWe', 'Teacher'); INSERT INTO Teacher (Teacher_Title, Teacher_Fname, Teacher_Lname, Teacher_Email, Teacher_Mobile_Number, Teacher_Username, Teacher_Password, Role) VALUES ('Mrs', 'Erik','Nagy','Erik.Nagy@hotmail.com','07981391795','ErikNagy', '$2a$08$gnA71gTP.S2.DW51s0dpG.G1uBlN6sKM4anblcvFAZoWUrNLnaaWe', 'Teacher'); ",
         timeout: 1000,
     }, function(error) {
         if (error) {
@@ -36,7 +36,7 @@ function insetIntoTeacherTable() {
 
 function insetIntoParentTable() {
     connection.query({
-        sql: "CREATE TABLE IF NOT EXISTS `testFYP`.`Parent` ( `Parent_ID` INT NOT NULL AUTO_INCREMENT, `Parent_Title` VARCHAR(45) NOT NULL, `Parent_Fname` VARCHAR(45) NOT NULL, `Parent_Lname` VARCHAR(45) NOT NULL, `Parent_Email` VARCHAR(45) NOT NULL, `Parent_Mobile_Number` VARCHAR(15) NULL, `Parent_Home_Number` VARCHAR(15) NULL, `Parent_Address` VARCHAR(100) NULL, `Parent_Username` VARCHAR(45) NOT NULL, `Parent_Password` VARCHAR(300) NOT NULL, `Role` VARCHAR(45) NOT NULL, PRIMARY KEY (`Parent_ID`), UNIQUE INDEX `Parent_ID_UNIQUE` (`Parent_ID` ASC)) ENGINE = InnoDB;",
+        sql: " INSERT INTO Parent (Parent_Title, Parent_Fname, Parent_Lname, Parent_Email, Parent_Mobile_Number, Parent_Home_Number, Parent_Address, Parent_Username, Parent_Password, Role) VALUES ('Mr', 'Richard', 'Love', 'Richad.Love@gmail.com', '0782637463', '01634237485', 'ME89E4', 'RichardLove', '$2a$08$gnA71gTP.S2.DW51s0dpG.G1uBlN6sKM4anblcvFAZoWUrNLnaaWe', 'Parent'); INSERT INTO Parent (Parent_Title, Parent_Fname, Parent_Lname, Parent_Email, Parent_Mobile_Number, Parent_Home_Number, Parent_Address, Parent_Username, Parent_Password, Role) VALUES ('Mrs', 'Belinda', 'Love', 'Belinda.Love@gmail.com', '0782237463', '01634237485', 'ME89E4', 'BelindaLove', '$2a$08$gnA71gTP.S2.DW51s0dpG.G1uBlN6sKM4anblcvFAZoWUrNLnaaWe', 'Parent'); INSERT INTO Parent (Parent_Title, Parent_Fname, Parent_Lname, Parent_Email, Parent_Mobile_Number, Parent_Home_Number, Parent_Address, Parent_Username, Parent_Password, Role) VALUES ('Mr', 'Jason', 'King', 'Jason.King@gmail.com', '0782637463', '01634297485', 'ME59E4', 'JasonKing', '$2a$08$gnA71gTP.S2.DW51s0dpG.G1uBlN6sKM4anblcvFAZoWUrNLnaaWe', 'Parent'); ",
         timeout: 2000,
     }, function(error) {
         if (error) {
@@ -48,7 +48,7 @@ function insetIntoParentTable() {
 
 function insetIntoStudentTable() {
     connection.query({
-        sql: "CREATE TABLE IF NOT EXISTS `testFYP`.`Student` ( `Student_ID` INT NOT NULL AUTO_INCREMENT, `Student_Title` VARCHAR(45) NOT NULL, `Student_Fname` VARCHAR(45) NOT NULL, `Student_Lname` VARCHAR(45) NOT NULL, `Student_Email` VARCHAR(45) NULL, `Student_Year` INT NULL, `Student_Username` VARCHAR(45) NULL, `Student_Password` VARCHAR(300) NULL, `Role` VARCHAR(45) NOT NULL, `Active` VARCHAR(10) NOT NULL DEFAULT 'True', PRIMARY KEY (`Student_ID`), UNIQUE INDEX `Student_ID_UNIQUE` (`Student_ID` ASC)) ENGINE = InnoDB;",
+        sql: " INSERT INTO Student (Student_Title, Student_Fname, Student_Lname, Student_Email, Student_Year, Student_Username, Student_Password, Role) VALUES ('Mr', 'Nick', 'Liffen', 'Nick.liffen@hotmail.com', '8', 'NickLiffen', '$2a$08$gnA71gTP.S2.DW51s0dpG.G1uBlN6sKM4anblcvFAZoWUrNLnaaWe', 'Student'); INSERT INTO Student (Student_Title, Student_Fname, Student_Lname, Student_Email, Student_Year, Student_Username, Student_Password, Role) VALUES ('Mrs', 'Caris', 'Love', 'Caris.Love@hotmail.com', '9', 'CarisLove', '$2a$08$gnA71gTP.S2.DW51s0dpG.G1uBlN6sKM4anblcvFAZoWUrNLnaaWe', 'Student'); INSERT INTO Student (Student_Title, Student_Fname, Student_Lname, Student_Email, Student_Year, Student_Username, Student_Password, Role) VALUES ('Mrs', 'Katie', 'King', 'Katie.King@hotmail.com', '10', 'KatieKing', '$2a$08$gnA71gTP.S2.DW51s0dpG.G1uBlN6sKM4anblcvFAZoWUrNLnaaWe', 'Student'); ",
         timeout: 3000,
     }, function(error) {
         if (error) {
@@ -60,7 +60,7 @@ function insetIntoStudentTable() {
 
 function insetIntoSubjectTable() {
     connection.query({
-        sql: "CREATE TABLE IF NOT EXISTS `testFYP`.`Subject` ( `Subject_ID` INT NOT NULL AUTO_INCREMENT, `Subject_Name` VARCHAR(45) NOT NULL, `Subject_Description` VARCHAR(45) NULL, PRIMARY KEY (`Subject_ID`), UNIQUE INDEX `Subject_ID_UNIQUE` (`Subject_ID` ASC)) ENGINE = InnoDB;",
+        sql: " INSERT INTO Subject (Subject_Name, Subject_Description) VALUES ('English', 'English Language and Litriture'); INSERT INTO Subject (Subject_Name, Subject_Description) VALUES ('Maths', 'Normal Mathmatics'); INSERT INTO Subject (Subject_Name, Subject_Description) VALUES ('History', 'Histroy about the Normans'); ",
         timeout: 4000,
     }, function(error) {
         if (error) {
@@ -72,7 +72,7 @@ function insetIntoSubjectTable() {
 
 function insetIntoRoomTable() {
     connection.query({
-        sql: "CREATE TABLE IF NOT EXISTS `testFYP`.`Room` ( `Room_ID` INT NOT NULL AUTO_INCREMENT, `Room_Name` VARCHAR(45) NOT NULL, `Room_Description` VARCHAR(45) NOT NULL, PRIMARY KEY (`Room_ID`), UNIQUE INDEX `Room_ID_UNIQUE` (`Room_ID` ASC)) ENGINE = InnoDB;",
+        sql: " INSERT INTO Room (Room_Name, Rom_Description) VALUES ('3.0.1', 'Burnaby Building'); INSERT INTO Room (Room_Name, Rom_Description) VALUES ('1.0.4', 'Richmond Building'); INSERT INTO Room (Room_Name, Rom_Description) VALUES ('8.0.2', 'Portland Building'); ",
         timeout: 5000,
     }, function(error) {
         if (error) {
@@ -84,7 +84,7 @@ function insetIntoRoomTable() {
 
 function insetIntoAdminTable() {
     connection.query({
-        sql: "CREATE TABLE IF NOT EXISTS `testFYP`.`Admin` ( `Admin_ID` INT NOT NULL AUTO_INCREMENT, `Admin_Title` VARCHAR(45) NOT NULL, `Admin_Fname` VARCHAR(45) NOT NULL, `Admin_Lname` VARCHAR(45) NOT NULL, `Admin_Email` VARCHAR(45) NOT NULL, `Admin_Privledge_Level` VARCHAR(45) NULL, `Admin_Username` VARCHAR(45) NOT NULL, `Admin_Password` VARCHAR(300) NULL, `Role` VARCHAR(45) NOT NULL, PRIMARY KEY (`Admin_ID`), UNIQUE INDEX `Admin_ID_UNIQUE` (`Admin_ID` ASC)) ENGINE = InnoDB;",
+        sql: " INSERT INTO Admin (Admin_Title, Admin_Fname, Admin_Lname, Admin_Email, Admin_Privledge_Level, Admin_Username, Admin_Password, Role) VALUES ('Mr', 'Andrew', 'Stockdale', 'Andrew.Stockdale@hotmail.com', '1', 'AndrewStockdale', '$2a$08$gnA71gTP.S2.DW51s0dpG.G1uBlN6sKM4anblcvFAZoWUrNLnaaWe', 'Admin'); INSERT INTO Admin (Admin_Title, Admin_Fname, Admin_Lname, Admin_Email, Admin_Privledge_Level, Admin_Username, Admin_Password, Role) VALUES ('Mrs', 'Rachel', 'Bodkin', 'Rachel.Bodkin@hotmail.com', '2', 'RachelBodkin', '$2a$08$gnA71gTP.S2.DW51s0dpG.G1uBlN6sKM4anblcvFAZoWUrNLnaaWe', 'Admin'); INSERT INTO Admin (Admin_Title, Admin_Fname, Admin_Lname, Admin_Email, Admin_Privledge_Level, Admin_Username, Admin_Password, Role) VALUES ('Mrs', 'Sophie', 'Clarke', 'Sophie.Clarke@hotmail.com', '1', 'SophieClarke', '$2a$08$gnA71gTP.S2.DW51s0dpG.G1uBlN6sKM4anblcvFAZoWUrNLnaaWe', 'Admin'); ",
         timeout: 7000,
     }, function(error) {
         if (error) {
@@ -96,7 +96,7 @@ function insetIntoAdminTable() {
 
 function insetIntoStudentHasParentTable() {
     connection.query({
-        sql: "CREATE TABLE IF NOT EXISTS `testFYP`.`Student_has_Parent` ( `Student_Student_ID` INT NOT NULL, `Parent_Parent_ID` INT NOT NULL, PRIMARY KEY (`Student_Student_ID`, `Parent_Parent_ID`), INDEX `fk_Student_has_Parent_Parent1_idx` (`Parent_Parent_ID` ASC), INDEX `fk_Student_has_Parent_Student1_idx` (`Student_Student_ID` ASC), CONSTRAINT `fk_Student_has_Parent_Student1` FOREIGN KEY (`Student_Student_ID`) REFERENCES `testFYP`.`Student` (`Student_ID`) ON DELETE NO ACTION, CONSTRAINT `fk_Student_has_Parent_Parent1` FOREIGN KEY (`Parent_Parent_ID`) REFERENCES `testFYP`.`Parent` (`Parent_ID`) ON DELETE NO ACTION) ENGINE = InnoDB;",
+        sql: " INSERT INTO Student_has_Parent (Student_Student_ID, Parent_Parent_ID) VALUES ('1', '1'); INSERT INTO Student_has_Parent (Student_Student_ID, Parent_Parent_ID) VALUES ('2', '2'); INSERT INTO Student_has_Parent (Student_Student_ID, Parent_Parent_ID) VALUES ('3', '3'); ",
         timeout: 9000,
     }, function(error) {
         if (error) {
@@ -108,7 +108,7 @@ function insetIntoStudentHasParentTable() {
 
 function insetIntoClassTable() {
     connection.query({
-        sql: "CREATE TABLE IF NOT EXISTS `testFYP`.`Class` ( `Class_ID` INT NOT NULL AUTO_INCREMENT, `Class_Level` VARCHAR(45) NOT NULL, `Class_Start_Timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, `Class_End_Timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, `Subject_ID` INT NOT NULL, `Room_ID` INT NOT NULL, `Teacher_ID` INT NOT NULL, `Active` VARCHAR(10) NOT NULL DEFAULT 'True', PRIMARY KEY (`Class_ID`, `Subject_ID`, `Room_ID`, `Teacher_ID`), INDEX `fk_Class_Subject1_idx` (`Subject_ID` ASC), INDEX `fk_Class_Room1_idx` (`Room_ID` ASC), INDEX `fk_Class_Teacher1_idx` (`Teacher_ID` ASC), UNIQUE INDEX `Class_ID_UNIQUE` (`Class_ID` ASC), CONSTRAINT `fk_Class_Subject1` FOREIGN KEY (`Subject_ID`) REFERENCES `testFYP`.`Subject` (`Subject_ID`) ON DELETE NO ACTION, CONSTRAINT `fk_Class_Room1` FOREIGN KEY (`Room_ID`) REFERENCES `testFYP`.`Room` (`Room_ID`) ON DELETE NO ACTION, CONSTRAINT `fk_Class_Teacher1` FOREIGN KEY (`Teacher_ID`) REFERENCES `testFYP`.`Teacher` (`Teacher_ID`) ON DELETE NO ACTION) ENGINE = InnoDB;",
+        sql: " INSERT INTO Class (Class_Level, Class_Start_Timestamp, Class_End_Timestamp, Subject_ID, Room_ID, Teacher_ID) VALUES ('7', '2016-01-27 08:00:00', '2016-01-27 09:00:00', '1', '2', '1'); INSERT INTO Class (Class_Level, Class_Start_Timestamp, Class_End_Timestamp, Subject_ID, Room_ID, Teacher_ID) VALUES ('11', '2016-01-27 09:00:00', '2016-01-27 10:00:00', '2', '1', '2'); INSERT INTO Class (Class_Level, Class_Start_Timestamp, Class_End_Timestamp, Subject_ID, Room_ID, Teacher_ID) VALUES ('9', '2016-01-27 10:00:00', '2016-01-27 11:00:00', '3', '3', '3'); ",
         timeout: 6000,
     }, function(error) {
         if (error) {
@@ -120,7 +120,7 @@ function insetIntoClassTable() {
 
 function insetIntoStudentHasClassTable() {
     connection.query({
-        sql: "CREATE TABLE IF NOT EXISTS `testFYP`.`Student_has_Class` ( `Student_ID` INT NOT NULL, `Class_ID` INT NOT NULL, PRIMARY KEY (`Student_ID`, `Class_ID`), INDEX `fk_Student_has_Class_Class1_idx` (`Class_ID` ASC), INDEX `fk_Student_has_Class_Student_idx` (`Student_ID` ASC), CONSTRAINT `fk_Student_has_Class_Student` FOREIGN KEY (`Student_ID`) REFERENCES `testFYP`.`Student` (`Student_ID`) ON DELETE NO ACTION, CONSTRAINT `fk_Student_has_Class_Class1` FOREIGN KEY (`Class_ID`) REFERENCES `testFYP`.`Class` (`Class_ID`) ON DELETE NO ACTION) ENGINE = InnoDB;",
+        sql: " INSERT INTO Student_has_Class (Student_ID, Class_ID) VALUES ('1', '1'); INSERT INTO Student_has_Class (Student_ID, Class_ID) VALUES ('2', '1'); INSERT INTO Student_has_Class (Student_ID, Class_ID) VALUES ('3', '1'); INSERT INTO Student_has_Class (Student_ID, Class_ID) VALUES ('1', '2'); INSERT INTO Student_has_Class (Student_ID, Class_ID) VALUES ('2', '2'); INSERT INTO Student_has_Class (Student_ID, Class_ID) VALUES ('3', '2'); INSERT INTO Student_has_Class (Student_ID, Class_ID) VALUES ('1', '3'); INSERT INTO Student_has_Class (Student_ID, Class_ID) VALUES ('2', '3'); INSERT INTO Student_has_Class (Student_ID, Class_ID) VALUES ('3', '3'); ",
         timeout: 8000,
     }, function(error) {
         if (error) {
@@ -132,7 +132,7 @@ function insetIntoStudentHasClassTable() {
 
 function insetIntoAttendanceTable() {
     connection.query({
-        sql: "CREATE TABLE IF NOT EXISTS `testFYP`.`Attendance` ( `Attendance_ID` INT NOT NULL AUTO_INCREMENT, `Attendance_Status` VARCHAR(45) NOT NULL, `Attendance_Remarks` VARCHAR(45) NULL, `Class_ID` INT NOT NULL, `Student_ID` INT NOT NULL, PRIMARY KEY (`Attendance_ID`, `Class_ID`, `Student_ID`), INDEX `fk_Attendance_Class1_idx` (`Class_ID` ASC), INDEX `fk_Attendance_Student1_idx` (`Student_ID` ASC), UNIQUE INDEX `Attendance_ID_UNIQUE` (`Attendance_ID` ASC), CONSTRAINT `fk_Attendance_Class1` FOREIGN KEY (`Class_ID`) REFERENCES `testFYP`.`Class` (`Class_ID`) ON DELETE NO ACTION, CONSTRAINT `fk_Attendance_Student1` FOREIGN KEY (`Student_ID`) REFERENCES `testFYP`.`Student` (`Student_ID`) ON DELETE NO ACTION) ENGINE = InnoDB;",
+        sql: " INSERT INTO Attendance (Attendance_Status, Attendance_Remarks, Class_ID, Student_ID) VALUES ('Present', 'N/A', '1', '1'); INSERT INTO Attendance (Attendance_Status, Attendance_Remarks, Class_ID, Student_ID) VALUES ('Present', 'N/A', '1', '2'); INSERT INTO Attendance (Attendance_Status, Attendance_Remarks, Class_ID, Student_ID) VALUES ('Late', 'N/A', '1', '3'); INSERT INTO Attendance (Attendance_Status, Attendance_Remarks, Class_ID, Student_ID) VALUES ('Absent', 'N/A', '2', '1'); INSERT INTO Attendance (Attendance_Status, Attendance_Remarks, Class_ID, Student_ID) VALUES ('Present', 'N/A', '2', '2'); INSERT INTO Attendance (Attendance_Status, Attendance_Remarks, Class_ID, Student_ID) VALUES ('Present', 'N/A', '2', '3'); INSERT INTO Attendance (Attendance_Status, Attendance_Remarks, Class_ID, Student_ID) VALUES ('Present', 'N/A', '3', '1'); INSERT INTO Attendance (Attendance_Status, Attendance_Remarks, Class_ID, Student_ID) VALUES ('Late', 'N/A', '3', '2'); INSERT INTO Attendance (Attendance_Status, Attendance_Remarks, Class_ID, Student_ID) VALUES ('Absent', 'N/A', '3', '3'); ",
         timeout: 10000,
     }, function(error) {
         if (error) {
@@ -153,4 +153,4 @@ function executeAsynchronously(functions, timeout) {
 }
 
 executeAsynchronously(
-  [connect, insetIntoTeacherTable, insetIntoParentTable, insetIntoStudentTable, insetIntoSubjectTable, insetIntoRoomTable, insetIntoAdminTable, insetIntoStudentHasParentTable, insetIntoClassTable, insetIntoStudentHasClassTable, insetIntoAttendanceTable, endConnection], 2000);
+  [connect, insetIntoTeacherTable, insetIntoParentTable, insetIntoStudentTable, insetIntoSubjectTable, insetIntoRoomTable, insetIntoAdminTable, insetIntoStudentHasParentTable, insetIntoClassTable, insetIntoStudentHasClassTable, insetIntoAttendanceTable, endConnection], 5000);
