@@ -6,8 +6,8 @@ This project is based around a school attendance system primaryly focused on sec
 
 # Install
 
-1. Download the latest stable version of Node.Js (https://nodejs.org/en/).
-2. Download the latest stable version of MySQL (http://dev.mysql.com/downloads/mysql/). Set up MySQL to your specs. 
+1. Download the latest stable version of Node.Js [Download Here](https://nodejs.org/en/).
+2. Download the latest stable version of MySQL [Download Here](http://dev.mysql.com/downloads/mysql/). Set up MySQL to your specs. 
 3. Git Clone this repo (https://github.com/NickLiffen/project.git)
 
 # Set Up
@@ -25,3 +25,4 @@ This project is based around a school attendance system primaryly focused on sec
 
 1. If at any time you need to flush the database run `npm run db-remove` to remove the database. Then run steps 3 & 4 of the install to 
   create the database from scratch again.
+1. Any known issues with this project can be found here: [Issues](https://github.com/NickLiffen/project/issues)
