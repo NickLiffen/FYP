@@ -1,3 +1,20 @@
-# project
+# Project
 
 [![Build Status](https://travis-ci.com/NickLiffen/project.svg?token=nTmoVpHsSx6vLW8egSuy&branch=master)](https://travis-ci.com/NickLiffen/project)
+
+This project is based around a school attendance system primaryly focused on secondary schools. (But can also be used for primary schools etc).
+
+# Install
+
+1. Download the latest stable version of Node.Js (https://nodejs.org/en/).
+2. Download the latest stable version of MySQL (http://dev.mysql.com/downloads/mysql/). Set up MySQL to your specs. 
+3. Git Clone this repo (https://github.com/NickLiffen/project.git)
+
+# Set Up
+
+1. Run `npm install` to install all the node dependicies.
+2. Use .env-sample to create your own .env
+
+# Run
+
+1. Run `npm start` to run the application
