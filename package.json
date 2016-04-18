@@ -39,6 +39,11 @@
   },
   "version": "0.0.1",
   "description": "Node App",
+  "version": "1.0.0",
+  "engines": {
+    "node": "5.2.0",
+    "npm": "3.3.12"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/NickLiffen/project"
