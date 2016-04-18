@@ -22,6 +22,7 @@
     "moment": "^2.11.1",
     "morgan": "~1.0.0",
     "mysql": "~2.9.0",
+    "nodemon": "^1.9.1",
     "passport": "~0.1.17",
     "passport-local": "~0.1.6",
     "request": "^2.65.0",
@@ -37,9 +38,8 @@
     "db-remove": "/bin/removeDatabase.js",
     "postinstall": "./node_modules/bower/bin/bower install"
   },
-  "version": "0.0.1",
-  "description": "Node App",
   "version": "1.0.0",
+  "description": "Node App",
   "engines": {
     "node": "5.2.0",
     "npm": "3.3.12"
