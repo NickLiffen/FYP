@@ -65,6 +65,7 @@ $(document).ready(function() {
         },
         defaultView: 'agendaWeek',
         eventLimit: true,
+        timezone: 'Europe/London',
         weekends: false,
         eventSources: [
           {
