@@ -6,6 +6,7 @@ $(document).ready(() => {
     url: '/teacherCurrentClassStatus',
     dataType: 'JSON'
   }).done(function(response){
+    console.log(response);
     if(response.length < 1){
       $('#currentClassStatus').addClass('alert alert-success');
       $('#currentClassStatus').addClass('center');
