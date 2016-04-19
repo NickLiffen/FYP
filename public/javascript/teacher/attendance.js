@@ -61,7 +61,7 @@ $(document).ready(() => {
       defaultView: 'agendaWeek',
 			eventLimit: true,
 			weekends: true,
-			timezone: 'Europe/Prague',
+			timezone: 'local',
 			eventSources: [
         {
             url: '/teacherTimetable',
