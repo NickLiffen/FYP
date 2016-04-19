@@ -65,7 +65,7 @@ $(document).ready(function() {
         },
         defaultView: 'agendaWeek',
         eventLimit: true,
-        timezone: 'Europe/London',
+        timezone: 'Europe/Prague',
         weekends: false,
         eventSources: [
           {
