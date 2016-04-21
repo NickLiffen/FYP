@@ -80,7 +80,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
             });
     });
 
-    app.get('/teacherCurrentClassStatus', function(req, res) {
+    app.get('/teacherCurrentClassStatus', loggedIn, function(req, res) {
         databaseQuery.teacherCurrentClassStatus(req.user.id)
             .then(function(data) {
                 res.send(data);
@@ -108,7 +108,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
     });
 
 
-    app.post('/teacherTimetable', function(req, res) {
+    app.post('/teacherTimetable', loggedIn, function(req, res) {
         let data;
         if (Object.keys(req.body).length === 0 || !req.body.ID) {
             data = req.user.id;
@@ -126,7 +126,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
             });
     });
 
-    app.post('/studentTimetable', function(req, res) {
+    app.post('/studentTimetable', loggedIn, function(req, res) {
         databaseQuery.studentTimetable(req.body.ID)
             .then(function(data) {
                 res.send(data);
@@ -138,7 +138,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
             });
     });
 
-    app.post('/getBarChartDetails', function(req, res) {
+    app.post('/getBarChartDetails', loggedIn, function(req, res) {
         databaseQuery.getBarChartDetails(req.body.id)
             .then(function(data) {
                 res.send(data);
@@ -162,7 +162,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
             });
     });
 
-    app.get('/absenceAllYears', function(req, res) {
+    app.get('/absenceAllYears', loggedIn, function(req, res) {
         databaseQuery.absenceAllYears()
             .then(function(data) {
                 res.send(data);
@@ -174,7 +174,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
             });
     });
 
-    app.get('/mostPopularTruenters', function(req, res) {
+    app.get('/mostPopularTruenters', loggedIn, function(req, res) {
         databaseQuery.mostPopularTruenters()
             .then(function(data) {
                 res.send(data);
@@ -186,7 +186,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
             });
     });
 
-    app.get('/totalStudents', function(req, res) {
+    app.get('/totalStudents', loggedIn, function(req, res) {
         databaseQuery.totalStudents()
             .then(function(data) {
                 res.send(data);
@@ -198,8 +198,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
             });
     });
 
-    app.get('/teacherTodayClasses', function(req, res) {
-
+    app.get('/teacherTodayClasses', loggedIn, function(req, res) {
       databaseQuery.teacherTodayClasses(req.user.id)
           .then(function(data) {
               res.send(data);
@@ -212,7 +211,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
     });
 
 
-    app.get('/absencesPerSubject', function(req, res) {
+    app.get('/absencesPerSubject', loggedIn, function(req, res) {
         databaseQuery.absencesPerSubject()
             .then(function(data) {
                 res.send(data);
@@ -224,7 +223,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
             });
     });
 
-    app.post('/getRadarChartDetails', function(req, res) {
+    app.post('/getRadarChartDetails', loggedIn, function(req, res) {
         databaseQuery.getRadarChartDetails(req.body.id)
             .then(function(data) {
                 res.send(data);
@@ -236,7 +235,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
             });
     });
 
-    app.post('/studentTodayAttendance', function(req, res) {
+    app.post('/studentTodayAttendance', loggedIn, function(req, res) {
         console.log(" day were here");
         databaseQuery.studentTodayAttendance(req.body.id)
             .then(function(data) {
@@ -250,7 +249,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
             });
     });
 
-    app.post('/studentWeekAttendance', function(req, res) {
+    app.post('/studentWeekAttendance', loggedIn, function(req, res) {
         console.log(" week were here");
         databaseQuery.studentWeekAttendance(req.body.id)
             .then(function(data) {
@@ -264,7 +263,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
             });
     });
 
-    app.post('/studentMonthAttendance', function(req, res) {
+    app.post('/studentMonthAttendance', loggedIn, function(req, res) {
         console.log("month were here");
         databaseQuery.studentMonthAttendance(req.body.id)
             .then(function(data) {
@@ -278,7 +277,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
             });
     });
 
-    app.get('/studentt/:id', function(req, res) {
+    app.get('/studentt/:id', loggedIn, function(req, res) {
       let studentID = req.params.id;
       databaseQuery.getIndividualStudent(studentID)
           .then(function(data) {
@@ -291,7 +290,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
           });
     });
 
-    app.get('/student/:id', function(req, res) {
+    app.get('/student/:id', loggedIn, function(req, res) {
         let studentID = req.params.id;
         databaseQuery.getStudentProfile(studentID)
             .then(function(data) {
@@ -315,7 +314,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
             });
     });
 
-    app.get('/parent/:id', function(req, res) {
+    app.get('/parent/:id', loggedIn, function(req, res) {
         let parentID = req.params.id;
         databaseQuery.getIndividualParent(parentID)
             .then(function(data) {
@@ -332,7 +331,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
             });
     });
 
-    app.get('/parent/:id/contact', function(req, res) {
+    app.get('/parent/:id/contact', loggedIn, function(req, res) {
         let parentID = req.params.id;
         databaseQuery.getIndividualParent(parentID)
             .then(function(data) {
@@ -353,7 +352,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
     });
 
 
-    app.get('/parent/:id/contact', function(req, res) {
+    app.get('/parent/:id/contact', loggedIn, function(req, res) {
         let parentID = req.params.id;
         databaseQuery.getIndividualParent(parentID)
             .then(function(data) {
@@ -370,7 +369,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
             });
     });
 
-    app.get('/student/:id/attendance', function(req, res) {
+    app.get('/student/:id/attendance', loggedIn, function(req, res) {
         let studentID = req.params.id;
         databaseQuery.getStudentProfile(studentID)
             .then(function(data) {
@@ -388,7 +387,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
             });
     });
 
-    app.patch('/student/:id', function(req, res) {
+    app.patch('/student/:id', loggedIn, function(req, res) {
         let studentID       = req.params.id;
         let studentObject   = req.body;
         let StudentTitle    = req.body.StudentTitle;
@@ -409,7 +408,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
             });
     });
 
-    app.delete('/student/:id', function(req, res) {
+    app.delete('/student/:id', loggedIn, function(req, res) {
         let studentID = req.params.id;
         databaseQuery.deleteStudent(studentID)
             .then(function(data) {
@@ -422,8 +421,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
             });
     });
 
-
-    app.get('/teacher/:id', function(req, res) {
+    app.get('/teacher/:id', loggedIn, function(req, res) {
         let teacherID = req.params.id;
         databaseQuery.getTeacherProfile(teacherID)
             .then(function(data) {
@@ -444,8 +442,9 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
                 });
             });
     });
+
     //THIS IS SUCH A BAD HACK FIND ANOTHER WAY AROUND IT
-    app.get('/teacherr/:id', function(req, res) {
+    app.get('/teacherr/:id', loggedIn, function(req, res) {
       let teacherID = req.params.id;
       databaseQuery.getIndividualTeacher(teacherID)
           .then(function(data) {
@@ -458,7 +457,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
           });
     });
 
-    app.patch('/teacher/:id', function(req, res) {
+    app.patch('/teacher/:id', loggedIn, function(req, res) {
         let teacherID = req.params.id;
         let teacherTitle = req.body.TeacherTitle;
         let teacherFname = req.body.TeacherFName;
@@ -477,7 +476,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
             });
     });
 
-    app.delete('/teacher/:id', function(req, res) {
+    app.delete('/teacher/:id', loggedIn, function(req, res) {
         let teacherID = req.params.id;
         databaseQuery.deleteTeacher(teacherID)
             .then(function(data) {
@@ -490,7 +489,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
             });
     });
 
-    app.get('/class/:id', function(req, res) {
+    app.get('/class/:id', loggedIn, function(req, res) {
         let classID = req.params.id;
         databaseQuery.getIndividualClass(classID)
             .then(function(data) {
@@ -503,7 +502,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
             });
     });
 
-    app.patch('/class/:id', function(req, res) {
+    app.patch('/class/:id', loggedIn, function(req, res) {
         let classID = req.params.id;
         let classObject = req.body;
         let Class_Level = req.body.Class_Level;
@@ -524,7 +523,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
             });
     });
 
-    app.delete('/class/:id', function(req, res) {
+    app.delete('/class/:id', loggedIn, function(req, res) {
         let ClassID = req.params.id;
         databaseQuery.deleteClass(ClassID)
             .then(function(data) {
@@ -537,7 +536,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
             });
     });
 
-    app.get('/parentt/:id', function(req, res) {
+    app.get('/parentt/:id', loggedIn, function(req, res) {
       let parentID = req.params.id;
       databaseQuery.getIndividualParent(parentID)
           .then(function(data) {
@@ -550,7 +549,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
           });
     });
 
-    app.patch('/parent/:id', function(req, res) {
+    app.patch('/parent/:id', loggedIn, function(req, res) {
         let parentID        = req.params.id;
         let parentObject    = req.body;
         let ParentTitle     = req.body.ParentTitle;
@@ -573,7 +572,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
             });
     });
 
-    app.delete('/parent/:id', function(req, res) {
+    app.delete('/parent/:id', loggedIn, function(req, res) {
         let parentID = req.params.id;
         databaseQuery.deleteParent(parentID)
             .then(function(data) {
@@ -587,7 +586,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
             });
     });
 
-    app.get('/subject/:id', function(req, res) {
+    app.get('/subject/:id', loggedIn, function(req, res) {
         let subjectID = req.params.id;
         databaseQuery.getIndividualSubject(subjectID)
             .then(function(data) {
@@ -600,7 +599,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
             });
     });
 
-    app.patch('/subject/:id', function(req, res) {
+    app.patch('/subject/:id', loggedIn, function(req, res) {
         let subjectID = req.params.id;
         let subjectName = req.body.Subject_Name;
         let subjectDescription = req.body.Subject_Description;
@@ -616,7 +615,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
             });
     });
 
-    app.delete('/subject/:id', function(req, res) {
+    app.delete('/subject/:id', loggedIn, function(req, res) {
         let subjectID = req.params.id;
         databaseQuery.deleteSubject(subjectID)
             .then(function(data) {
@@ -630,7 +629,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
             });
     });
 
-    app.get('/room/:id', function(req, res) {
+    app.get('/room/:id', loggedIn, function(req, res) {
         let roomID = req.params.id;
 
         databaseQuery.getIndividualRoom(roomID)
@@ -644,7 +643,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
             });
     });
 
-    app.patch('/room/:id', function(req, res) {
+    app.patch('/room/:id', loggedIn, function(req, res) {
         let roomID = req.params.id;
         let roomName = req.body.Room_Name;
         let roomDescription = req.body.Rom_Description;
@@ -660,7 +659,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
             });
     });
 
-    app.delete('/room/:id', function(req, res) {
+    app.delete('/room/:id', loggedIn, function(req, res) {
         let roomID = req.params.id;
         databaseQuery.deleteRoom(roomID)
             .then(function(data) {
@@ -735,7 +734,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
     });
 
 
-    app.get('/getParent', function(req, res) {
+    app.get('/getParent', loggedIn, function(req, res) {
       console.log(req);
         databaseQuery.getParent(req.body)
             .then(function(data) {
@@ -749,7 +748,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
     });
 
 
-    app.get('/getStudent', function(req, res) {
+    app.get('/getStudent', loggedIn, function(req, res) {
             databaseQuery.getStudent(req.user.role, req.user.id)
             .then(function(data) {
                 res.send(data);
@@ -761,7 +760,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
             });
     });
 
-    app.get('/getStudentParentSide', function(req, res) {
+    app.get('/getStudentParentSide', loggedIn, function(req, res) {
         databaseQuery.getStudentParentSide(req.body)
             .then(function(data) {
                 res.send(data);
@@ -773,7 +772,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
             });
     });
 
-    app.get('/getTeacher', function(req, res) {
+    app.get('/getTeacher', loggedIn, function(req, res) {
         databaseQuery.getTeacher(req.body)
             .then(function(data) {
                 res.send(data);
@@ -785,7 +784,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
             });
     });
 
-    app.get('/getClass', function(req, res) {
+    app.get('/getClass', loggedIn, function(req, res) {
         databaseQuery.getClass(req.body)
             .then(function(data) {
                 res.send(data);
@@ -797,7 +796,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
             });
     });
 
-    app.get('/getRoom', function(req, res) {
+    app.get('/getRoom', loggedIn, function(req, res) {
         databaseQuery.getRoom(req.body)
             .then(function(data) {
                 res.send(data);
@@ -809,7 +808,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
             });
     });
 
-    app.get('/getSubject', function(req, res) {
+    app.get('/getSubject', loggedIn, function(req, res) {
         databaseQuery.getSubject(req.body)
             .then(function(data) {
                 res.send(data);
@@ -823,7 +822,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
 
 
 
-    app.post('/takeAttendance', function(req, res) {
+    app.post('/takeAttendance', loggedIn, function(req, res) {
         databaseQuery.takeAttendance(req.body)
             .then(function(data) {
                 res.send(data);
@@ -835,7 +834,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
             });
     });
 
-    app.post('/getClassStudent', function(req, res) {
+    app.post('/getClassStudent', loggedIn, function(req, res) {
         //Add the Teahcer ID to the JSON Object to get specifc students;
         req.body.teacherID = req.user.id;
         databaseQuery.addClassStudent(req.body)
@@ -849,7 +848,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
             });
     });
 
-    app.post('/class', function(req, res) {
+    app.post('/class', loggedIn, function(req, res) {
         databaseQuery.addClass(req.body)
             .then(function(data) {
                 res.send(data);
@@ -861,7 +860,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
             });
     });
 
-    app.post('/room', function(req, res) {
+    app.post('/room', loggedIn, function(req, res) {
         databaseQuery.addRoom(req.body)
             .then(function(data) {
                 res.send(data);
@@ -873,7 +872,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
             });
     });
 
-    app.post('/subject', function(req, res) {
+    app.post('/subject', loggedIn, function(req, res) {
         databaseQuery.addSubject(req.body)
             .then(function(data) {
                 res.send(data);
@@ -885,7 +884,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
             });
     });
 
-    app.post('/contact', function(req, res) {
+    app.post('/contact', loggedIn, function(req, res) {
       console.log(req.body);
       if(req.body.contactMethod ==='Email'){
           const email = new sendgridClient.Email();
@@ -927,7 +926,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
     });
 
 
-    app.post('/pupil', function(req, res) {
+    app.post('/pupil', loggedIn, function(req, res) {
         //Store the unhashed password in a variable
         let unhashedPassword = req.body.Student_Password;
         //Hash the users password
@@ -949,7 +948,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
         });
     });
 
-    app.post('/teacher', function(req, res) {
+    app.post('/teacher', loggedIn, function(req, res) {
         //Store the unhashed password in a variable
         let unhashedPassword = req.body.Teacher_Password;
         //Hash the users password
@@ -972,7 +971,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
     });
 
 
-    app.post('/parent', function(req, res) {
+    app.post('/parent', loggedIn, function(req, res) {
         //Store the unhashed password in a variable
         let unhashedPassword = req.body.Parent_Password;
         //Hash the users password
@@ -994,7 +993,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
         });
     });
 
-    app.post('/update', function(req, res) {
+    app.post('/update', loggedIn, function(req, res) {
 
         //Declare vars
         let email, username, id;
@@ -1067,6 +1066,15 @@ function allowParents(req, res, next) {
         return next();
     } else {
         req.flash('loginMessage', "Naughty, Naughty your not an Teacher!");
+        res.redirect('/login');
+    }
+}
+
+function loggedIn(req, res, next) {
+    if (req.user) {
+        next();
+    } else {
+        req.flash('loginMessage', "You need to be logged in to access this area!");
         res.redirect('/login');
     }
 }
