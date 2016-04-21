@@ -28,7 +28,8 @@ $("#searchForm").submit(function(event) {
       console.log("Do Nothing");
     }
     else{
-    userID = searchValue.charAt(1);
+      console.log(userID);
+    userID = searchValue.match(/\d+(?=\s)/)[0];
     window.location.href = `/student/${userID}`;
   }
   });
