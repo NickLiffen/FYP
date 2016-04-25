@@ -4,6 +4,7 @@ $(document).ready(function() {
   let parentID = $('.parentID').attr("id");
   let studentID = $('.studentID').attr("id");
 
+
     $("#contactParents").click(function(){
         window.location.href = `/parent/${parentID}/contact`;
 });
