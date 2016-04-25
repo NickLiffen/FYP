@@ -51,14 +51,26 @@
                         <td>Student Username: </td>
                         <td><%= studentUsername %></td>
                       </tr>
+                      <tr>
+                      <td>Student Timetable: </td>
+                      <td><button type="button" class="btn btn-primary" id="getTimetable">Student Timetable</button></td>
+                    </tr>
+                    <tr>
+                    <td>Student Attendance: </td>
+                    <td><button type="button" class="btn btn-primary" id="attendanceInfo">Student Attendance</button></td>
+                  </tr>
+                <% if (user.role === 'Teacher' || user.role === 'Admin') { %>
+                  <tr>
+                  <td>Contact Parents: </td>
+                  <td><button type="button" class="btn btn-primary" id="contactParents">Contact Parents</button></td>
+                </tr>
+                <% } %>
                         </td>
                       </tr>
                     </tbody>
                   </table>
-                  <button type="button" class="btn btn-primary" id="getTimetable">Student Timetable</button>
-                  <% if (user.role === 'Teacher' || user.role === 'Admin') { %>
-                      <button type="button" class="btn btn-primary" id="contactParents">Contact Parents</button>
-                  <% } %>
+
+
                 </div>
               </div>
             </div>

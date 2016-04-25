@@ -912,7 +912,7 @@ module.exports = {
 
     takeAttendance: function(attendanceInfo) {
         return new Promise(function(resolve, reject) {
-
+          console.log(attendanceInfo);
             if (attendanceInfo[0].length === 3) {
 
               let sqlStatement = "UPDATE Attendance SET Attendance_Status = ?, Attendance_Remarks = ? WHERE Attendance_ID = ?;";

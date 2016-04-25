@@ -41,8 +41,6 @@ let studentID = this.id;
     else{
       window.location.href = `/student/${studentID}/attendance`;
     }
-
-
   });
 /*
   $.ajax({

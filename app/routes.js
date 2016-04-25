@@ -377,7 +377,8 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
                 res.render('parent/attendance.ejs', {
                     message: req.flash('user'),
                     studentID: data[0].Student_ID,
-                    studentName: data[0].Student_Name
+                    studentName: data[0].Student_Name,
+                    user: req.user,
                 });
             })
             .catch(function(e) {

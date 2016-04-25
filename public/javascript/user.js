@@ -1,12 +1,17 @@
 "use strict";
 
 $(document).ready(function() {
-
   let parentID = $('.parentID').attr("id");
+  let studentID = $('.studentID').attr("id");
 
     $("#contactParents").click(function(){
         window.location.href = `/parent/${parentID}/contact`;
 });
+
+  $("#attendanceInfo").click(function(){
+      window.location.href = `/student/${studentID}/attendance`;
+  });
+
 
 
   $(".calendarEffect").fadeOut();
@@ -91,5 +96,6 @@ $(document).ready(function() {
       $(".calendarEffect").fadeOut();
       $(".profileEffect").fadeIn();
     });
+
 
 });
