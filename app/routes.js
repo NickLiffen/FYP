@@ -36,7 +36,7 @@ module.exports = function(app, passport, sendgridClient, twilioClient) {
         }
     });
 
-    app.get('/attendance', allowParents, function(req, res) {
+    app.get('/attendance', loggedIn, function(req, res) {
         res.render('parent/attendance.ejs', {
             message: req.flash('appMessage')
         });
