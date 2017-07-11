@@ -1,5 +1,6 @@
 # Project
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/4beeb5212e2049f5be66daefa8c13255)](https://www.codacy.com/app/app64462670/FYP?utm_source=github.com&utm_medium=referral&utm_content=NickLiffen/FYP&utm_campaign=badger)
 [![Build Status](https://travis-ci.com/NickLiffen/project.svg?token=nTmoVpHsSx6vLW8egSuy&branch=master)](https://travis-ci.com/NickLiffen/project)
 
 This project is based around a school attendance system primaryly focused on secondary schools. (But can also be used for primary schools etc).
